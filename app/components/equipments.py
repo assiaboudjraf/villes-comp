@@ -1,13 +1,13 @@
 """
 components/equipements.py
-
 """
 
 import streamlit as st
 import requests
 import plotly.graph_objects as go
-import pydeck as pdk
 import pandas as pd
+import folium
+from streamlit_folium import st_folium
 import sys, os
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 from utils import COULEUR_V1, COULEUR_V2
@@ -45,17 +45,15 @@ def overpass_query(query: str):
 @st.cache_data(ttl=3600)
 def get_equipements(lat: float, lon: float, rayon_m: int = 5000):
     categories = {
-    "Cinémas":      ('cinema',      'amenity', [150, 0, 200]),     # violet
-    "Musées":       ('museum',      'tourism', [0, 180, 0]),       # vert
-    "Bibliothèques": ('library',     'amenity', [255, 140, 0]),    # orange
-    "Théâtres":     ('theatre',     'amenity', [255, 215, 0]),     # jaune
-    "Stades":        ('stadium',     'leisure', [0, 0, 180]),      # bleu foncé
-    "Piscines":     ('swimming_pool','leisure', [0, 255, 200]),    # turquoise
-    "Hôpitaux":     ('hospital',    'amenity', [180, 0, 0]),       # rouge sombre
-    "Universités":  ('university',  'amenity', [255, 105, 180])    # rose clair
-}
-
-
+        "Cinémas":      ('cinema',      'amenity', "purple"),
+        "Musées":       ('museum',      'tourism', "green"),
+        "Bibliothèques": ('library',     'amenity', "orange"),
+        "Théâtres":     ('theatre',     'amenity', "yellow"),
+        "Stades":        ('stadium',     'leisure', "blue"),
+        "Piscines":     ('swimming_pool','leisure', "cadetblue"),
+        "Hôpitaux":     ('hospital',    'amenity', "red"),
+        "Universités":  ('university',  'amenity', "pink")
+    }
 
     resultats = {}
     points = []
@@ -88,35 +86,22 @@ def get_equipements(lat: float, lon: float, rayon_m: int = 5000):
 
 
 # ───────────────────────────────────────────────
-# CARTE PYDECK (VILLE UNIQUE)
+# CARTE FOLIUM (VILLE UNIQUE)
 # ───────────────────────────────────────────────
-def carte_pydeck(points, lat, lon):
-    df = pd.DataFrame(points)
+def carte_folium(points, lat, lon):
+    m = folium.Map(location=[lat, lon], zoom_start=12, tiles="OpenStreetMap")
 
-    layer = pdk.Layer(
-        "ScatterplotLayer",
-        data=df,
-        get_position='[lon, lat]',
-        get_color='color',
-        get_radius=150,
-        pickable=True,
-    )
+    for p in points:
+        folium.CircleMarker(
+            location=[p["lat"], p["lon"]],
+            radius=6,
+            color=p["color"],
+            fill=True,
+            fill_opacity=0.8,
+            popup=p["category"]
+        ).add_to(m)
 
-    view_state = pdk.ViewState(
-        latitude=lat,
-        longitude=lon,
-        zoom=11,
-        pitch=0,
-    )
-
-    deck = pdk.Deck(
-        layers=[layer],
-        initial_view_state=view_state,
-        map_style="mapbox://styles/mapbox/dark-v10",
-        tooltip={"text": "{category}"}
-    )
-
-    return deck
+    return m
 
 
 # ───────────────────────────────────────────────
@@ -132,20 +117,20 @@ def afficher_section_equipements(ville1: dict, ville2: dict):
         eq1, pts1 = get_equipements(lat1, lon1)
         eq2, pts2 = get_equipements(lat2, lon2)
 
-    # ─────────── 2 CARTES CÔTE À CÔTE ───────────
+    # ─────────── 2 CARTES CÔTE À CÔTÉ ───────────
     st.subheader("Cartes interactives des villes")
 
     colA, colB = st.columns(2)
 
     with colA:
         st.markdown(f"### 🔵 {ville1['nom_standard']}")
-        deck1 = carte_pydeck(pts1, lat1, lon1)
-        st.pydeck_chart(deck1)
+        m1 = carte_folium(pts1, lat1, lon1)
+        st_folium(m1, width=500, height=400)
 
     with colB:
         st.markdown(f"### 🔴 {ville2['nom_standard']}")
-        deck2 = carte_pydeck(pts2, lat2, lon2)
-        st.pydeck_chart(deck2)
+        m2 = carte_folium(pts2, lat2, lon2)
+        st_folium(m2, width=500, height=400)
 
     # ─────────── LÉGENDE ───────────
     st.markdown("""
@@ -159,7 +144,6 @@ def afficher_section_equipements(ville1: dict, ville2: dict):
 - 🟥 Hôpitaux  
 - 🌸 Universités  
 """)
-
 
     # ─────────── Métriques ───────────
     col1, col2 = st.columns(2)
