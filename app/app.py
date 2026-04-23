@@ -29,6 +29,8 @@ st.markdown("""
 .ville-badge-2 { background:#FEF2F2; border-left:4px solid #DC2626; padding:0.5rem 1rem; border-radius:0 8px 8px 0; margin-bottom:0.5rem; }
 </style>
 """, unsafe_allow_html=True)
+st.markdown("<div class='main-title'>Comparateur de Villes Françaises 🏙️</div>", unsafe_allow_html=True)
+
 
 # ─── Chargement ───────────────────────────────────────────────────────────────
 df_villes = load_villes()
