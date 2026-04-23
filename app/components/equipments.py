@@ -112,7 +112,7 @@ def carte_pydeck(points, lat, lon):
     deck = pdk.Deck(
         layers=[layer],
         initial_view_state=view_state,
-        map_style="mapbox://styles/mapbox/light-v10",
+        map_style="mapbox://styles/mapbox/satellite-v9",
         tooltip={"text": "{category}"}
     )
 
