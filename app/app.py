@@ -23,7 +23,7 @@ st.set_page_config(
 
 st.markdown("""
 <style>
-.main-title    { font-size:2.2rem; font-weight:800; color:#1E293B; margin-bottom:0; }
+.main-title    { font-size:4rem; font-weight:800; color:#1E293B; margin-bottom:0; }
 .main-subtitle { font-size:1rem; color:#64748B; margin-top:0.2rem; margin-bottom:1.5rem; }
 .ville-badge-1 { background:#EFF6FF; border-left:4px solid #2563EB; padding:0.5rem 1rem; border-radius:0 8px 8px 0; margin-bottom:0.5rem; }
 .ville-badge-2 { background:#FEF2F2; border-left:4px solid #DC2626; padding:0.5rem 1rem; border-radius:0 8px 8px 0; margin-bottom:0.5rem; }
