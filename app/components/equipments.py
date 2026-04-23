@@ -5,9 +5,8 @@ components/equipements.py
 import streamlit as st
 import requests
 import plotly.graph_objects as go
+import pydeck as pdk
 import pandas as pd
-import folium
-from streamlit_folium import st_folium
 import sys, os
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 from utils import COULEUR_V1, COULEUR_V2
@@ -45,14 +44,14 @@ def overpass_query(query: str):
 @st.cache_data(ttl=3600)
 def get_equipements(lat: float, lon: float, rayon_m: int = 5000):
     categories = {
-        "Cinémas":      ('cinema',      'amenity', "purple"),
-        "Musées":       ('museum',      'tourism', "green"),
-        "Bibliothèques": ('library',     'amenity', "orange"),
-        "Théâtres":     ('theatre',     'amenity', "yellow"),
-        "Stades":        ('stadium',     'leisure', "blue"),
-        "Piscines":     ('swimming_pool','leisure', "cadetblue"),
-        "Hôpitaux":     ('hospital',    'amenity', "red"),
-        "Universités":  ('university',  'amenity', "pink")
+        "Cinémas":      ('cinema',      'amenity', [150, 0, 200]),
+        "Musées":       ('museum',      'tourism', [0, 180, 0]),
+        "Bibliothèques": ('library',     'amenity', [255, 140, 0]),
+        "Théâtres":     ('theatre',     'amenity', [255, 215, 0]),
+        "Stades":        ('stadium',     'leisure', [0, 0, 180]),
+        "Piscines":     ('swimming_pool','leisure', [0, 255, 200]),
+        "Hôpitaux":     ('hospital',    'amenity', [180, 0, 0]),
+        "Universités":  ('university',  'amenity', [255, 105, 180])
     }
 
     resultats = {}
@@ -86,22 +85,37 @@ def get_equipements(lat: float, lon: float, rayon_m: int = 5000):
 
 
 # ───────────────────────────────────────────────
-# CARTE FOLIUM (VILLE UNIQUE)
+# CARTE PYDECK SANS MAPBOX (OpenStreetMap)
 # ───────────────────────────────────────────────
-def carte_folium(points, lat, lon):
-    m = folium.Map(location=[lat, lon], zoom_start=12, tiles="OpenStreetMap")
+def carte_pydeck(points, lat, lon):
+    df = pd.DataFrame(points)
 
-    for p in points:
-        folium.CircleMarker(
-            location=[p["lat"], p["lon"]],
-            radius=6,
-            color=p["color"],
-            fill=True,
-            fill_opacity=0.8,
-            popup=p["category"]
-        ).add_to(m)
+    layer = pdk.Layer(
+        "ScatterplotLayer",
+        data=df,
+        get_position='[lon, lat]',
+        get_color='color',
+        get_radius=150,
+        pickable=True,
+    )
 
-    return m
+    view_state = pdk.ViewState(
+        latitude=lat,
+        longitude=lon,
+        zoom=11,
+        pitch=0,
+    )
+
+    # 🔥 Style OpenStreetMap GRATUIT (pas besoin de clé API)
+    deck = pdk.Deck(
+        layers=[layer],
+        initial_view_state=view_state,
+        map_provider="carto",  # 👈 IMPORTANT
+        map_style="light",     # 👈 fonctionne sans clé
+        tooltip={"text": "{category}"}
+    )
+
+    return deck
 
 
 # ───────────────────────────────────────────────
@@ -117,22 +131,21 @@ def afficher_section_equipements(ville1: dict, ville2: dict):
         eq1, pts1 = get_equipements(lat1, lon1)
         eq2, pts2 = get_equipements(lat2, lon2)
 
-    # ─────────── 2 CARTES CÔTE À CÔTÉ ───────────
     st.subheader("Cartes interactives des villes")
 
     colA, colB = st.columns(2)
 
     with colA:
         st.markdown(f"### 🔵 {ville1['nom_standard']}")
-        m1 = carte_folium(pts1, lat1, lon1)
-        st_folium(m1, width=500, height=400)
+        deck1 = carte_pydeck(pts1, lat1, lon1)
+        st.pydeck_chart(deck1, width="stretch", height=400)
 
     with colB:
         st.markdown(f"### 🔴 {ville2['nom_standard']}")
-        m2 = carte_folium(pts2, lat2, lon2)
-        st_folium(m2, width=500, height=400)
+        deck2 = carte_pydeck(pts2, lat2, lon2)
+        st.pydeck_chart(deck2, width="stretch", height=400)
 
-    # ─────────── LÉGENDE ───────────
+    # Légende
     st.markdown("""
 ### Légende des couleurs
 - 🟣 Cinémas  
@@ -145,7 +158,7 @@ def afficher_section_equipements(ville1: dict, ville2: dict):
 - 🌸 Universités  
 """)
 
-    # ─────────── Métriques ───────────
+    # Métriques
     col1, col2 = st.columns(2)
 
     with col1:
@@ -158,7 +171,7 @@ def afficher_section_equipements(ville1: dict, ville2: dict):
         for label, val in eq2.items():
             st.metric(label, val)
 
-    # ─────────── Graphique ───────────
+    # Graphique
     st.divider()
     categories = list(eq1.keys())
     vals1 = [eq1[c] for c in categories]
@@ -176,4 +189,4 @@ def afficher_section_equipements(ville1: dict, ville2: dict):
         xaxis_tickangle=-20,
     )
 
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
