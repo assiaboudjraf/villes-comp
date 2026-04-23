@@ -20,6 +20,36 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded",
 )
+# ─── Bannière en haut ─────────────────────────────────────────────────────────
+st.markdown("""
+<style>
+.top-banner {
+    width: 100%;
+    background: #F8FAFC;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 2px solid #E2E8F0;
+}
+
+.top-banner img {
+    height: 60px;
+}
+
+.top-banner .title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #1E293B;
+}
+</style>
+
+<div class="top-banner">
+    <img src="https://upload.wikimedia.org/wikipedia/fr/e/e7/Logo_Universit%C3%A9_de_Paris.svg" alt="Logo Université">
+    <div class="title">Comparateur de Villes Françaises</div>
+</div>
+""", unsafe_allow_html=True)
+
 
 st.markdown("""
 <style>
