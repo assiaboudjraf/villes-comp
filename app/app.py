@@ -46,7 +46,6 @@ st.markdown("""
 
 <div class="top-banner">
     <img src="https://upload.wikimedia.org/wikipedia/fr/e/e7/Logo_Universit%C3%A9_de_Paris.svg" alt="Logo Université">
-    <div class="title">Comparateur de Villes Françaises</div>
 </div>
 """, unsafe_allow_html=True)
 
@@ -101,6 +100,25 @@ with st.sidebar:
         "- OpenStreetMap / Overpass\n"
         "- Wikipedia"
     )
+
+# ─── Footer / Copyright ───────────────────────────────────────────────────────
+st.markdown("""
+<style>
+.footer {
+    width: 100%;
+    text-align: center;
+    padding: 15px 0;
+    margin-top: 40px;
+    color: #64748B;
+    font-size: 0.9rem;
+}
+</style>
+
+<div class="footer">
+    © 2026 Assia BOUDJRAF — Tous droits réservés
+</div>
+""", unsafe_allow_html=True)
+
 
 # ─── Données des villes sélectionnées ────────────────────────────────────────
 def get_ville(nom):
