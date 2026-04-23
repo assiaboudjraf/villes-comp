@@ -1,0 +1,482 @@
+code_insee,nom_standard,dep_code,dep_nom,reg_nom,code_postal,population,superficie,densite,latitude,longitude
+80001,Abbeville,80,Somme,Hauts-de-France,80100,22595,26,855.0,50.108,1.832
+78005,Achères,78,Yvelines,Île-de-France,78260,21368,10,2242.0,48.972,2.09
+34003,Agde,34,Hérault,Occitanie,34300,29103,51,572.0,43.309,3.484
+47001,Agen,47,Lot-et-Garonne,Nouvelle-Aquitaine,47000,32485,12,2820.0,44.203,0.626
+13001,Aix-en-Provence,13,Bouches-du-Rhône,Provence-Alpes-Côte d'Azur,13100,147478,188,786.0,43.536,5.399
+73008,Aix-les-Bains,73,Savoie,Auvergne-Rhône-Alpes,73100,31874,16,2020.0,45.698,5.904
+2A004,Ajaccio,2A,Corse-du-Sud,Corse,20000,73822,83,888.0,41.935,8.701
+81004,Albi,81,Tarn,Occitanie,81000,49714,45,1106.0,43.926,2.147
+61001,Alençon,61,Orne,Normandie,61000,25555,11,2373.0,48.432,0.092
+94002,Alfortville,94,Val-de-Marne,Île-de-France,94140,45046,4,12241.0,48.796,2.421
+13002,Allauch,13,Bouches-du-Rhône,Provence-Alpes-Côte d'Azur,13190,21490,50,427.0,43.353,5.511
+30007,Alès,30,Gard,Occitanie,30100,43892,23,1886.0,44.125,4.088
+80021,Amiens,80,Somme,Hauts-de-France,80090,133625,50,2668.0,49.901,2.29
+49007,Angers,49,Maine-et-Loire,Pays de la Loire,49000,157175,44,3546.0,47.477,-0.556
+64024,Anglet,64,Pyrénées-Atlantiques,Nouvelle-Aquitaine,64600,41153,28,1489.0,43.492,-1.516
+16015,Angoulême,16,Charente,Nouvelle-Aquitaine,16000,41086,22,1894.0,45.647,0.145
+74010,Annecy,74,Haute-Savoie,Auvergne-Rhône-Alpes,74000,131715,16,8258.0,45.891,6.126
+74012,Annemasse,74,Haute-Savoie,Auvergne-Rhône-Alpes,74100,37918,5,7676.0,46.191,6.242
+06004,Antibes,06,Alpes-Maritimes,Provence-Alpes-Côte d'Azur,06160,75130,27,2784.0,43.588,7.106
+92002,Antony,92,Hauts-de-Seine,Île-de-France,92160,63232,10,6614.0,48.75,2.299
+94003,Arcueil,94,Val-de-Marne,Île-de-France,94110,21557,2,9292.0,48.806,2.334
+95018,Argenteuil,95,Val-d'Oise,Île-de-France,95100,107221,17,6169.0,48.951,2.241
+13004,Arles,13,Bouches-du-Rhône,Provence-Alpes-Côte d'Azur,13280,50415,758,66.0,43.547,4.662
+59017,Armentières,59,Nord,Hauts-de-France,59280,25581,6,4106.0,50.691,2.88
+62041,Arras,62,Pas-de-Calais,Hauts-de-France,62000,42600,12,3571.0,50.29,2.766
+92004,Asnières-sur-Seine,92,Hauts-de-Seine,Île-de-France,92600,89662,5,18602.0,48.915,2.288
+91027,Athis-Mons,91,Essonne,Île-de-France,91200,36222,9,4207.0,48.709,2.387
+13005,Aubagne,13,Bouches-du-Rhône,Provence-Alpes-Côte d'Azur,13400,47342,55,863.0,43.294,5.563
+93001,Aubervilliers,93,Seine-Saint-Denis,Île-de-France,93300,90071,6,15610.0,48.912,2.384
+32013,Auch,32,Gers,Occitanie,32000,23041,73,314.0,43.653,0.575
+93005,Aulnay-sous-Bois,93,Seine-Saint-Denis,Île-de-France,93600,86135,16,5337.0,48.946,2.493
+15014,Aurillac,15,Cantal,Auvergne-Rhône-Alpes,15000,25815,29,885.0,44.924,2.442
+89024,Auxerre,89,Yonne,Bourgogne-Franche-Comté,89000,34778,50,698.0,47.794,3.582
+84007,Avignon,84,Vaucluse,Provence-Alpes-Côte d'Azur,84000,90330,65,1392.0,43.935,4.841
+92007,Bagneux,92,Hauts-de-Seine,Île-de-France,92220,43699,4,10454.0,48.798,2.31
+93006,Bagnolet,93,Seine-Saint-Denis,Île-de-France,93170,39366,3,15318.0,48.869,2.423
+97103,Baie-Mahault,971,Guadeloupe,Guadeloupe,97122,30909,47,664.0,16.251,-61.593
+2B033,Bastia,2B,Haute-Corse,Corse,20600,48768,20,2467.0,42.686,9.425
+64102,Bayonne,64,Pyrénées-Atlantiques,Nouvelle-Aquitaine,64100,52749,26,2041.0,43.492,-1.466
+21054,Beaune,21,Côte-d'Or,Bourgogne-Franche-Comté,21200,20032,31,644.0,47.026,4.838
+49023,Beaupréau-en-Mauges,49,Maine-et-Loire,Pays de la Loire,49600,23639,36,659.0,47.213,-0.984
+60057,Beauvais,60,Oise,Hauts-de-France,60000,56677,33,1713.0,49.437,2.086
+90010,Belfort,90,Territoire de Belfort,Bourgogne-Franche-Comté,90000,45155,17,2644.0,47.647,6.845
+24037,Bergerac,24,Dordogne,Nouvelle-Aquitaine,24100,26323,57,465.0,44.854,0.486
+25056,Besançon,25,Doubs,Bourgogne-Franche-Comté,25000,119198,65,1831.0,47.255,6.02
+95063,Bezons,95,Val-d'Oise,Île-de-France,95870,32017,4,7660.0,48.926,2.211
+64122,Biarritz,64,Pyrénées-Atlantiques,Nouvelle-Aquitaine,64200,25764,12,2086.0,43.47,-1.553
+31069,Blagnac,31,Haute-Garonne,Occitanie,31700,26466,17,1539.0,43.642,1.379
+41018,Blois,41,Loir-et-Cher,Centre-Val de Loire,41000,46813,38,1248.0,47.582,1.306
+93008,Bobigny,93,Seine-Saint-Denis,Île-de-France,93000,55056,7,8169.0,48.908,2.439
+92009,Bois-Colombes,92,Hauts-de-Seine,Île-de-France,92270,29765,2,15422.0,48.915,2.267
+93010,Bondy,93,Seine-Saint-Denis,Île-de-France,93140,52905,5,9672.0,48.902,2.484
+33063,Bordeaux,33,Gironde,Nouvelle-Aquitaine,33300,261804,50,5268.0,44.857,-0.574
+44020,Bouguenais,44,Loire-Atlantique,Pays de la Loire,44340,20410,31,656.0,47.171,-1.617
+92012,Boulogne-Billancourt,92,Hauts-de-Seine,Île-de-France,92100,119808,6,19481.0,48.837,2.239
+62160,Boulogne-sur-Mer,62,Pas-de-Calais,Hauts-de-France,62200,40910,8,5245.0,50.727,1.608
+01053,Bourg-en-Bresse,01,Ain,Auvergne-Rhône-Alpes,01000,41525,24,1730.0,46.205,5.246
+92014,Bourg-la-Reine,92,Hauts-de-Seine,Île-de-France,92340,20810,2,11188.0,48.78,2.316
+18033,Bourges,18,Cher,Centre-Val de Loire,18000,63702,69,930.0,47.075,2.404
+38053,Bourgoin-Jallieu,38,Isère,Auvergne-Rhône-Alpes,38300,29577,25,1199.0,45.602,5.274
+29019,Brest,29,Finistère,Bretagne,29200,139619,49,2842.0,48.4,-4.503
+19031,Brive-la-Gaillarde,19,Corrèze,Nouvelle-Aquitaine,19100,46599,48,962.0,45.144,1.519
+69029,Bron,69,Rhône,Auvergne-Rhône-Alpes,69500,43049,10,4196.0,45.734,4.912
+62178,Bruay-la-Buissière,62,Pas-de-Calais,Hauts-de-France,62700,21827,17,1322.0,50.49,2.552
+33075,Bruges,33,Gironde,Nouvelle-Aquitaine,33520,20215,14,1424.0,44.889,-0.6
+91114,Brunoy,91,Essonne,Île-de-France,91800,25423,7,3864.0,48.696,2.504
+91103,Brétigny-sur-Orge,91,Essonne,Île-de-France,91220,27106,15,1857.0,48.602,2.302
+77058,Bussy-Saint-Georges,77,Seine-et-Marne,Île-de-France,77600,26571,15,1742.0,48.831,2.722
+33039,Bègles,33,Gironde,Nouvelle-Aquitaine,33130,30813,11,2817.0,44.802,-0.548
+62119,Béthune,62,Pas-de-Calais,Hauts-de-France,62400,24992,10,2631.0,50.529,2.642
+34032,Béziers,34,Hérault,Occitanie,34500,80341,96,840.0,43.348,3.231
+94016,Cachan,94,Val-de-Marne,Île-de-France,94230,30592,3,11004.0,48.792,2.332
+14118,Caen,14,Calvados,Normandie,14000,108200,26,4205.0,49.185,-0.37
+06027,Cagnes-sur-Mer,06,Alpes-Maritimes,Provence-Alpes-Côte d'Azur,06800,52580,18,2887.0,43.672,7.153
+46042,Cahors,46,Lot,Occitanie,46000,20141,65,311.0,44.451,1.441
+62193,Calais,62,Pas-de-Calais,Hauts-de-France,62100,67380,33,2014.0,50.95,1.876
+69034,Caluire-et-Cuire,69,Rhône,Auvergne-Rhône-Alpes,69300,43572,10,4190.0,45.797,4.851
+59122,Cambrai,59,Nord,Hauts-de-France,59400,31425,18,1726.0,50.17,3.242
+06029,Cannes,06,Alpes-Maritimes,Provence-Alpes-Côte d'Azur,06150,73255,21,3490.0,43.553,7.004
+11069,Carcassonne,11,Aude,Occitanie,11000,46218,65,710.0,43.209,2.344
+84031,Carpentras,84,Vaucluse,Provence-Alpes-Côte d'Azur,84200,30769,38,813.0,44.059,5.061
+44026,Carquefou,44,Loire-Atlantique,Pays de la Loire,44470,20510,43,473.0,47.302,-1.473
+34057,Castelnau-le-Lez,34,Hérault,Occitanie,34170,24888,11,2242.0,43.638,3.913
+81065,Castres,81,Tarn,Occitanie,81100,42672,99,432.0,43.616,2.238
+84035,Cavaillon,84,Vaucluse,Provence-Alpes-Côte d'Azur,84300,25923,46,565.0,43.851,5.036
+97302,Cayenne,973,Guyane,Guyane,97300,63468,31,2063.0,5.022,-52.501
+33119,Cenon,33,Gironde,Nouvelle-Aquitaine,33150,26778,6,4690.0,44.855,-0.521
+95127,Cergy,95,Val-d'Oise,Île-de-France,95000,68348,15,4704.0,49.04,2.051
+85047,Challans,85,Vendée,Pays de la Loire,85300,22494,65,344.0,46.835,-1.84
+71076,Chalon-sur-Saône,71,Saône-et-Loire,Bourgogne-Franche-Comté,71100,45031,15,2945.0,46.79,4.852
+73065,Chambéry,73,Savoie,Auvergne-Rhône-Alpes,73000,59856,21,2822.0,45.583,5.909
+94017,Champigny-sur-Marne,94,Val-de-Marne,Île-de-France,94500,77724,11,6878.0,48.817,2.517
+77083,Champs-sur-Marne,77,Seine-et-Marne,Île-de-France,77420,25695,8,3298.0,48.848,2.596
+94018,Charenton-le-Pont,94,Val-de-Marne,Île-de-France,94220,29445,2,16090.0,48.823,2.408
+08105,Charleville-Mézières,08,Ardennes,Grand Est,08000,46398,32,1460.0,49.775,4.717
+28085,Chartres,28,Eure-et-Loir,Centre-Val de Loire,28000,38447,17,2275.0,48.447,1.506
+78146,Chatou,78,Yvelines,Île-de-France,78400,29649,5,5848.0,48.897,2.154
+52121,Chaumont,52,Haute-Marne,Grand Est,52000,21699,55,392.0,48.098,5.141
+77108,Chelles,77,Seine-et-Marne,Île-de-France,77500,54309,16,3392.0,48.884,2.597
+49092,Chemillé-en-Anjou,49,Maine-et-Loire,Pays de la Loire,49120,21386,49,432.0,47.227,-0.73
+50129,Cherbourg-en-Cotentin,50,Manche,Normandie,50110,77808,16,4925.0,49.633,-1.634
+94021,Chevilly-Larue,94,Val-de-Marne,Île-de-France,94550,20326,4,4828.0,48.767,2.353
+94022,Choisy-le-Roi,94,Val-de-Marne,Île-de-France,94600,46129,5,8527.0,48.764,2.417
+49099,Cholet,49,Maine-et-Loire,Pays de la Loire,49300,53936,87,617.0,47.045,-0.878
+51108,Châlons-en-Champagne,51,Marne,Grand Est,51000,43877,26,1686.0,48.964,4.379
+36044,Châteauroux,36,Indre,Centre-Val de Loire,36000,42968,25,1692.0,46.803,1.694
+86066,Châtellerault,86,Vienne,Nouvelle-Aquitaine,86100,31284,52,604.0,46.816,0.553
+92019,Châtenay-Malabry,92,Hauts-de-Seine,Île-de-France,92290,34898,6,5478.0,48.768,2.263
+92020,Châtillon,92,Hauts-de-Seine,Île-de-France,92320,36777,3,12552.0,48.803,2.288
+92023,Clamart,92,Hauts-de-Seine,Île-de-France,92140,54491,9,6220.0,48.796,2.255
+63113,Clermont-Ferrand,63,Puy-de-Dôme,Auvergne-Rhône-Alpes,63100,147327,43,3421.0,45.786,3.116
+92024,Clichy,92,Hauts-de-Seine,Île-de-France,92110,64849,3,21055.0,48.904,2.306
+93014,Clichy-sous-Bois,93,Seine-Saint-Denis,Île-de-France,93390,29735,4,7528.0,48.908,2.546
+68066,Colmar,68,Haut-Rhin,Grand Est,68000,67730,66,1019.0,48.11,7.385
+92025,Colombes,92,Hauts-de-Seine,Île-de-France,92700,88870,8,11423.0,48.922,2.247
+31149,Colomiers,31,Haute-Garonne,Occitanie,31770,40159,21,1909.0,43.612,1.327
+77122,Combs-la-Ville,77,Seine-et-Marne,Île-de-France,77380,22240,15,1527.0,48.658,2.575
+60159,Compiègne,60,Oise,Hauts-de-France,60200,40394,53,760.0,49.399,2.853
+29039,Concarneau,29,Finistère,Bretagne,29900,20607,41,502.0,47.897,-3.907
+78172,Conflans-Sainte-Honorine,78,Yvelines,Île-de-France,78700,35926,10,3629.0,49.0,2.099
+91174,Corbeil-Essonnes,91,Essonne,Île-de-France,91100,52683,11,4772.0,48.604,2.469
+95176,Cormeilles-en-Parisis,95,Val-d'Oise,Île-de-France,95240,26741,8,3150.0,48.968,2.199
+59155,Coudekerque-Branche,59,Nord,Hauts-de-France,59210,20765,9,2255.0,51.018,2.396
+92026,Courbevoie,92,Hauts-de-Seine,Île-de-France,92400,81516,4,19595.0,48.898,2.256
+63124,Cournon-d'Auvergne,63,Puy-de-Dôme,Auvergne-Rhône-Alpes,63800,20193,19,1071.0,45.743,3.187
+44047,Couëron,44,Loire-Atlantique,Pays de la Loire,44220,23057,49,473.0,47.231,-1.729
+60175,Creil,60,Oise,Hauts-de-France,60100,36106,11,3270.0,49.253,2.485
+59163,Croix,59,Nord,Hauts-de-France,59170,20778,4,4648.0,50.674,3.155
+94028,Créteil,94,Val-de-Marne,Île-de-France,94000,92989,11,8128.0,48.784,2.455
+31157,Cugnaux,31,Haute-Garonne,Occitanie,31270,20341,13,1562.0,43.545,1.343
+77152,Dammarie-les-Lys,77,Seine-et-Marne,Île-de-France,77190,22845,10,2233.0,48.514,2.628
+40088,Dax,40,Landes,Nouvelle-Aquitaine,40100,21347,20,1084.0,43.701,-1.06
+59172,Denain,59,Nord,Hauts-de-France,59220,20640,12,1779.0,50.33,3.39
+95197,Deuil-la-Barre,95,Val-d'Oise,Île-de-France,95170,22510,4,6035.0,48.971,2.326
+76217,Dieppe,76,Seine-Maritime,Normandie,76370,28358,12,2332.0,49.922,1.087
+21231,Dijon,21,Côte-d'Or,Bourgogne-Franche-Comté,21000,159346,42,3831.0,47.323,5.038
+39198,Dole,39,Jura,Bourgogne-Franche-Comté,39100,23775,38,624.0,47.076,5.501
+59178,Douai,59,Nord,Hauts-de-France,59500,39648,17,2343.0,50.382,3.092
+83050,Draguignan,83,Var,Provence-Alpes-Côte d'Azur,83300,39745,54,735.0,43.536,6.454
+93029,Drancy,93,Seine-Saint-Denis,Île-de-France,93700,71363,8,9173.0,48.923,2.445
+91201,Draveil,91,Essonne,Île-de-France,91210,29173,16,1831.0,48.678,2.422
+28134,Dreux,28,Eure-et-Loir,Centre-Val de Loire,28100,30879,24,1272.0,48.748,1.359
+59183,Dunkerque,59,Nord,Hauts-de-France,59140,86788,43,2020.0,51.031,2.338
+69275,Décines-Charpieu,69,Rhône,Auvergne-Rhône-Alpes,69150,29731,17,1746.0,45.772,4.961
+95203,Eaubonne,95,Val-d'Oise,Île-de-France,95600,25373,4,5793.0,48.991,2.278
+95219,Ermont,95,Val-d'Oise,Île-de-France,95120,28987,4,6918.0,48.988,2.257
+33162,Eysines,33,Gironde,Nouvelle-Aquitaine,33320,24374,12,2026.0,44.88,-0.648
+45147,Fleury-les-Aubrais,45,Loiret,Centre-Val de Loire,45400,21438,10,2110.0,47.939,1.92
+38169,Fontaine,38,Isère,Auvergne-Rhône-Alpes,38600,22891,7,3422.0,45.193,5.678
+92032,Fontenay-aux-Roses,92,Hauts-de-Seine,Île-de-France,92260,24772,3,9791.0,48.79,2.287
+94033,Fontenay-sous-Bois,94,Val-de-Marne,Île-de-France,94120,51812,6,9302.0,48.851,2.474
+57227,Forbach,57,Moselle,Grand Est,57600,21130,16,1284.0,49.191,6.893
+97209,Fort-de-France,972,Martinique,Martinique,97200,74921,44,1721.0,14.641,-61.069
+35115,Fougères,35,Ille-et-Vilaine,Bretagne,35300,20653,10,1982.0,48.352,-1.194
+95252,Franconville,95,Val-d'Oise,Île-de-France,95130,37520,6,6022.0,48.988,2.224
+94034,Fresnes,94,Val-de-Marne,Île-de-France,94260,28780,4,8107.0,48.757,2.326
+34108,Frontignan,34,Hérault,Occitanie,34110,23808,40,598.0,43.448,3.749
+83061,Fréjus,83,Var,Provence-Alpes-Côte d'Azur,83600,57082,105,543.0,43.472,6.764
+93032,Gagny,93,Seine-Saint-Denis,Île-de-France,93220,40189,7,5749.0,48.882,2.545
+05061,Gap,05,Hautes-Alpes,Provence-Alpes-Côte d'Azur,05000,40500,109,372.0,44.58,6.065
+13041,Gardanne,13,Bouches-du-Rhône,Provence-Alpes-Côte d'Azur,13120,21174,27,779.0,43.453,5.48
+95268,Garges-lès-Gonesse,95,Val-d'Oise,Île-de-France,95140,42841,5,7875.0,48.97,2.405
+92036,Gennevilliers,92,Hauts-de-Seine,Île-de-France,92230,49410,12,4248.0,48.934,2.294
+91272,Gif-sur-Yvette,91,Essonne,Île-de-France,91190,22352,12,1875.0,48.699,2.128
+69091,Givors,69,Rhône,Auvergne-Rhône-Alpes,69700,20654,17,1182.0,45.582,4.757
+95277,Gonesse,95,Val-d'Oise,Île-de-France,95500,25963,20,1280.0,48.986,2.457
+95280,Goussainville,95,Val-d'Oise,Île-de-France,95190,30693,11,2678.0,49.024,2.466
+33192,Gradignan,33,Gironde,Nouvelle-Aquitaine,33170,25835,16,1650.0,44.771,-0.616
+59271,Grande-Synthe,59,Nord,Hauts-de-France,59760,20331,21,964.0,51.017,2.291
+06069,Grasse,06,Alpes-Maritimes,Provence-Alpes-Côte d'Azur,06130,48323,44,1091.0,43.656,6.932
+38185,Grenoble,38,Isère,Auvergne-Rhône-Alpes,38000,157477,19,8485.0,45.182,5.721
+91286,Grigny,91,Essonne,Île-de-France,91350,27257,5,5441.0,48.657,2.388
+33199,Gujan-Mestras,33,Gironde,Nouvelle-Aquitaine,33470,22399,50,446.0,44.594,-1.084
+78297,Guyancourt,78,Yvelines,Île-de-France,78280,29406,13,2219.0,48.773,2.076
+67180,Haguenau,67,Bas-Rhin,Grand Est,67500,35715,184,195.0,48.842,7.83
+59279,Halluin,59,Nord,Hauts-de-France,59250,20829,13,1644.0,50.775,3.127
+59295,Hazebrouck,59,Nord,Hauts-de-France,59190,21498,27,782.0,50.726,2.539
+95306,Herblay-sur-Seine,95,Val-d'Oise,Île-de-France,95220,31605,13,2504.0,49.001,2.15
+78311,Houilles,78,Yvelines,Île-de-France,78800,33449,4,7500.0,48.927,2.188
+83069,Hyères,83,Var,Provence-Alpes-Côte d'Azur,83400,55103,134,413.0,43.102,6.189
+62427,Hénin-Beaumont,62,Pas-de-Calais,Hauts-de-France,62110,26035,21,1253.0,50.409,2.959
+14327,Hérouville-Saint-Clair,14,Calvados,Normandie,14200,22227,11,2089.0,49.207,-0.331
+67218,Illkirch-Graffenstaden,67,Bas-Rhin,Grand Est,67400,27118,22,1219.0,48.52,7.731
+92040,Issy-les-Moulineaux,92,Hauts-de-Seine,Île-de-France,92130,68580,4,16175.0,48.824,2.264
+13047,Istres,13,Bouches-du-Rhône,Provence-Alpes-Côte d'Azur,13118,44577,114,390.0,43.55,4.951
+94041,Ivry-sur-Seine,94,Val-de-Marne,Île-de-France,94200,64001,6,10458.0,48.813,2.388
+94042,Joinville-le-Pont,94,Val-de-Marne,Île-de-France,94340,20413,2,8993.0,48.819,2.47
+37122,Joué-lès-Tours,37,Indre-et-Loire,Centre-Val de Loire,37300,38183,32,1179.0,47.334,0.654
+97610,Koungou,976,Mayotte,Mayotte,97600,32156,28,1161.0,-12.747,45.187
+97304,Kourou,973,Guyane,Guyane,97310,24612,2285,11.0,4.934,-52.766
+94038,L'Haÿ-les-Roses,94,Val-de-Marne,Île-de-France,94240,31392,4,8049.0,48.776,2.338
+78126,La Celle-Saint-Cloud,78,Yvelines,Île-de-France,78170,20476,6,3488.0,48.847,2.135
+44035,La Chapelle-sur-Erdre,44,Loire-Atlantique,Pays de la Loire,44240,20331,33,609.0,47.304,-1.561
+13028,La Ciotat,13,Bouches-du-Rhône,Provence-Alpes-Côte d'Azur,13600,36987,32,1147.0,43.193,5.613
+93027,La Courneuve,93,Seine-Saint-Denis,Île-de-France,93120,47160,8,6288.0,48.932,2.4
+83062,La Garde,83,Var,Provence-Alpes-Côte d'Azur,83130,25912,16,1643.0,43.126,6.019
+92035,La Garenne-Colombes,92,Hauts-de-Seine,Île-de-France,92250,29932,2,16816.0,48.907,2.245
+59368,La Madeleine,59,Nord,Hauts-de-France,59110,22488,3,8360.0,50.655,3.07
+97408,La Possession,974,La Réunion,La Réunion,97419,35245,119,297.0,-20.994,55.398
+85191,La Roche-sur-Yon,85,Vendée,Pays de la Loire,85000,54952,88,626.0,46.668,-1.408
+17300,La Rochelle,17,Charente-Maritime,Nouvelle-Aquitaine,17000,78535,32,2479.0,46.162,-1.175
+83126,La Seyne-sur-Mer,83,Var,Provence-Alpes-Côte d'Azur,83500,62763,24,2664.0,43.088,5.871
+33529,La Teste-de-Buch,33,Gironde,Nouvelle-Aquitaine,33115,26556,178,149.0,44.556,-1.175
+83144,La Valette-du-Var,83,Var,Provence-Alpes-Côte d'Azur,83160,23955,15,1556.0,43.15,5.992
+77243,Lagny-sur-Marne,77,Seine-et-Marne,Île-de-France,77400,21191,6,3660.0,48.873,2.71
+59328,Lambersart,59,Nord,Hauts-de-France,59130,27121,6,4475.0,50.652,3.025
+56098,Lanester,56,Morbihan,Bretagne,56600,23026,16,1419.0,47.769,-3.326
+22113,Lannion,22,Côtes-d'Armor,Bretagne,22300,20344,48,425.0,48.743,-3.462
+02408,Laon,02,Aisne,Hauts-de-France,02000,24021,45,539.0,49.568,3.621
+53130,Laval,53,Mayenne,Pays de la Loire,53000,49657,34,1447.0,48.061,-0.766
+93007,Le Blanc-Mesnil,93,Seine-Saint-Denis,Île-de-France,93150,58257,8,7175.0,48.94,2.461
+33069,Le Bouscat,33,Gironde,Nouvelle-Aquitaine,33110,24339,5,4618.0,44.866,-0.602
+06030,Le Cannet,06,Alpes-Maritimes,Provence-Alpes-Côte d'Azur,06110,41597,8,5416.0,43.573,7.006
+78158,Le Chesnay-Rocquencourt,78,Yvelines,Île-de-France,78150,30924,4,7192.0,48.827,2.13
+71153,Le Creusot,71,Saône-et-Loire,Bourgogne-Franche-Comté,71200,20731,18,1148.0,46.807,4.426
+97113,Le Gosier,971,Guadeloupe,Guadeloupe,97190,27184,45,598.0,16.225,-61.47
+76322,Le Grand-Quevilly,76,Seine-Maritime,Normandie,76120,25975,11,2355.0,49.409,1.04
+76351,Le Havre,76,Seine-Maritime,Normandie,76620,166058,55,3035.0,49.498,0.14
+94043,Le Kremlin-Bicêtre,94,Val-de-Marne,Île-de-France,94270,24380,2,15729.0,48.809,2.357
+97213,Le Lamentin,972,Martinique,Martinique,97232,39641,68,584.0,14.625,-60.993
+72181,Le Mans,72,Sarthe,Pays de la Loire,72100,145004,53,2757.0,47.988,0.2
+97117,Le Moule,971,Guadeloupe,Guadeloupe,97160,22645,83,271.0,16.32,-61.372
+77285,Le Mée-sur-Seine,77,Seine-et-Marne,Île-de-France,77350,20207,6,3641.0,48.54,2.629
+94058,Le Perreux-sur-Marne,94,Val-de-Marne,Île-de-France,94170,34213,4,8640.0,48.842,2.504
+76498,Le Petit-Quevilly,76,Seine-Maritime,Normandie,76140,21782,4,4996.0,49.424,1.06
+92060,Le Plessis-Robinson,92,Hauts-de-Seine,Île-de-France,92350,29228,3,8571.0,48.78,2.261
+94059,Le Plessis-Trévise,94,Val-de-Marne,Île-de-France,94420,20218,4,4648.0,48.806,2.576
+97407,Le Port,974,La Réunion,La Réunion,97420,33336,16,2073.0,-20.945,55.305
+97222,Le Robert,972,Martinique,Martinique,97231,21305,46,464.0,14.675,-60.943
+97422,Le Tampon,974,La Réunion,La Réunion,97418,81943,181,453.0,-21.223,55.558
+62498,Lens,62,Pas-de-Calais,Hauts-de-France,62300,32618,12,2790.0,50.437,2.821
+97101,Les Abymes,971,Guadeloupe,Guadeloupe,97142,52118,70,744.0,16.273,-61.502
+93045,Les Lilas,93,Seine-Saint-Denis,Île-de-France,93260,23469,1,18775.0,48.882,2.42
+78440,Les Mureaux,78,Yvelines,Île-de-France,78130,33977,12,2745.0,48.989,1.914
+93057,Les Pavillons-sous-Bois,93,Seine-Saint-Denis,Île-de-France,93320,24165,3,8247.0,48.908,2.503
+13071,Les Pennes-Mirabeau,13,Bouches-du-Rhône,Provence-Alpes-Côte d'Azur,13170,22161,34,657.0,43.403,5.316
+85194,Les Sables-d'Olonne,85,Vendée,Pays de la Loire,85180,48402,9,5563.0,46.501,-1.793
+91692,Les Ulis,91,Essonne,Île-de-France,91940,25253,5,4651.0,48.68,2.185
+92044,Levallois-Perret,92,Hauts-de-Seine,Île-de-France,92300,68009,2,28220.0,48.895,2.287
+33243,Libourne,33,Gironde,Nouvelle-Aquitaine,33500,24557,21,1187.0,44.913,-0.235
+59350,Lille,59,Nord,Hauts-de-France,59260,236710,35,6765.0,50.632,3.048
+94044,Limeil-Brévannes,94,Val-de-Marne,Île-de-France,94450,27999,7,4017.0,48.745,2.489
+87085,Limoges,87,Haute-Vienne,Nouvelle-Aquitaine,87100,129760,80,1628.0,45.854,1.249
+67267,Lingolsheim,67,Bas-Rhin,Grand Est,67380,20266,6,3562.0,48.554,7.681
+93046,Livry-Gargan,93,Seine-Saint-Denis,Île-de-France,93190,46028,7,6254.0,48.92,2.535
+62510,Liévin,62,Pas-de-Calais,Hauts-de-France,62800,30149,13,2341.0,50.424,2.773
+91345,Longjumeau,91,Essonne,Île-de-France,91160,20620,5,4243.0,48.69,2.302
+59360,Loos,59,Nord,Hauts-de-France,59120,23013,7,3335.0,50.608,3.021
+56121,Lorient,56,Morbihan,Bretagne,56100,57846,15,3901.0,47.75,-3.378
+33249,Lormont,33,Gironde,Nouvelle-Aquitaine,33310,23291,8,2990.0,44.877,-0.52
+34145,Lunel,34,Hérault,Occitanie,34400,26185,24,1079.0,43.682,4.136
+94046,Maisons-Alfort,94,Val-de-Marne,Île-de-France,94700,58068,5,10834.0,48.806,2.438
+78358,Maisons-Laffitte,78,Yvelines,Île-de-France,78600,23080,7,3330.0,48.952,2.152
+92046,Malakoff,92,Hauts-de-Seine,Île-de-France,92240,30292,2,14634.0,48.817,2.297
+97611,Mamoudzou,976,Mayotte,Mayotte,97600,71437,42,1687.0,-12.79,45.193
+06079,Mandelieu-la-Napoule,06,Alpes-Maritimes,Provence-Alpes-Côte d'Azur,06210,21561,32,672.0,43.538,6.918
+04112,Manosque,04,Alpes-de-Haute-Provence,Provence-Alpes-Côte d'Azur,04100,22926,57,404.0,43.835,5.791
+78361,Mantes-la-Jolie,78,Yvelines,Île-de-France,78200,44539,9,4693.0,48.998,1.693
+78362,Mantes-la-Ville,78,Yvelines,Île-de-France,78711,21376,6,3426.0,48.975,1.712
+59378,Marcq-en-Barœul,59,Nord,Hauts-de-France,59700,39356,14,2809.0,50.675,3.101
+13054,Marignane,13,Bouches-du-Rhône,Provence-Alpes-Côte d'Azur,13700,33003,24,1401.0,43.417,5.212
+13055,Marseille,13,Bouches-du-Rhône,Provence-Alpes-Côte d'Azur,13000,873076,241,3629.0,43.2803,5.3806
+13056,Martigues,13,Bouches-du-Rhône,Provence-Alpes-Côte d'Azur,13500,48568,74,652.0,43.38,5.05
+91377,Massy,91,Essonne,Île-de-France,91300,50962,9,5421.0,48.728,2.275
+97307,Matoury,973,Guyane,Guyane,97351,34810,149,234.0,4.832,-52.344
+59392,Maubeuge,59,Nord,Hauts-de-France,59600,29066,19,1532.0,50.284,3.963
+77284,Meaux,77,Seine-et-Marne,Île-de-France,77100,55616,15,3652.0,48.957,2.9
+77288,Melun,77,Seine-et-Marne,Île-de-France,77000,42367,8,5296.0,48.544,2.658
+06083,Menton,06,Alpes-Maritimes,Provence-Alpes-Côte d'Azur,06500,30412,14,2139.0,43.791,7.494
+57463,Metz,57,Moselle,Grand Est,57070,120874,42,2898.0,49.108,6.196
+92048,Meudon,92,Hauts-de-Seine,Île-de-France,92190,46342,10,4657.0,48.804,2.227
+69282,Meyzieu,69,Rhône,Auvergne-Rhône-Alpes,69330,35882,24,1525.0,45.777,5.006
+12145,Millau,12,Aveyron,Occitanie,12100,21712,170,128.0,44.098,3.117
+13063,Miramas,13,Bouches-du-Rhône,Provence-Alpes-Côte d'Azur,13140,26405,26,1025.0,43.584,5.014
+77294,Mitry-Mory,77,Seine-et-Marne,Île-de-France,77290,20627,30,689.0,48.978,2.612
+59410,Mons-en-Barœul,59,Nord,Hauts-de-France,59370,21467,3,7428.0,50.643,3.109
+76451,Mont-Saint-Aignan,76,Seine-Maritime,Normandie,76130,20066,8,2530.0,49.468,1.082
+40192,Mont-de-Marsan,40,Landes,Nouvelle-Aquitaine,40000,30674,37,838.0,43.899,-0.491
+85146,Montaigu-Vendée,85,Vendée,Pays de la Loire,85600,20605,3,6756.0,46.976,-1.314
+82121,Montauban,82,Tarn-et-Garonne,Occitanie,82000,61919,136,456.0,44.022,1.364
+25388,Montbéliard,25,Doubs,Bourgogne-Franche-Comté,25200,25573,15,1714.0,47.516,6.792
+77305,Montereau-Fault-Yonne,77,Seine-et-Marne,Île-de-France,77130,22259,9,2460.0,48.39,2.962
+93047,Montfermeil,93,Seine-Saint-Denis,Île-de-France,93370,27980,5,5172.0,48.898,2.567
+91421,Montgeron,91,Essonne,Île-de-France,91230,23800,11,2133.0,48.695,2.462
+78423,Montigny-le-Bretonneux,78,Yvelines,Île-de-France,78180,31777,11,2962.0,48.78,2.03
+95424,Montigny-lès-Cormeilles,95,Val-d'Oise,Île-de-France,95370,22603,4,5595.0,48.994,2.194
+57480,Montigny-lès-Metz,57,Moselle,Grand Est,57950,21854,7,3262.0,49.095,6.154
+03185,Montluçon,03,Allier,Auvergne-Rhône-Alpes,03100,33342,21,1610.0,46.339,2.604
+95428,Montmorency,95,Val-d'Oise,Île-de-France,95160,21870,5,4206.0,48.992,2.321
+34172,Montpellier,34,Hérault,Occitanie,34080,302454,57,5296.0,43.613,3.868
+93048,Montreuil,93,Seine-Saint-Denis,Île-de-France,93100,111455,9,12523.0,48.863,2.448
+92049,Montrouge,92,Hauts-de-Seine,Île-de-France,92120,47657,2,23023.0,48.815,2.316
+26198,Montélimar,26,Drôme,Auvergne-Rhône-Alpes,26200,40399,46,871.0,44.554,4.749
+91434,Morsang-sur-Orge,91,Essonne,Île-de-France,91390,20785,4,4745.0,48.656,2.351
+68224,Mulhouse,68,Haut-Rhin,Grand Est,68200,106341,22,4760.0,47.749,7.326
+31395,Muret,31,Haute-Garonne,Occitanie,31600,25060,58,429.0,43.449,1.308
+71270,Mâcon,71,Saône-et-Loire,Bourgogne-Franche-Comté,71000,34448,27,1274.0,46.321,4.818
+33281,Mérignac,33,Gironde,Nouvelle-Aquitaine,33700,75729,48,1583.0,44.832,-0.682
+54395,Nancy,54,Meurthe-et-Moselle,Grand Est,54100,104260,15,6979.0,48.69,6.176
+92050,Nanterre,92,Hauts-de-Seine,Île-de-France,92000,97351,12,7960.0,48.896,2.207
+44109,Nantes,44,Loire-Atlantique,Pays de la Loire,44200,323204,66,4914.0,47.232,-1.548
+11262,Narbonne,11,Aude,Occitanie,11100,56395,175,323.0,43.165,3.02
+93049,Neuilly-Plaisance,93,Seine-Saint-Denis,Île-de-France,93360,21415,3,6280.0,48.864,2.51
+93050,Neuilly-sur-Marne,93,Seine-Saint-Denis,Île-de-France,93330,37531,7,5385.0,48.862,2.54
+92051,Neuilly-sur-Seine,92,Hauts-de-Seine,Île-de-France,92200,59267,4,15975.0,48.885,2.266
+58194,Nevers,58,Nièvre,Bourgogne-Franche-Comté,58000,32830,17,1892.0,46.988,3.157
+06088,Nice,06,Alpes-Maritimes,Provence-Alpes-Côte d'Azur,06000,348085,74,4710.0,43.712,7.238
+79191,Niort,79,Deux-Sèvres,Nouvelle-Aquitaine,79000,59309,68,868.0,46.328,-0.465
+94052,Nogent-sur-Marne,94,Val-de-Marne,Île-de-France,94130,33472,3,11997.0,48.837,2.482
+60463,Nogent-sur-Oise,60,Oise,Hauts-de-France,60180,21382,7,2893.0,49.276,2.464
+93051,Noisy-le-Grand,93,Seine-Saint-Denis,Île-de-France,93160,70374,13,5397.0,48.836,2.564
+93053,Noisy-le-Sec,93,Seine-Saint-Denis,Île-de-France,93130,46094,5,9164.0,48.891,2.459
+30189,Nîmes,30,Gard,Occitanie,30900,148104,161,919.0,43.845,4.348
+45232,Olivet,45,Loiret,Centre-Val de Loire,45160,22855,23,980.0,47.855,1.888
+84087,Orange,84,Vaucluse,Provence-Alpes-Côte d'Azur,84100,28949,74,389.0,44.129,4.81
+94054,Orly,94,Val-de-Marne,Île-de-France,94310,24482,7,3670.0,48.743,2.395
+45234,Orléans,45,Loiret,Centre-Val de Loire,45000,116617,28,4230.0,47.883,1.916
+44114,Orvault,44,Loire-Atlantique,Pays de la Loire,44700,27872,28,1003.0,47.274,-1.623
+69149,Oullins-Pierre-Bénite,69,Rhône,Auvergne-Rhône-Alpes,69600,27113,4,6219.0,45.715,4.803
+01283,Oyonnax,01,Ain,Auvergne-Rhône-Alpes,01100,22277,36,620.0,46.26,5.653
+77350,Ozoir-la-Ferrière,77,Seine-et-Marne,Île-de-France,77330,20692,16,1321.0,48.764,2.68
+91477,Palaiseau,91,Essonne,Île-de-France,91120,34893,12,2987.0,48.715,2.229
+93055,Pantin,93,Seine-Saint-Denis,Île-de-France,93500,60800,5,12063.0,48.898,2.409
+64445,Pau,64,Pyrénées-Atlantiques,Nouvelle-Aquitaine,64000,77066,32,2445.0,43.32,-0.35
+66136,Perpignan,66,Pyrénées-Orientales,Occitanie,66000,119656,68,1752.0,42.697,2.899
+84089,Pertuis,84,Vaucluse,Provence-Alpes-Côte d'Azur,84120,20012,59,338.0,43.687,5.52
+33318,Pessac,33,Gironde,Nouvelle-Aquitaine,33600,66760,39,1728.0,44.792,-0.676
+97118,Petit-Bourg,971,Guadeloupe,Guadeloupe,97170,24272,131,185.0,16.172,-61.657
+93059,Pierrefitte-sur-Seine,93,Seine-Saint-Denis,Île-de-France,93380,32379,3,9385.0,48.961,2.363
+78490,Plaisir,78,Yvelines,Île-de-France,78370,31375,18,1779.0,48.813,1.947
+78498,Poissy,78,Yvelines,Île-de-France,78300,40016,13,3097.0,48.924,2.027
+86194,Poitiers,86,Vienne,Nouvelle-Aquitaine,86000,90240,42,2128.0,46.584,0.36
+77373,Pontault-Combault,77,Seine-et-Marne,Île-de-France,77340,38258,14,2815.0,48.787,2.614
+95500,Pontoise,95,Val-d'Oise,Île-de-France,95300,31327,7,4321.0,49.051,2.095
+92062,Puteaux,92,Hauts-de-Seine,Île-de-France,92800,43672,3,13733.0,48.884,2.238
+24322,Périgueux,24,Dordogne,Nouvelle-Aquitaine,24000,29516,10,2911.0,45.192,0.712
+29232,Quimper,29,Finistère,Bretagne,29000,63642,84,755.0,47.997,-4.091
+78517,Rambouillet,78,Yvelines,Île-de-France,78120,26816,36,747.0,48.654,1.826
+51454,Reims,51,Marne,Grand Est,51100,179380,47,3823.0,49.252,4.04
+97309,Remire-Montjoly,973,Guyane,Guyane,97354,27274,51,533.0,4.884,-52.279
+35238,Rennes,35,Ille-et-Vilaine,Bretagne,35700,225081,50,4470.0,48.112,-1.682
+44143,Rezé,44,Loire-Atlantique,Pays de la Loire,44400,42998,16,2762.0,47.176,-1.55
+69286,Rillieux-la-Pape,69,Rhône,Auvergne-Rhône-Alpes,69140,31247,15,2148.0,45.821,4.898
+91521,Ris-Orangis,91,Essonne,Île-de-France,91130,29825,8,3555.0,48.645,2.408
+42187,Roanne,42,Loire,Auvergne-Rhône-Alpes,42300,34762,16,2163.0,46.045,4.08
+17299,Rochefort,17,Charente-Maritime,Nouvelle-Aquitaine,17300,23092,22,1048.0,45.943,-0.972
+12202,Rodez,12,Aveyron,Occitanie,12000,24207,11,2142.0,44.358,2.567
+77390,Roissy-en-Brie,77,Seine-et-Marne,Île-de-France,77680,23061,14,1683.0,48.79,2.661
+93063,Romainville,93,Seine-Saint-Denis,Île-de-France,93230,33266,3,9642.0,48.885,2.438
+26281,Romans-sur-Isère,26,Drôme,Auvergne-Rhône-Alpes,26100,32911,33,985.0,45.055,5.038
+93064,Rosny-sous-Bois,93,Seine-Saint-Denis,Île-de-France,93110,45655,6,7712.0,48.875,2.486
+59512,Roubaix,59,Nord,Hauts-de-France,59100,98892,13,7475.0,50.688,3.183
+76540,Rouen,76,Seine-Maritime,Normandie,76100,114083,21,5326.0,49.441,1.093
+92063,Rueil-Malmaison,92,Hauts-de-Seine,Île-de-France,92500,78186,15,5381.0,48.869,2.177
+97409,Saint-André,974,La Réunion,La Réunion,97440,57150,54,1053.0,-20.963,55.643
+97410,Saint-Benoît,974,La Réunion,La Réunion,97437,37023,230,161.0,-21.092,55.649
+22278,Saint-Brieuc,22,Côtes-d'Armor,Bretagne,22000,44224,19,2278.0,48.515,-2.762
+42207,Saint-Chamond,42,Loire,Auvergne-Rhône-Alpes,42400,35068,55,636.0,45.47,4.502
+92064,Saint-Cloud,92,Hauts-de-Seine,Île-de-France,92210,29727,8,3958.0,48.843,2.209
+78545,Saint-Cyr-l'École,78,Yvelines,Île-de-France,78210,20971,5,4104.0,48.807,2.066
+97411,Saint-Denis,974,La Réunion,La Réunion,97400,154765,142,1094.0,-20.933,55.447
+93066,Saint-Denis,93,Seine-Saint-Denis,Île-de-France,93210,113942,12,9204.0,48.93,2.359
+52448,Saint-Dizier,52,Haute-Marne,Grand Est,52100,23068,48,477.0,48.628,4.949
+69204,Saint-Genis-Laval,69,Rhône,Auvergne-Rhône-Alpes,69230,20929,13,1619.0,45.694,4.789
+78551,Saint-Germain-en-Laye,78,Yvelines,Île-de-France,78112,44380,49,898.0,48.941,2.099
+95555,Saint-Gratien,95,Val-d'Oise,Île-de-France,95210,20866,3,7643.0,48.969,2.285
+44162,Saint-Herblain,44,Loire-Atlantique,Pays de la Loire,44800,49537,30,1656.0,47.224,-1.634
+45284,Saint-Jean-de-Braye,45,Loiret,Centre-Val de Loire,45800,21700,14,1583.0,47.918,1.972
+97412,Saint-Joseph,974,La Réunion,La Réunion,97480,38807,178,218.0,-21.306,55.642
+97311,Saint-Laurent-du-Maroni,973,Guyane,Guyane,97320,50250,4151,12.0,4.965,-53.983
+06123,Saint-Laurent-du-Var,06,Alpes-Maritimes,Provence-Alpes-Côte d'Azur,06700,30941,9,3299.0,43.686,7.182
+97413,Saint-Leu,974,La Réunion,La Réunion,97416,34893,118,295.0,-21.167,55.333
+68297,Saint-Louis,68,Haut-Rhin,Grand Est,68300,22698,17,1339.0,47.602,7.541
+97414,Saint-Louis,974,La Réunion,La Réunion,97421,53935,99,546.0,-21.234,55.421
+35288,Saint-Malo,35,Ille-et-Vilaine,Bretagne,35400,47323,37,1296.0,48.64,-1.981
+94067,Saint-Mandé,94,Val-de-Marne,Île-de-France,94160,21195,1,23550.0,48.842,2.419
+38421,Saint-Martin-d'Hères,38,Isère,Auvergne-Rhône-Alpes,38400,38454,9,4061.0,45.176,5.765
+94068,Saint-Maur-des-Fossés,94,Val-de-Marne,Île-de-France,94210,75441,11,6718.0,48.799,2.494
+91570,Saint-Michel-sur-Orge,91,Essonne,Île-de-France,91240,21437,5,4030.0,48.632,2.312
+33449,Saint-Médard-en-Jalles,33,Gironde,Nouvelle-Aquitaine,33160,32538,85,383.0,44.883,-0.784
+44184,Saint-Nazaire,44,Loire-Atlantique,Pays de la Loire,44600,72057,48,1497.0,47.28,-2.254
+95572,Saint-Ouen-l'Aumône,95,Val-d'Oise,Île-de-France,95310,25023,14,1786.0,49.044,2.129
+93070,Saint-Ouen-sur-Seine,93,Seine-Saint-Denis,Île-de-France,93400,53207,4,12490.0,48.91,2.333
+97415,Saint-Paul,974,La Réunion,La Réunion,97411,105240,240,438.0,-21.044,55.322
+97416,Saint-Pierre,974,La Réunion,La Réunion,97410,84077,96,873.0,-21.312,55.494
+69290,Saint-Priest,69,Rhône,Auvergne-Rhône-Alpes,69800,48822,30,1646.0,45.702,4.949
+02691,Saint-Quentin,02,Aisne,Hauts-de-France,02100,52958,23,2323.0,49.847,3.278
+83118,Saint-Raphaël,83,Var,Provence-Alpes-Côte d'Azur,83530,35950,91,395.0,43.458,6.847
+44190,Saint-Sébastien-sur-Loire,44,Loire-Atlantique,Pays de la Loire,44230,28283,12,2411.0,47.203,-1.499
+42218,Saint-Étienne,42,Loire,Auvergne-Rhône-Alpes,42100,172718,80,2159.0,45.43,4.379
+76575,Saint-Étienne-du-Rouvray,76,Seine-Maritime,Normandie,76800,28508,18,1563.0,49.382,1.09
+97128,Sainte-Anne,971,Guadeloupe,Guadeloupe,97180,24281,81,301.0,16.257,-61.388
+69202,Sainte-Foy-lès-Lyon,69,Rhône,Auvergne-Rhône-Alpes,69110,21858,7,3196.0,45.736,4.793
+91549,Sainte-Geneviève-des-Bois,91,Essonne,Île-de-France,91700,35846,9,3830.0,48.641,2.33
+97418,Sainte-Marie,974,La Réunion,La Réunion,97438,34344,89,387.0,-20.947,55.53
+97420,Sainte-Suzanne,974,La Réunion,La Réunion,97441,24293,58,420.0,-20.946,55.593
+17415,Saintes,17,Charente-Maritime,Nouvelle-Aquitaine,17100,25518,46,556.0,45.742,-0.65
+13103,Salon-de-Provence,13,Bouches-du-Rhône,Provence-Alpes-Côte d'Azur,13300,44731,71,634.0,43.646,5.068
+95582,Sannois,95,Val-d'Oise,Île-de-France,95110,26768,5,5588.0,48.972,2.253
+95585,Sarcelles,95,Val-d'Oise,Île-de-France,95200,58424,8,6964.0,48.99,2.382
+57631,Sarreguemines,57,Moselle,Grand Est,57200,20624,30,688.0,49.109,7.069
+78586,Sartrouville,78,Yvelines,Île-de-France,78500,51220,8,6062.0,48.94,2.175
+49328,Saumur,49,Maine-et-Loire,Pays de la Loire,49400,26215,66,394.0,47.267,-0.083
+77445,Savigny-le-Temple,77,Seine-et-Marne,Île-de-France,77176,30510,12,2526.0,48.588,2.574
+91589,Savigny-sur-Orge,91,Essonne,Île-de-France,91600,37371,7,5339.0,48.684,2.349
+92071,Sceaux,92,Hauts-de-Seine,Île-de-France,92330,20488,4,5691.0,48.777,2.295
+67447,Schiltigheim,67,Bas-Rhin,Grand Est,67300,34129,8,4473.0,48.612,7.744
+89387,Sens,89,Yonne,Bourgogne-Franche-Comté,89100,27034,22,1238.0,48.196,3.298
+93071,Sevran,93,Seine-Saint-Denis,Île-de-France,93270,51845,7,7102.0,48.939,2.531
+83129,Six-Fours-les-Plages,83,Var,Provence-Alpes-Côte d'Azur,83140,36203,27,1345.0,43.087,5.829
+02722,Soissons,02,Aisne,Hauts-de-France,02200,28705,12,2328.0,49.379,3.325
+76681,Sotteville-lès-Rouen,76,Seine-Maritime,Normandie,76300,28965,7,3909.0,49.41,1.095
+93072,Stains,93,Seine-Saint-Denis,Île-de-France,93240,40359,5,7488.0,48.957,2.385
+67482,Strasbourg,67,Bas-Rhin,Grand Est,67000,291313,78,3730.0,48.571,7.768
+94071,Sucy-en-Brie,94,Val-de-Marne,Île-de-France,94370,27622,10,2653.0,48.766,2.533
+92073,Suresnes,92,Hauts-de-Seine,Île-de-France,92150,49104,4,12956.0,48.87,2.22
+34301,Sète,34,Hérault,Occitanie,34200,44712,42,1070.0,43.392,3.647
+49301,Sèvremoine,49,Maine-et-Loire,Pays de la Loire,49450,25806,28,934.0,47.126,-0.998
+92072,Sèvres,92,Hauts-de-Seine,Île-de-France,92310,22618,4,5770.0,48.822,2.21
+33522,Talence,33,Gironde,Nouvelle-Aquitaine,33400,45225,8,5455.0,44.806,-0.591
+65440,Tarbes,65,Hautes-Pyrénées,Occitanie,65000,43955,15,2867.0,43.235,0.066
+69244,Tassin-la-Demi-Lune,69,Rhône,Auvergne-Rhône-Alpes,69160,22676,8,2852.0,45.763,4.755
+95607,Taverny,95,Val-d'Oise,Île-de-France,95150,27025,10,2596.0,49.027,2.221
+94073,Thiais,94,Val-de-Marne,Île-de-France,94320,31097,6,4829.0,48.761,2.385
+57672,Thionville,57,Moselle,Grand Est,57100,42163,50,846.0,49.376,6.129
+74281,Thonon-les-Bains,74,Haute-Savoie,Auvergne-Rhône-Alpes,74200,37027,16,2259.0,46.37,6.482
+77468,Torcy,77,Seine-et-Marne,Île-de-France,77200,22444,6,3655.0,48.853,2.651
+83137,Toulon,83,Var,Provence-Alpes-Côte d'Azur,83000,180452,44,4084.0,43.136,5.932
+31555,Toulouse,31,Haute-Garonne,Occitanie,31100,504078,118,4269.0,43.596,1.432
+59599,Tourcoing,59,Nord,Hauts-de-France,59200,99011,15,6518.0,50.725,3.159
+31557,Tournefeuille,31,Haute-Garonne,Occitanie,31170,29439,18,1612.0,43.578,1.335
+37261,Tours,37,Indre-et-Loire,Centre-Val de Loire,37100,137658,33,4128.0,47.399,0.696
+78621,Trappes,78,Yvelines,Île-de-France,78190,33717,14,2461.0,48.775,1.993
+93073,Tremblay-en-France,93,Seine-Saint-Denis,Île-de-France,93290,37271,23,1650.0,48.978,2.555
+10387,Troyes,10,Aube,Grand Est,10000,62782,13,4689.0,48.297,4.078
+26362,Valence,26,Drôme,Auvergne-Rhône-Alpes,26000,64483,37,1753.0,44.923,4.914
+59606,Valenciennes,59,Nord,Hauts-de-France,59300,42991,14,3086.0,50.359,3.516
+06155,Vallauris,06,Alpes-Maritimes,Provence-Alpes-Côte d'Azur,06220,28025,13,2136.0,43.577,7.058
+54547,Vandœuvre-lès-Nancy,54,Meurthe-et-Moselle,Grand Est,54500,29537,9,3159.0,48.658,6.165
+56260,Vannes,56,Morbihan,Bretagne,56000,54420,33,1638.0,47.66,-2.757
+92075,Vanves,92,Hauts-de-Seine,Île-de-France,92170,28014,2,18074.0,48.822,2.287
+69256,Vaulx-en-Velin,69,Rhône,Auvergne-Rhône-Alpes,69120,52139,21,2480.0,45.786,4.926
+27681,Vernon,27,Eure,Normandie,27200,24543,34,715.0,49.088,1.485
+78646,Versailles,78,Yvelines,Île-de-France,78000,83587,26,3207.0,48.803,2.118
+44215,Vertou,44,Loire-Atlantique,Pays de la Loire,44120,26002,38,681.0,47.16,-1.47
+03310,Vichy,03,Allier,Auvergne-Rhône-Alpes,03200,25789,6,4401.0,46.13,3.424
+38544,Vienne,38,Isère,Auvergne-Rhône-Alpes,38200,31051,23,1374.0,45.521,4.881
+18279,Vierzon,18,Cher,Centre-Val de Loire,18100,25348,75,339.0,47.237,2.079
+91657,Vigneux-sur-Seine,91,Essonne,Île-de-France,91270,31050,9,3462.0,48.704,2.428
+69264,Villefranche-sur-Saône,69,Rhône,Auvergne-Rhône-Alpes,69400,35913,9,3800.0,45.988,4.732
+94076,Villejuif,94,Val-de-Marne,Île-de-France,94800,57753,5,10938.0,48.793,2.36
+93077,Villemomble,93,Seine-Saint-Denis,Île-de-France,93250,30332,4,7527.0,48.885,2.509
+33550,Villenave-d'Ornon,33,Gironde,Nouvelle-Aquitaine,33140,40500,21,1908.0,44.773,-0.558
+94078,Villeneuve-Saint-Georges,94,Val-de-Marne,Île-de-France,94190,35492,8,4414.0,48.741,2.449
+59009,Villeneuve-d'Ascq,59,Nord,Hauts-de-France,59650,62067,28,2253.0,50.632,3.154
+92078,Villeneuve-la-Garenne,92,Hauts-de-Seine,Île-de-France,92390,25371,3,7953.0,48.936,2.324
+94077,Villeneuve-le-Roi,94,Val-de-Marne,Île-de-France,94290,21129,8,2492.0,48.732,2.41
+47323,Villeneuve-sur-Lot,47,Lot-et-Garonne,Nouvelle-Aquitaine,47300,21629,81,266.0,44.425,0.742
+77514,Villeparisis,77,Seine-et-Marne,Île-de-France,77270,26822,8,3232.0,48.942,2.617
+93078,Villepinte,93,Seine-Saint-Denis,Île-de-France,93420,38725,10,3716.0,48.959,2.536
+69266,Villeurbanne,69,Rhône,Auvergne-Rhône-Alpes,69100,156928,15,10603.0,45.771,4.888
+95680,Villiers-le-Bel,95,Val-d'Oise,Île-de-France,95400,28836,7,3956.0,49.008,2.404
+94079,Villiers-sur-Marne,94,Val-de-Marne,Île-de-France,94350,30669,4,7099.0,48.826,2.545
+94080,Vincennes,94,Val-de-Marne,Île-de-France,94300,48798,2,25549.0,48.847,2.438
+91687,Viry-Châtillon,91,Essonne,Île-de-France,91170,31045,6,5048.0,48.67,2.374
+13117,Vitrolles,13,Bouches-du-Rhône,Provence-Alpes-Côte d'Azur,13127,35532,37,967.0,43.45,5.264
+94081,Vitry-sur-Seine,94,Val-de-Marne,Île-de-France,94400,96205,12,8258.0,48.788,2.394
+38563,Voiron,38,Isère,Auvergne-Rhône-Alpes,38500,20891,22,950.0,45.379,5.582
+78640,Vélizy-Villacoublay,78,Yvelines,Île-de-France,78140,22713,9,2535.0,48.784,2.197
+69259,Vénissieux,69,Rhône,Auvergne-Rhône-Alpes,69200,66363,15,4318.0,45.704,4.881
+59646,Wasquehal,59,Nord,Hauts-de-France,59290,20836,7,3020.0,50.675,3.129
+59650,Wattrelos,59,Nord,Hauts-de-France,59150,40836,14,3009.0,50.706,3.216
+91691,Yerres,91,Essonne,Île-de-France,91330,28699,10,2887.0,48.716,2.493
+38151,Échirolles,38,Isère,Auvergne-Rhône-Alpes,38130,36849,8,4718.0,45.147,5.715
+78208,Élancourt,78,Yvelines,Île-de-France,78990,26082,9,2814.0,48.778,1.96
+51230,Épernay,51,Marne,Grand Est,51200,22001,23,964.0,49.037,3.931
+88160,Épinal,88,Vosges,Grand Est,88000,32285,59,544.0,48.163,6.48
+93031,Épinay-sur-Seine,93,Seine-Saint-Denis,Île-de-France,93800,53489,5,11653.0,48.955,2.314
+91223,Étampes,91,Essonne,Île-de-France,91150,26529,46,577.0,48.421,2.138
+27229,Évreux,27,Eure,Normandie,27000,47289,26,1795.0,49.02,1.142
+91228,Évry-Courcouronnes,91,Essonne,Île-de-France,91080,66177,9,7740.0,48.63,2.44
