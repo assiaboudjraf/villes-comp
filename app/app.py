@@ -20,6 +20,7 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded",
 )
+
 # ─── Bannière en haut ─────────────────────────────────────────────────────────
 st.markdown("""
 <style>
@@ -49,17 +50,19 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-
+# ─── Styles généraux ──────────────────────────────────────────────────────────
 st.markdown("""
 <style>
-.main-title    { font-size:4rem; font-weight:800; color:#1E293B; margin-bottom:0; }
-.main-subtitle { font-size:1rem; color:#64748B; margin-top:0.2rem; margin-bottom:1.5rem; }
+.main-title    { font-size:4rem; font-weight:800; color:#1E293B; margin-bottom:0; text-align:center; }
+.main-subtitle { font-size:1rem; color:#64748B; margin-top:0.2rem; margin-bottom:1.5rem; text-align:center; }
 .ville-badge-1 { background:#EFF6FF; border-left:4px solid #2563EB; padding:0.5rem 1rem; border-radius:0 8px 8px 0; margin-bottom:0.5rem; }
 .ville-badge-2 { background:#FEF2F2; border-left:4px solid #DC2626; padding:0.5rem 1rem; border-radius:0 8px 8px 0; margin-bottom:0.5rem; }
 </style>
 """, unsafe_allow_html=True)
-st.markdown("<div class='main-title'>Comparateur de Villes Françaises 🏙️</div>", unsafe_allow_html=True)
 
+# ─── Titre principal (UN SEUL) ────────────────────────────────────────────────
+st.markdown("<div class='main-title'>Comparateur de Villes Françaises 🏙️</div>", unsafe_allow_html=True)
+st.markdown("<div class='main-subtitle'>Comparez deux villes françaises sur leurs données générales, emploi, logement, météo et équipements.</div>", unsafe_allow_html=True)
 
 # ─── Chargement ───────────────────────────────────────────────────────────────
 df_villes = load_villes()
@@ -101,25 +104,6 @@ with st.sidebar:
         "- Wikipedia"
     )
 
-# ─── Footer / Copyright ───────────────────────────────────────────────────────
-st.markdown("""
-<style>
-.footer {
-    width: 100%;
-    text-align: center;
-    padding: 15px 0;
-    margin-top: 40px;
-    color: #64748B;
-    font-size: 0.9rem;
-}
-</style>
-
-<div class="footer">
-    © 2026 Assia BOUDJRAF — Tous droits réservés
-</div>
-""", unsafe_allow_html=True)
-
-
 # ─── Données des villes sélectionnées ────────────────────────────────────────
 def get_ville(nom):
     row = df_villes[df_villes["nom_standard"] == nom]
@@ -128,11 +112,7 @@ def get_ville(nom):
 ville1 = get_ville(ville1_nom)
 ville2 = get_ville(ville2_nom)
 
-
-# ─── En-tête ──────────────────────────────────────────────────────────────────
-st.markdown('<p class="main-title">🏙️ Comparateur de Villes Françaises</p>', unsafe_allow_html=True)
-st.markdown('<p class="main-subtitle">Comparez deux villes françaises sur leurs données générales, emploi, logement, météo et équipements.</p>', unsafe_allow_html=True)
-
+# ─── En-tête des villes ───────────────────────────────────────────────────────
 col_h1, col_h2 = st.columns(2)
 with col_h1:
     st.markdown(f'<div class="ville-badge-1">🔵 <strong>{ville1_nom}</strong> — {ville1.get("dep_nom","")} ({ville1.get("reg_nom","")})</div>', unsafe_allow_html=True)
@@ -141,6 +121,7 @@ with col_h2:
 
 st.divider()
 
+# ─── Sections ─────────────────────────────────────────────────────────────────
 if ville1_nom == ville2_nom:
     st.warning("⚠️ Sélectionnez deux villes différentes dans la barre latérale.")
     st.stop()
@@ -166,3 +147,21 @@ if show_equipements:
 
 st.markdown("---")
 st.caption("SAE Outils Décisionnels — données issues de sources publiques ouvertes (INSEE, data.gouv.fr, Open-Meteo, OpenStreetMap, Wikipedia).")
+
+# ─── Footer ───────────────────────────────────────────────────────────────────
+st.markdown("""
+<style>
+.footer {
+    width: 100%;
+    text-align: center;
+    padding: 15px 0;
+    margin-top: 40px;
+    color: #64748B;
+    font-size: 0.9rem;
+}
+</style>
+
+<div class="footer">
+    © 2026 Assia BOUDJRAF — Tous droits réservés
+</div>
+""", unsafe_allow_html=True)
