@@ -60,6 +60,22 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+# ─── Correctif PyDeck (évite le fond blanc) ───────────────────────────────────
+st.markdown("""
+<style>
+.stDeckGlJsonChart {
+    background-color: transparent !important;
+}
+.stDeckGlJsonChart canvas {
+    background-color: transparent !important;
+}
+canvas {
+    background-color: transparent !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
+
 # ─── Titre principal (UN SEUL) ────────────────────────────────────────────────
 st.markdown("<div class='main-title'>Comparateur de Villes Françaises 🏙️</div>", unsafe_allow_html=True)
 st.markdown("<div class='main-subtitle'>Comparez deux villes françaises sur leurs données générales, emploi, logement, météo et équipements.</div>", unsafe_allow_html=True)
