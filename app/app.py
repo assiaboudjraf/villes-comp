@@ -90,6 +90,17 @@ liste_villes = sorted(df_villes["nom_standard"].dropna().unique().tolist())
 
 # ─── Sidebar ──────────────────────────────────────────────────────────────────
 with st.sidebar:
+    with st.sidebar:
+    st.markdown(
+        """
+        <div style="text-align:center; margin-bottom:15px;">
+            <img src="https://upload.wikimedia.org/wikipedia/fr/e/e7/Logo_Universit%C3%A9_de_Paris.svg"
+                 style="width:120px;">
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
     st.markdown("## Sélection des villes")
     st.caption("Communes de plus de 20 000 habitants (source : INSEE)")
 
