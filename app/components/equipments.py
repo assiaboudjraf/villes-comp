@@ -12,6 +12,9 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 from utils import COULEUR_V1, COULEUR_V2
 
 
+# ───────────────────────────────────────────────
+# ENDPOINTS OVERPASS AVEC FALLBACK
+# ───────────────────────────────────────────────
 ENDPOINTS = [
     "https://overpass-api.de/api/interpreter",
     "https://overpass-api.nl/api/interpreter",
@@ -23,17 +26,6 @@ HEADERS = {
     "Accept": "application/json"
 }
 
-COULEURS_EQ = {
-    "Cinémas":              "#7B00C8",
-    "Musées":               "#00B400",
-    "Bibliothèques":        "#FF8C00",
-    "Théâtres":             "#DAA520",
-    "Stades":               "#0000B4",
-    "Piscines":             "#00FFC8",
-    "Hôpitaux":             "#B40000",
-    "Établissements d'enseignement supérieur ": "#FF69B4",
-}
-
 
 def overpass_query(query: str):
     for url in ENDPOINTS:
@@ -41,22 +33,25 @@ def overpass_query(query: str):
             r = requests.post(url, data={"data": query}, headers=HEADERS, timeout=8)
             if r.status_code == 200:
                 return r.json()
-        except Exception:
+        except:
             pass
     return None
 
 
+# ───────────────────────────────────────────────
+# RÉCUPÉRATION DES ÉQUIPEMENTS
+# ───────────────────────────────────────────────
 @st.cache_data(ttl=3600)
 def get_equipements(lat: float, lon: float, rayon_m: int = 5000):
     categories = {
-        "Cinémas":              ('cinema',       'amenity', [123, 0, 200]),
-        "Musées":               ('museum',       'tourism', [0, 180, 0]),
-        "Bibliothèques":        ('library',      'amenity', [255, 140, 0]),
-        "Théâtres":             ('theatre',      'amenity', [255, 215, 0]),
-        "Stades":               ('stadium',      'leisure', [0, 0, 180]),
-        "Piscines":             ('swimming_pool','leisure', [0, 255, 200]),
-        "Hôpitaux":             ('hospital',     'amenity', [180, 0, 0]),
-        "Établissements d'enseignement supérieur ": ('university', 'amenity', [255, 105, 180]),
+        "Cinémas":      ('cinema',      'amenity', [150, 0, 200]),
+        "Musées":       ('museum',      'tourism', [0, 180, 0]),
+        "Bibliothèques": ('library',     'amenity', [255, 140, 0]),
+        "Théâtres":     ('theatre',     'amenity', [255, 215, 0]),
+        "Stades":        ('stadium',     'leisure', [0, 0, 180]),
+        "Piscines":     ('swimming_pool','leisure', [0, 255, 200]),
+        "Hôpitaux":     ('hospital',    'amenity', [180, 0, 0]),
+        "Établissements d'enseignement supérieur ":  ('university',  'amenity', [255, 105, 180])
     }
 
     resultats = {}
@@ -68,11 +63,13 @@ def get_equipements(lat: float, lon: float, rayon_m: int = 5000):
         node["{key}"="{value}"](around:{rayon_m},{lat},{lon});
         out body;
         """
+
         data = overpass_query(query)
 
         if data and "elements" in data:
             elems = data["elements"]
             resultats[label] = len(elems)
+
             for e in elems:
                 if "lat" in e and "lon" in e:
                     points.append({
@@ -87,6 +84,9 @@ def get_equipements(lat: float, lon: float, rayon_m: int = 5000):
     return resultats, points
 
 
+# ───────────────────────────────────────────────
+# CARTE PYDECK SANS MAPBOX (OpenStreetMap)
+# ───────────────────────────────────────────────
 def carte_pydeck(points, lat, lon):
     df = pd.DataFrame(points)
 
@@ -106,17 +106,21 @@ def carte_pydeck(points, lat, lon):
         pitch=0,
     )
 
+    # Style OpenStreetMap GRATUIT (pas besoin de clé API)
     deck = pdk.Deck(
         layers=[layer],
         initial_view_state=view_state,
-        map_provider="carto",
-        map_style="light",
+        map_provider="carto",  # IMPORTANT
+        map_style="light",     # fonctionne sans clé
         tooltip={"text": "{category}"}
     )
 
     return deck
 
 
+# ───────────────────────────────────────────────
+# AFFICHAGE STREAMLIT
+# ───────────────────────────────────────────────
 def afficher_section_equipements(ville1: dict, ville2: dict):
     st.header("Équipements & Services")
 
@@ -127,8 +131,8 @@ def afficher_section_equipements(ville1: dict, ville2: dict):
         eq1, pts1 = get_equipements(lat1, lon1)
         eq2, pts2 = get_equipements(lat2, lon2)
 
-    # ── Cartes interactives ───────────────────────────────────────────────────
     st.subheader("Cartes interactives des villes")
+
     colA, colB = st.columns(2)
 
     with colA:
@@ -141,68 +145,69 @@ def afficher_section_equipements(ville1: dict, ville2: dict):
         deck2 = carte_pydeck(pts2, lat2, lon2)
         st.pydeck_chart(deck2, width="stretch", height=400)
 
-    # ── Légende couleurs ──────────────────────────────────────────────────────
-    # ── Légende couleurs ──────────────────────────────────────────────────────
-    st.divider()
-    st.markdown("""
-**Légende des couleurs**  
-<span style="display:inline-block;width:12px;height:12px;background:#7B00C8;border-radius:3px;margin-right:6px;vertical-align:middle;"></span> Cinémas &nbsp;&nbsp;
-<span style="display:inline-block;width:12px;height:12px;background:#00B400;border-radius:3px;margin-right:6px;vertical-align:middle;"></span> Musées &nbsp;&nbsp;
-<span style="display:inline-block;width:12px;height:12px;background:#FF8C00;border-radius:3px;margin-right:6px;vertical-align:middle;"></span> Bibliothèques &nbsp;&nbsp;
-<span style="display:inline-block;width:12px;height:12px;background:#DAA520;border-radius:3px;margin-right:6px;vertical-align:middle;"></span> Théâtres &nbsp;&nbsp;
-<span style="display:inline-block;width:12px;height:12px;background:#0000B4;border-radius:3px;margin-right:6px;vertical-align:middle;"></span> Stades &nbsp;&nbsp;
-<span style="display:inline-block;width:12px;height:12px;background:#00FFC8;border-radius:3px;margin-right:6px;vertical-align:middle;"></span> Piscines &nbsp;&nbsp;
-<span style="display:inline-block;width:12px;height:12px;background:#B40000;border-radius:3px;margin-right:6px;vertical-align:middle;"></span> Hôpitaux &nbsp;&nbsp;
-<span style="display:inline-block;width:12px;height:12px;background:#FF69B4;border-radius:3px;margin-right:6px;vertical-align:middle;"></span> Établissements d'enseignement supérieur
-""", unsafe_allow_html=True)
+# Légende
+COULEURS_EQ = {
+    "Cinémas":             "#7B00C8",
+    "Musées":              "#00B400",
+    "Bibliothèques":       "#FF8C00",
+    "Théâtres":            "#DAA520",
+    "Stades":              "#0000B4",
+    "Piscines":            "#00FFC8",
+    "Hôpitaux":            "#B40000",
+    "Établissements d'enseignement supérieur ": "#FF69B4",
+}
 
-    # ── Métriques avec labels colorés ─────────────────────────────────────────
-    col1, col2 = st.columns(2)
+st.markdown("**Légende des couleurs**")
+cols_leg = st.columns(4)
+for i, (label, couleur) in enumerate(COULEURS_EQ.items()):
+    cols_leg[i % 4].markdown(
+        f'<span style="display:inline-block;width:14px;height:14px;'
+        f'background:{couleur};border-radius:3px;margin-right:6px;vertical-align:middle;"></span>'
+        f'{label}',
+        unsafe_allow_html=True
+    )
 
-    with col1:
-        st.markdown(f"<h4 style='color:{COULEUR_V1};'>{ville1['nom_standard']}</h4>",
-                    unsafe_allow_html=True)
-        cols = st.columns(2)
-        for i, (label, val) in enumerate(eq1.items()):
-            couleur = COULEURS_EQ.get(label, "#888")
-            cols[i % 2].markdown(
-                f'<span style="color:{couleur};font-weight:600;">{label}</span>',
-                unsafe_allow_html=True)
-            cols[i % 2].metric(label="", value=val)
+st.divider()
 
-    with col2:
-        st.markdown(f"<h4 style='color:{COULEUR_V2};'>{ville2['nom_standard']}</h4>",
-                    unsafe_allow_html=True)
-        cols = st.columns(2)
-        for i, (label, val) in enumerate(eq2.items()):
-            couleur = COULEURS_EQ.get(label, "#888")
-            cols[i % 2].markdown(
-                f'<span style="color:{couleur};font-weight:600;">{label}</span>',
-                unsafe_allow_html=True)
-            cols[i % 2].metric(label="", value=val)
+# Métriques avec labels colorés
+col1, col2 = st.columns(2)
 
-    # ── Graphique comparatif ──────────────────────────────────────────────────
+with col1:
+    st.markdown(f"<h4 style='color:{COULEUR_V1};'>{ville1['nom_standard']}</h4>", unsafe_allow_html=True)
+    cols = st.columns(2)
+    for i, (label, val) in enumerate(eq1.items()):
+        couleur = COULEURS_EQ.get(label, "#888")
+        cols[i % 2].markdown(
+            f'<span style="color:{couleur};font-weight:600;">{label}</span>',
+            unsafe_allow_html=True)
+        cols[i % 2].metric(label="", value=val)
+
+with col2:
+    st.markdown(f"<h4 style='color:{COULEUR_V2};'>{ville2['nom_standard']}</h4>", unsafe_allow_html=True)
+    cols = st.columns(2)
+    for i, (label, val) in enumerate(eq2.items()):
+        couleur = COULEURS_EQ.get(label, "#888")
+        cols[i % 2].markdown(
+            f'<span style="color:{couleur};font-weight:600;">{label}</span>',
+            unsafe_allow_html=True)
+        cols[i % 2].metric(label="", value=val)
+
+    # Graphique
     st.divider()
     categories = list(eq1.keys())
     vals1 = [eq1[c] for c in categories]
     vals2 = [eq2[c] for c in categories]
 
     fig = go.Figure()
-    fig.add_trace(go.Bar(
-        name=ville1["nom_standard"], x=categories, y=vals1,
-        marker_color=COULEUR_V1, opacity=0.85,
-    ))
-    fig.add_trace(go.Bar(
-        name=ville2["nom_standard"], x=categories, y=vals2,
-        marker_color=COULEUR_V2, opacity=0.85,
-    ))
+    fig.add_trace(go.Bar(name=ville1["nom_standard"], x=categories, y=vals1, marker_color=COULEUR_V1))
+    fig.add_trace(go.Bar(name=ville2["nom_standard"], x=categories, y=vals2, marker_color=COULEUR_V2))
+
     fig.update_layout(
         barmode="group",
         title="Comparaison des équipements (rayon 5 km)",
         yaxis_title="Nombre d'équipements",
         height=420,
         xaxis_tickangle=-20,
-        legend=dict(orientation="h", y=1.1),
-        margin=dict(l=40, r=20, t=60, b=80),
     )
+
     st.plotly_chart(fig, width="stretch")
