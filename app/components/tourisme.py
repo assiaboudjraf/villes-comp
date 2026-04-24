@@ -1,9 +1,5 @@
 """
 components/tourisme.py
------------------------
-Analyse touristique combinant deux sources :
-  1. Hébergements classés par commune (data.gouv.fr — Licence Ouverte v2.0)
-  2. Points d'intérêt touristiques via API Overpass/OpenStreetMap (ODbL)
 """
 
 import streamlit as st
@@ -22,7 +18,6 @@ ENDPOINTS_OVERPASS = [
     "https://overpass-api.nl/api/interpreter",
     "https://overpass.kumi.systems/api/interpreter",
 ]
-
 HEADERS = {"User-Agent": "ComparateurVilles/1.0", "Accept": "application/json"}
 
 COULEURS_POI = {
@@ -36,8 +31,18 @@ COULEURS_POI = {
     "Commerces":        "#DB2777",
 }
 
+# Mapping noms de colonnes → labels lisibles pour le donut
+TYPES_LABELS = {
+    "nb_hotels":            "Hôtels",
+    "nb_campings":          "Campings",
+    "nb_residences":        "Résidences",
+    "nb_villages_vacances": "Villages vacances",
+    "nb_auberges":          "Auberges",
+    "nb_parcs_loisirs":     "Parcs loisirs",
+}
 
-# ─── Chargement données hébergements ──────────────────────────────────────────
+
+# ─── Chargement ───────────────────────────────────────────────────────────────
 
 @st.cache_data
 def load_tourisme() -> pd.DataFrame:
@@ -54,7 +59,7 @@ def get_tourisme_ville(df: pd.DataFrame, code_insee: str) -> dict:
     return row.iloc[0].to_dict() if not row.empty else {}
 
 
-# ─── API Overpass ─────────────────────────────────────────────────────────────
+# ─── Overpass ─────────────────────────────────────────────────────────────────
 
 def overpass_query(query: str):
     for url in ENDPOINTS_OVERPASS:
@@ -69,7 +74,6 @@ def overpass_query(query: str):
 
 @st.cache_data(ttl=86400)
 def get_poi_touristiques(lat: float, lon: float, rayon_m: int = 8000) -> dict:
-    """Récupère les points d'intérêt touristiques via Overpass."""
     requetes = {
         "Hôtels":           f'node["tourism"="hotel"](around:{rayon_m},{lat},{lon});',
         "Campings":         f'node["tourism"="camp_site"](around:{rayon_m},{lat},{lon});',
@@ -82,26 +86,23 @@ def get_poi_touristiques(lat: float, lon: float, rayon_m: int = 8000) -> dict:
         "Commerces":        f'node["shop"="gift"](around:{rayon_m},{lat},{lon});'
                           + f'node["shop"="souvenirs"](around:{rayon_m},{lat},{lon});',
     }
-
     resultats = {}
     for label, filtre in requetes.items():
         query = f"[out:json][timeout:20];\n({filtre});\nout ids;"
         data = overpass_query(query)
         resultats[label] = len(data.get("elements", [])) if data else 0
-
     return resultats
 
 
 # ─── Graphiques ───────────────────────────────────────────────────────────────
 
 def _legende_couleurs():
-    """Affiche la légende des couleurs des POI."""
     st.markdown("**Légende des couleurs**")
     cols = st.columns(4)
     for i, (label, couleur) in enumerate(COULEURS_POI.items()):
         cols[i % 4].markdown(
             f'<span style="display:inline-block;width:14px;height:14px;'
-            f'background:{couleur};border-radius:3px;margin-right:6px;"></span>'
+            f'background:{couleur};border-radius:3px;margin-right:6px;vertical-align:middle;"></span>'
             f'{label}',
             unsafe_allow_html=True
         )
@@ -116,9 +117,9 @@ def _gauge_hebergements(total: int, nom: str, couleur: str, max_val: int = 500) 
             "axis": {"range": [0, max_val]},
             "bar":  {"color": couleur},
             "steps": [
-                {"range": [0,               max_val * 0.33], "color": "#FEE2E2"},
-                {"range": [max_val * 0.33,  max_val * 0.66], "color": "#FEF3C7"},
-                {"range": [max_val * 0.66,  max_val],        "color": "#D1FAE5"},
+                {"range": [0,              max_val * 0.33], "color": "#FEE2E2"},
+                {"range": [max_val * 0.33, max_val * 0.66], "color": "#FEF3C7"},
+                {"range": [max_val * 0.66, max_val],        "color": "#D1FAE5"},
             ],
         },
     ))
@@ -127,68 +128,59 @@ def _gauge_hebergements(total: int, nom: str, couleur: str, max_val: int = 500) 
 
 
 def _donut_types(tour_dict: dict, nom: str) -> go.Figure:
-    """Donut des types d'hébergements."""
-    types_labels = []
-    types_vals   = []
-    prefixes = ["nb_h", "nb_c", "nb_r", "nb_v", "nb_a", "nb_m"]
-    noms_lisibles = {
-        "nb_h": "Hôtels",
-        "nb_c": "Campings",
-        "nb_r": "Résidences",
-        "nb_v": "Villages vacances",
-        "nb_a": "Auberges",
-        "nb_m": "Meublés",
-    }
-    for k, v in tour_dict.items():
-        if k.startswith("nb_") and k not in ["total_hebergements", "nb_chambres_total"]:
-            try:
-                val = float(v)
-                if val > 0:
-                    prefix = next((p for p in prefixes if k.startswith(p)), k)
-                    label  = noms_lisibles.get(prefix, k.replace("nb_", "").replace("_", " ").title())
-                    types_labels.append(label)
-                    types_vals.append(val)
-            except Exception:
-                pass
+    labels, vals = [], []
+    for col, label in TYPES_LABELS.items():
+        v = tour_dict.get(col, 0)
+        try:
+            v = float(v)
+            if v > 0:
+                labels.append(label)
+                vals.append(v)
+        except Exception:
+            pass
 
-    if not types_vals:
+    # Fallback : chercher toute colonne nb_ non reconnue
+    if not vals:
+        for k, v in tour_dict.items():
+            if k.startswith("nb_") and k not in ["total_hebergements", "nb_chambres_total"]:
+                try:
+                    fv = float(v)
+                    if fv > 0:
+                        labels.append(k.replace("nb_", "").replace("_", " ").title())
+                        vals.append(fv)
+                except Exception:
+                    pass
+
+    if not vals:
         return None
 
     fig = go.Figure(go.Pie(
-        labels=types_labels,
-        values=types_vals,
+        labels=labels, values=vals,
         hole=0.5,
         marker_colors=px.colors.qualitative.Set2,
         textinfo="label+percent",
     ))
     fig.update_layout(
         title=f"Types d'hébergements — {nom}",
-        height=320,
+        height=320, showlegend=True,
         margin=dict(l=20, r=20, t=50, b=20),
-        showlegend=True,
     )
     return fig
 
 
-def _bar_poi(poi1: dict, poi2: dict, nom1: str, nom2: str) -> go.Figure:
+def _bar_poi(poi1, poi2, nom1, nom2):
     categories = list(poi1.keys())
-    vals1 = [poi1.get(c, 0) for c in categories]
-    vals2 = [poi2.get(c, 0) for c in categories]
-
     fig = go.Figure()
-    fig.add_trace(go.Bar(
-        name=nom1, x=categories, y=vals1,
-        marker_color=COULEUR_V1, opacity=0.85,
-    ))
-    fig.add_trace(go.Bar(
-        name=nom2, x=categories, y=vals2,
-        marker_color=COULEUR_V2, opacity=0.85,
-    ))
+    fig.add_trace(go.Bar(name=nom1, x=categories,
+                         y=[poi1.get(c, 0) for c in categories],
+                         marker_color=COULEUR_V1, opacity=0.85))
+    fig.add_trace(go.Bar(name=nom2, x=categories,
+                         y=[poi2.get(c, 0) for c in categories],
+                         marker_color=COULEUR_V2, opacity=0.85))
     fig.update_layout(
         barmode="group",
         title="Points d'intérêt touristiques (rayon 8km, OpenStreetMap)",
-        yaxis_title="Nombre",
-        height=420,
+        yaxis_title="Nombre", height=420,
         legend=dict(orientation="h", y=1.1),
         margin=dict(l=40, r=20, t=60, b=80),
         xaxis_tickangle=-20,
@@ -196,31 +188,24 @@ def _bar_poi(poi1: dict, poi2: dict, nom1: str, nom2: str) -> go.Figure:
     return fig
 
 
-def _radar_tourisme(poi1: dict, poi2: dict, nom1: str, nom2: str) -> go.Figure:
-    categories      = list(poi1.keys())
-    vals1           = [poi1.get(c, 0) for c in categories]
-    vals2           = [poi2.get(c, 0) for c in categories]
-    categories_closed = categories + [categories[0]]
-    vals1_closed    = vals1 + [vals1[0]]
-    vals2_closed    = vals2 + [vals2[0]]
+def _radar_tourisme(poi1, poi2, nom1, nom2):
+    categories = list(poi1.keys())
+    v1 = [poi1.get(c, 0) for c in categories]
+    v2 = [poi2.get(c, 0) for c in categories]
+    cats_c = categories + [categories[0]]
+    v1_c   = v1 + [v1[0]]
+    v2_c   = v2 + [v2[0]]
 
     fig = go.Figure()
-    fig.add_trace(go.Scatterpolar(
-        r=vals1_closed, theta=categories_closed,
-        fill="toself", name=nom1,
-        line_color=COULEUR_V1, fillcolor=COULEUR_V1,
-        opacity=0.4,
-    ))
-    fig.add_trace(go.Scatterpolar(
-        r=vals2_closed, theta=categories_closed,
-        fill="toself", name=nom2,
-        line_color=COULEUR_V2, fillcolor=COULEUR_V2,
-        opacity=0.4,
-    ))
+    fig.add_trace(go.Scatterpolar(r=v1_c, theta=cats_c, fill="toself",
+                                  name=nom1, line_color=COULEUR_V1,
+                                  fillcolor=COULEUR_V1, opacity=0.4))
+    fig.add_trace(go.Scatterpolar(r=v2_c, theta=cats_c, fill="toself",
+                                  name=nom2, line_color=COULEUR_V2,
+                                  fillcolor=COULEUR_V2, opacity=0.4))
     fig.update_layout(
         polar=dict(radialaxis=dict(visible=True)),
-        title="Profil touristique comparatif",
-        height=420,
+        title="Profil touristique comparatif", height=420,
         legend=dict(orientation="h", y=-0.1),
         margin=dict(l=40, r=40, t=60, b=60),
     )
@@ -270,12 +255,14 @@ def afficher_section_tourisme(ville1: dict, ville2: dict):
             m1.metric("Hébergements classés", total)
             if capacite:
                 try:
-                    m2.metric("Capacité (lits/places)", f"{int(float(capacite)):,}".replace(",", " "))
+                    m2.metric("Capacité (lits/places)",
+                              f"{int(float(capacite)):,}".replace(",", " "))
                 except Exception:
                     pass
             if chambres:
                 try:
-                    m1.metric("Nb de chambres", f"{int(float(chambres)):,}".replace(",", " "))
+                    m1.metric("Nb de chambres",
+                              f"{int(float(chambres)):,}".replace(",", " "))
                 except Exception:
                     pass
 
@@ -283,22 +270,17 @@ def afficher_section_tourisme(ville1: dict, ville2: dict):
             if fig_donut:
                 st.plotly_chart(fig_donut, width="stretch")
 
-    # Jauges comparatives
     if any(t > 0 for t in totaux):
         max_val = max(max(totaux) * 1.3, 10)
         g1, g2 = st.columns(2)
         with g1:
             if totaux[0] > 0:
-                st.plotly_chart(
-                    _gauge_hebergements(totaux[0], nom1, COULEUR_V1, int(max_val)),
-                    width="stretch"
-                )
+                st.plotly_chart(_gauge_hebergements(totaux[0], nom1, COULEUR_V1, int(max_val)),
+                                width="stretch")
         with g2:
             if totaux[1] > 0:
-                st.plotly_chart(
-                    _gauge_hebergements(totaux[1], nom2, COULEUR_V2, int(max_val)),
-                    width="stretch"
-                )
+                st.plotly_chart(_gauge_hebergements(totaux[1], nom2, COULEUR_V2, int(max_val)),
+                                width="stretch")
 
     # ── Points d'intérêt OSM ──────────────────────────────────────────────────
     st.divider()
@@ -318,11 +300,9 @@ def afficher_section_tourisme(ville1: dict, ville2: dict):
         poi1 = get_poi_touristiques(float(lat1), float(lon1))
         poi2 = get_poi_touristiques(float(lat2), float(lon2))
 
-    # Légende des couleurs
     _legende_couleurs()
     st.divider()
 
-    # Métriques
     col1, col2 = st.columns(2)
     with col1:
         st.markdown(f"<h4 style='color:{COULEUR_V1};'>{nom1}</h4>", unsafe_allow_html=True)
@@ -347,7 +327,6 @@ def afficher_section_tourisme(ville1: dict, ville2: dict):
 
     st.divider()
 
-    # Graphiques
     tab1, tab2 = st.tabs(["Barres comparatives", "Radar touristique"])
     with tab1:
         st.plotly_chart(_bar_poi(poi1, poi2, nom1, nom2), width="stretch")
