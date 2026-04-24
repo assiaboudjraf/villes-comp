@@ -42,7 +42,7 @@ canvas { background-color: transparent !important; }
 """, unsafe_allow_html=True)
 
 # ─── Titre principal ──────────────────────────────────────────────────────────
-st.markdown("<div class='main-title'>Comparateur de Villes Françaises 🏙️</div>", unsafe_allow_html=True)
+st.markdown("<div class='main-title'>Comparateur de Villes Françaises</div>", unsafe_allow_html=True)
 st.markdown("<div class='main-subtitle'>Comparez deux villes françaises sur leurs données générales, emploi, logement, météo, équipements et tourisme.</div>", unsafe_allow_html=True)
 
 # ─── Chargement ───────────────────────────────────────────────────────────────
