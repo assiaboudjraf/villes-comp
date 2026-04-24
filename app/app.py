@@ -8,11 +8,12 @@ import sys, os
 sys.path.insert(0, os.path.dirname(__file__))
 
 from utils import load_villes
-from components.general     import afficher_section_generale
-from components.meteo        import afficher_section_meteo
-from components.immobilier   import afficher_section_immobilier
-from components.emploi       import afficher_section_emploi
-from components.equipments import afficher_section_equipements
+from components.general      import afficher_section_generale
+from components.meteo         import afficher_section_meteo
+from components.immobilier    import afficher_section_immobilier
+from components.emploi        import afficher_section_emploi
+from components.equipments    import afficher_section_equipements
+from components.tourisme      import afficher_section_tourisme
 
 st.set_page_config(
     page_title="Comparateur de Villes Françaises",
@@ -31,25 +32,18 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# ─── Correctif PyDeck (évite le fond blanc) ───────────────────────────────────
+# ─── Correctif PyDeck ─────────────────────────────────────────────────────────
 st.markdown("""
 <style>
-.stDeckGlJsonChart {
-    background-color: transparent !important;
-}
-.stDeckGlJsonChart canvas {
-    background-color: transparent !important;
-}
-canvas {
-    background-color: transparent !important;
-}
+.stDeckGlJsonChart { background-color: transparent !important; }
+.stDeckGlJsonChart canvas { background-color: transparent !important; }
+canvas { background-color: transparent !important; }
 </style>
 """, unsafe_allow_html=True)
 
-
-# ─── Titre principal (UN SEUL) ────────────────────────────────────────────────
+# ─── Titre principal ──────────────────────────────────────────────────────────
 st.markdown("<div class='main-title'>Comparateur de Villes Françaises 🏙️</div>", unsafe_allow_html=True)
-st.markdown("<div class='main-subtitle'>Comparez deux villes françaises sur leurs données générales, emploi, logement, météo et équipements.</div>", unsafe_allow_html=True)
+st.markdown("<div class='main-subtitle'>Comparez deux villes françaises sur leurs données générales, emploi, logement, météo, équipements et tourisme.</div>", unsafe_allow_html=True)
 
 # ─── Chargement ───────────────────────────────────────────────────────────────
 df_villes = load_villes()
@@ -71,11 +65,10 @@ with st.sidebar:
         unsafe_allow_html=True
     )
 
-
     st.markdown("## Sélection des villes")
     st.caption("Communes de plus de 20 000 habitants (source : INSEE)")
 
-    default1 = "Lyon"    if "Lyon"    in liste_villes else liste_villes[0]
+    default1 = "Lyon"     if "Lyon"     in liste_villes else liste_villes[0]
     default2 = "Bordeaux" if "Bordeaux" in liste_villes else liste_villes[1]
 
     ville1_nom = st.selectbox("🔵 Ville 1", liste_villes, index=liste_villes.index(default1))
@@ -86,11 +79,12 @@ with st.sidebar:
 
     st.divider()
     st.markdown("## Sections")
-    show_general      = st.checkbox("Données générales",          value=True)
-    show_emploi       = st.checkbox("Emploi & Chômage",           value=True)
-    show_immobilier   = st.checkbox("Logement & Immobilier",      value=True)
-    show_meteo        = st.checkbox("Météo & Climat",             value=True)
-    show_equipements  = st.checkbox("Équipements & Services",     value=True)
+    show_general     = st.checkbox("Données générales",      value=True)
+    show_emploi      = st.checkbox("Emploi & Chômage",       value=True)
+    show_immobilier  = st.checkbox("Logement & Immobilier",  value=True)
+    show_meteo       = st.checkbox("Météo & Climat",         value=True)
+    show_equipements = st.checkbox("Équipements & Services", value=True)
+    show_tourisme    = st.checkbox("Tourisme & Attractivité",value=True)
 
     st.divider()
     st.caption(
@@ -102,7 +96,7 @@ with st.sidebar:
         "- Wikipedia"
     )
 
-# ─── Données des villes sélectionnées ────────────────────────────────────────
+# ─── Données des villes ───────────────────────────────────────────────────────
 def get_ville(nom):
     row = df_villes[df_villes["nom_standard"] == nom]
     return row.iloc[0].to_dict() if not row.empty else {}
@@ -142,24 +136,17 @@ if show_meteo:
 
 if show_equipements:
     afficher_section_equipements(ville1, ville2)
+    st.divider()
 
-st.markdown("---")
-st.caption("SAE Outils Décisionnels — données issues de sources publiques ouvertes (INSEE, data.gouv.fr, Open-Meteo, OpenStreetMap, Wikipedia).")
+if show_tourisme:
+    afficher_section_tourisme(ville1, ville2)
 
 # ─── Footer ───────────────────────────────────────────────────────────────────
+st.markdown("---")
+st.caption("SAE Outils Décisionnels — données issues de sources publiques ouvertes (INSEE, data.gouv.fr, Open-Meteo, OpenStreetMap, Wikipedia).")
 st.markdown("""
 <style>
-.footer {
-    width: 100%;
-    text-align: center;
-    padding: 15px 0;
-    margin-top: 40px;
-    color: #64748B;
-    font-size: 0.9rem;
-}
+.footer { width:100%; text-align:center; padding:15px 0; margin-top:40px; color:#64748B; font-size:0.9rem; }
 </style>
-
-<div class="footer">
-    © 2026 Assia BOUDJRAF — Tous droits réservés
-</div>
+<div class="footer">© 2026 Assia BOUDJRAF — Tous droits réservés</div>
 """, unsafe_allow_html=True)
