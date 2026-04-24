@@ -139,7 +139,11 @@ def afficher_section_meteo(ville1: dict, ville2: dict):
         _previsions_card(ville2, COULEUR_V2)
 
     st.divider()
-    st.subheader("Climatologie (moyennes sur 5 ans)")
+    
+from datetime import date
+    annee_fin   = date.today().year - 1
+    annee_debut = annee_fin - 4
+    st.subheader(f"Climatologie (moyennes {annee_debut}–{annee_fin})")
     st.caption("Source : Open-Meteo Historical Weather API (ERA5) — données journalières agrégées par mois.")
 
     tab_temp, tab_precip = st.tabs(["🌡️ Températures", "💧 Précipitations"])
