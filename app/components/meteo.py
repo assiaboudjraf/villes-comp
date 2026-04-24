@@ -9,6 +9,7 @@ import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
 import sys, os
+from datetime import date
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 from utils import get_meteo_previsions, get_meteo_historique, decode_wmo, COULEUR_V1, COULEUR_V2
 
@@ -44,8 +45,8 @@ def _previsions_card(ville: dict, couleur: str):
     for i, (col, date_str) in enumerate(zip(cols, dates)):
         with col:
             desc, emoji = decode_wmo(int(codes[i])) if i < len(codes) else ("—", "❓")
-            tmax  = f"{t_max[i]:.0f}°"  if i < len(t_max)  else "—"
-            tmin  = f"{t_min[i]:.0f}°"  if i < len(t_min)  else "—"
+            tmax  = f"{t_max[i]:.0f}°"   if i < len(t_max)  else "—"
+            tmin  = f"{t_min[i]:.0f}°"   if i < len(t_min)  else "—"
             pluie = f"{precip[i]:.1f}mm" if i < len(precip) else "—"
             try:
                 d = pd.to_datetime(date_str)
@@ -139,8 +140,6 @@ def afficher_section_meteo(ville1: dict, ville2: dict):
         _previsions_card(ville2, COULEUR_V2)
 
     st.divider()
-    
-from datetime import date
     annee_fin   = date.today().year - 1
     annee_debut = annee_fin - 4
     st.subheader(f"Climatologie (moyennes {annee_debut}–{annee_fin})")
