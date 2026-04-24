@@ -94,6 +94,19 @@ def get_poi_touristiques(lat: float, lon: float, rayon_m: int = 8000) -> dict:
 
 # ─── Graphiques ───────────────────────────────────────────────────────────────
 
+def _legende_couleurs():
+    """Affiche la légende des couleurs des POI."""
+    st.markdown("**Légende des couleurs**")
+    cols = st.columns(4)
+    for i, (label, couleur) in enumerate(COULEURS_POI.items()):
+        cols[i % 4].markdown(
+            f'<span style="display:inline-block;width:14px;height:14px;'
+            f'background:{couleur};border-radius:3px;margin-right:6px;"></span>'
+            f'{label}',
+            unsafe_allow_html=True
+        )
+
+
 def _gauge_hebergements(total: int, nom: str, couleur: str, max_val: int = 500) -> go.Figure:
     fig = go.Figure(go.Indicator(
         mode="gauge+number",
@@ -103,9 +116,9 @@ def _gauge_hebergements(total: int, nom: str, couleur: str, max_val: int = 500) 
             "axis": {"range": [0, max_val]},
             "bar":  {"color": couleur},
             "steps": [
-                {"range": [0,              max_val * 0.33], "color": "#FEE2E2"},
-                {"range": [max_val * 0.33, max_val * 0.66], "color": "#FEF3C7"},
-                {"range": [max_val * 0.66, max_val],        "color": "#D1FAE5"},
+                {"range": [0,               max_val * 0.33], "color": "#FEE2E2"},
+                {"range": [max_val * 0.33,  max_val * 0.66], "color": "#FEF3C7"},
+                {"range": [max_val * 0.66,  max_val],        "color": "#D1FAE5"},
             ],
         },
     ))
@@ -113,18 +126,21 @@ def _gauge_hebergements(total: int, nom: str, couleur: str, max_val: int = 500) 
     return fig
 
 
-def _donut_types(tour_dict: dict, nom: str, couleur: str) -> go.Figure:
-    """Donut des types d'hébergements si les colonnes existent."""
+def _donut_types(tour_dict: dict, nom: str) -> go.Figure:
+    """Donut des types d'hébergements."""
     types_labels = []
     types_vals   = []
     prefixes = ["nb_h", "nb_c", "nb_r", "nb_v", "nb_a", "nb_m"]
     noms_lisibles = {
-        "nb_h": "Hôtels", "nb_c": "Campings",
-        "nb_r": "Résidences", "nb_v": "Villages vacances",
-        "nb_a": "Auberges", "nb_m": "Meublés",
+        "nb_h": "Hôtels",
+        "nb_c": "Campings",
+        "nb_r": "Résidences",
+        "nb_v": "Villages vacances",
+        "nb_a": "Auberges",
+        "nb_m": "Meublés",
     }
     for k, v in tour_dict.items():
-        if k.startswith("nb_") and k != "total_hebergements":
+        if k.startswith("nb_") and k not in ["total_hebergements", "nb_chambres_total"]:
             try:
                 val = float(v)
                 if val > 0:
@@ -149,7 +165,7 @@ def _donut_types(tour_dict: dict, nom: str, couleur: str) -> go.Figure:
         title=f"Types d'hébergements — {nom}",
         height=320,
         margin=dict(l=20, r=20, t=50, b=20),
-        showlegend=False,
+        showlegend=True,
     )
     return fig
 
@@ -160,10 +176,14 @@ def _bar_poi(poi1: dict, poi2: dict, nom1: str, nom2: str) -> go.Figure:
     vals2 = [poi2.get(c, 0) for c in categories]
 
     fig = go.Figure()
-    fig.add_trace(go.Bar(name=nom1, x=categories, y=vals1,
-                         marker_color=COULEUR_V1, opacity=0.85))
-    fig.add_trace(go.Bar(name=nom2, x=categories, y=vals2,
-                         marker_color=COULEUR_V2, opacity=0.85))
+    fig.add_trace(go.Bar(
+        name=nom1, x=categories, y=vals1,
+        marker_color=COULEUR_V1, opacity=0.85,
+    ))
+    fig.add_trace(go.Bar(
+        name=nom2, x=categories, y=vals2,
+        marker_color=COULEUR_V2, opacity=0.85,
+    ))
     fig.update_layout(
         barmode="group",
         title="Points d'intérêt touristiques (rayon 8km, OpenStreetMap)",
@@ -177,12 +197,12 @@ def _bar_poi(poi1: dict, poi2: dict, nom1: str, nom2: str) -> go.Figure:
 
 
 def _radar_tourisme(poi1: dict, poi2: dict, nom1: str, nom2: str) -> go.Figure:
-    categories = list(poi1.keys())
-    vals1 = [poi1.get(c, 0) for c in categories]
-    vals2 = [poi2.get(c, 0) for c in categories]
+    categories      = list(poi1.keys())
+    vals1           = [poi1.get(c, 0) for c in categories]
+    vals2           = [poi2.get(c, 0) for c in categories]
     categories_closed = categories + [categories[0]]
-    vals1_closed = vals1 + [vals1[0]]
-    vals2_closed = vals2 + [vals2[0]]
+    vals1_closed    = vals1 + [vals1[0]]
+    vals2_closed    = vals2 + [vals2[0]]
 
     fig = go.Figure()
     fig.add_trace(go.Scatterpolar(
@@ -226,7 +246,10 @@ def afficher_section_tourisme(ville1: dict, ville2: dict):
     col1, col2 = st.columns(2)
     totaux = []
 
-    for col, nom, tour, couleur in [(col1, nom1, tour1, COULEUR_V1), (col2, nom2, tour2, COULEUR_V2)]:
+    for col, nom, tour, couleur in [
+        (col1, nom1, tour1, COULEUR_V1),
+        (col2, nom2, tour2, COULEUR_V2),
+    ]:
         with col:
             st.markdown(f"<h4 style='color:{couleur};'>{nom}</h4>", unsafe_allow_html=True)
             if not tour:
@@ -242,35 +265,50 @@ def afficher_section_tourisme(ville1: dict, ville2: dict):
             totaux.append(total)
 
             capacite = tour.get("capacite_totale")
+            chambres = tour.get("nb_chambres_total")
             m1, m2 = st.columns(2)
             m1.metric("Hébergements classés", total)
             if capacite:
                 try:
-                    m2.metric("Capacité totale (lits/places)", f"{int(float(capacite)):,}".replace(",", " "))
+                    m2.metric("Capacité (lits/places)", f"{int(float(capacite)):,}".replace(",", " "))
+                except Exception:
+                    pass
+            if chambres:
+                try:
+                    m1.metric("Nb de chambres", f"{int(float(chambres)):,}".replace(",", " "))
                 except Exception:
                     pass
 
-            fig_donut = _donut_types(tour, nom, couleur)
+            fig_donut = _donut_types(tour, nom)
             if fig_donut:
                 st.plotly_chart(fig_donut, width="stretch")
 
+    # Jauges comparatives
     if any(t > 0 for t in totaux):
         max_val = max(max(totaux) * 1.3, 10)
         g1, g2 = st.columns(2)
         with g1:
             if totaux[0] > 0:
-                st.plotly_chart(_gauge_hebergements(totaux[0], nom1, COULEUR_V1, int(max_val)), width="stretch")
+                st.plotly_chart(
+                    _gauge_hebergements(totaux[0], nom1, COULEUR_V1, int(max_val)),
+                    width="stretch"
+                )
         with g2:
             if totaux[1] > 0:
-                st.plotly_chart(_gauge_hebergements(totaux[1], nom2, COULEUR_V2, int(max_val)), width="stretch")
+                st.plotly_chart(
+                    _gauge_hebergements(totaux[1], nom2, COULEUR_V2, int(max_val)),
+                    width="stretch"
+                )
 
     # ── Points d'intérêt OSM ──────────────────────────────────────────────────
     st.divider()
     st.subheader("Points d'intérêt (OpenStreetMap)")
     st.caption("Source : API Overpass / OpenStreetMap — rayon 8km. Licence ODbL.")
 
-    lat1, lon1 = ville1.get("latitude"), ville1.get("longitude")
-    lat2, lon2 = ville2.get("latitude"), ville2.get("longitude")
+    lat1 = ville1.get("latitude")
+    lon1 = ville1.get("longitude")
+    lat2 = ville2.get("latitude")
+    lon2 = ville2.get("longitude")
 
     if not all([lat1, lon1, lat2, lon2]):
         st.warning("Coordonnées manquantes pour l'une des villes.")
@@ -280,20 +318,36 @@ def afficher_section_tourisme(ville1: dict, ville2: dict):
         poi1 = get_poi_touristiques(float(lat1), float(lon1))
         poi2 = get_poi_touristiques(float(lat2), float(lon2))
 
+    # Légende des couleurs
+    _legende_couleurs()
+    st.divider()
+
+    # Métriques
     col1, col2 = st.columns(2)
     with col1:
         st.markdown(f"<h4 style='color:{COULEUR_V1};'>{nom1}</h4>", unsafe_allow_html=True)
         cols = st.columns(2)
         for i, (k, v) in enumerate(poi1.items()):
-            cols[i % 2].metric(k, v)
+            couleur = COULEURS_POI.get(k, "#888")
+            cols[i % 2].markdown(
+                f'<span style="color:{couleur};font-weight:600;">{k}</span>',
+                unsafe_allow_html=True
+            )
+            cols[i % 2].metric(label="", value=v)
     with col2:
         st.markdown(f"<h4 style='color:{COULEUR_V2};'>{nom2}</h4>", unsafe_allow_html=True)
         cols = st.columns(2)
         for i, (k, v) in enumerate(poi2.items()):
-            cols[i % 2].metric(k, v)
+            couleur = COULEURS_POI.get(k, "#888")
+            cols[i % 2].markdown(
+                f'<span style="color:{couleur};font-weight:600;">{k}</span>',
+                unsafe_allow_html=True
+            )
+            cols[i % 2].metric(label="", value=v)
 
     st.divider()
 
+    # Graphiques
     tab1, tab2 = st.tabs(["Barres comparatives", "Radar touristique"])
     with tab1:
         st.plotly_chart(_bar_poi(poi1, poi2, nom1, nom2), width="stretch")
