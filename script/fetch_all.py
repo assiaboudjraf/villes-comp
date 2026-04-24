@@ -1,25 +1,17 @@
 """
-fetch_all.py
--------------
-Lance tous les scripts de collecte dans le bon ordre.
-
-Fichiers INSEE à placer manuellement dans data/ avant de lancer :
-  - data/chomage_raw.xlsx        (taux chômage zones emploi)
-  - data/appartenance_communes.csv (correspondance commune → zone emploi)
+fetch_all.py - Lance tous les scripts de collecte dans l'ordre.
 """
-
-import subprocess
-import sys
-import os
+import subprocess, sys, os
 
 script_dir   = os.path.dirname(os.path.abspath(__file__))
 project_root = os.path.dirname(script_dir)
 os.chdir(project_root)
 
 scripts = [
-    ("1/3 — Villes françaises +20 000 hab (data.gouv.fr)",  "scripts/fetch_villes.py"),
-    ("2/3 — Prix immobilier (DVF agrégé, data.gouv.fr)",    "scripts/fetch_immobilier.py"),
-    ("3/3 — Taux de chômage (fichiers INSEE locaux)",        "scripts/fetch_chomage.py"),
+    ("1/4 — Villes françaises +20 000 hab",       "scripts/fetch_villes.py"),
+    ("2/4 — Prix immobilier (DVF agrégé)",          "scripts/fetch_immobilier.py"),
+    ("3/4 — Taux de chômage (fichiers INSEE locaux)","scripts/fetch_chomage.py"),
+    ("4/4 — Hébergements touristiques classés",     "scripts/fetch_tourisme.py"),
 ]
 
 print("=" * 60)
@@ -27,15 +19,15 @@ print("  COLLECTE DES DONNÉES — Comparateur de Villes")
 print("=" * 60)
 
 errors = []
-for label, script_path in scripts:
-    print(f"\n {label}")
+for label, script in scripts:
+    print(f"\n▶  {label}")
     print("-" * 60)
-    result = subprocess.run([sys.executable, script_path])
+    result = subprocess.run([sys.executable, script])
     if result.returncode != 0:
-        errors.append(script_path)
-        print(f"❌ Erreur dans {script_path}")
+        errors.append(script)
+        print(f"❌ Erreur dans {script}")
     else:
-        print(f"✓  Terminé avec succès")
+        print(f"✓  Terminé")
 
 print("\n" + "=" * 60)
 if errors:
