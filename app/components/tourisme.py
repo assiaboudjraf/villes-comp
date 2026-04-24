@@ -31,18 +31,18 @@ COULEURS_POI = {
     "Commerces":        "#DB2777",
 }
 
-# Mapping noms de colonnes → labels lisibles pour le donut
 TYPES_LABELS = {
-    "nb_hotels":            "Hôtels",
-    "nb_campings":          "Campings",
-    "nb_residences":        "Résidences",
-    "nb_villages_vacances": "Villages vacances",
-    "nb_auberges":          "Auberges",
-    "nb_parcs_loisirs":     "Parcs loisirs",
+    "nb_hotels":               "Hôtels",
+    "nb_ha_tel_de_tourisme":   "Hôtels",
+    "nb_campings":             "Campings",
+    "nb_residences":           "Résidences",
+    "nb_ra_sidence_de_touris": "Résidences",
+    "nb_villages_vacances":    "Villages vacances",
+    "nb_auberges":             "Auberges",
+    "nb_parcs_loisirs":        "Parcs loisirs",
+    "nb_parc_ra_sidentiel_de": "Parcs loisirs",
 }
 
-
-# ─── Chargement ───────────────────────────────────────────────────────────────
 
 @st.cache_data
 def load_tourisme() -> pd.DataFrame:
@@ -56,10 +56,10 @@ def get_tourisme_ville(df: pd.DataFrame, code_insee: str) -> dict:
     if df.empty or "code_insee" not in df.columns:
         return {}
     row = df[df["code_insee"].astype(str).str.zfill(5) == str(code_insee).zfill(5)]
-    return row.iloc[0].to_dict() if not row.empty else {}
+    if row.empty:
+        return {}
+    return row.iloc[0].to_dict()
 
-
-# ─── Overpass ─────────────────────────────────────────────────────────────────
 
 def overpass_query(query: str):
     for url in ENDPOINTS_OVERPASS:
@@ -94,8 +94,6 @@ def get_poi_touristiques(lat: float, lon: float, rayon_m: int = 8000) -> dict:
     return resultats
 
 
-# ─── Graphiques ───────────────────────────────────────────────────────────────
-
 def _legende_couleurs():
     st.markdown("**Légende des couleurs**")
     cols = st.columns(4)
@@ -108,7 +106,7 @@ def _legende_couleurs():
         )
 
 
-def _gauge_hebergements(total: int, nom: str, couleur: str, max_val: int = 500) -> go.Figure:
+def _gauge_hebergements(total, nom, couleur, max_val=500):
     fig = go.Figure(go.Indicator(
         mode="gauge+number",
         value=total,
@@ -127,19 +125,23 @@ def _gauge_hebergements(total: int, nom: str, couleur: str, max_val: int = 500) 
     return fig
 
 
-def _donut_types(tour_dict: dict, nom: str) -> go.Figure:
+def _donut_types(tour_dict, nom):
     labels, vals = [], []
+    seen = set()
     for col, label in TYPES_LABELS.items():
+        if label in seen:
+            continue
         v = tour_dict.get(col, 0)
         try:
             v = float(v)
             if v > 0:
                 labels.append(label)
                 vals.append(v)
+                seen.add(label)
         except Exception:
             pass
 
-    # Fallback : chercher toute colonne nb_ non reconnue
+    # Fallback : toute colonne nb_ non reconnue
     if not vals:
         for k, v in tour_dict.items():
             if k.startswith("nb_") and k not in ["total_hebergements", "nb_chambres_total"]:
@@ -155,8 +157,7 @@ def _donut_types(tour_dict: dict, nom: str) -> go.Figure:
         return None
 
     fig = go.Figure(go.Pie(
-        labels=labels, values=vals,
-        hole=0.5,
+        labels=labels, values=vals, hole=0.5,
         marker_colors=px.colors.qualitative.Set2,
         textinfo="label+percent",
     ))
@@ -195,14 +196,17 @@ def _radar_tourisme(poi1, poi2, nom1, nom2):
     cats_c = categories + [categories[0]]
     v1_c   = v1 + [v1[0]]
     v2_c   = v2 + [v2[0]]
-
     fig = go.Figure()
-    fig.add_trace(go.Scatterpolar(r=v1_c, theta=cats_c, fill="toself",
-                                  name=nom1, line_color=COULEUR_V1,
-                                  fillcolor=COULEUR_V1, opacity=0.4))
-    fig.add_trace(go.Scatterpolar(r=v2_c, theta=cats_c, fill="toself",
-                                  name=nom2, line_color=COULEUR_V2,
-                                  fillcolor=COULEUR_V2, opacity=0.4))
+    fig.add_trace(go.Scatterpolar(
+        r=v1_c, theta=cats_c, fill="toself",
+        name=nom1, line_color=COULEUR_V1,
+        fillcolor=COULEUR_V1, opacity=0.4,
+    ))
+    fig.add_trace(go.Scatterpolar(
+        r=v2_c, theta=cats_c, fill="toself",
+        name=nom2, line_color=COULEUR_V2,
+        fillcolor=COULEUR_V2, opacity=0.4,
+    ))
     fig.update_layout(
         polar=dict(radialaxis=dict(visible=True)),
         title="Profil touristique comparatif", height=420,
@@ -212,15 +216,11 @@ def _radar_tourisme(poi1, poi2, nom1, nom2):
     return fig
 
 
-# ─── Point d'entrée ───────────────────────────────────────────────────────────
-
 def afficher_section_tourisme(ville1: dict, ville2: dict):
     st.header("Tourisme & Attractivité")
-
     nom1 = ville1.get("nom_standard", "Ville 1")
     nom2 = ville2.get("nom_standard", "Ville 2")
 
-    # ── Hébergements classés ──────────────────────────────────────────────────
     st.subheader("Hébergements touristiques classés")
     st.caption("Source : data.gouv.fr — hébergements classés (hôtels, campings, résidences…). Licence Ouverte v2.0.")
 
@@ -237,7 +237,7 @@ def afficher_section_tourisme(ville1: dict, ville2: dict):
     ]:
         with col:
             st.markdown(f"<h4 style='color:{couleur};'>{nom}</h4>", unsafe_allow_html=True)
-            if not tour:
+            if not tour or "total_hebergements" not in tour:
                 st.info("Données hébergements non disponibles pour cette commune.")
                 totaux.append(0)
                 continue
@@ -275,14 +275,17 @@ def afficher_section_tourisme(ville1: dict, ville2: dict):
         g1, g2 = st.columns(2)
         with g1:
             if totaux[0] > 0:
-                st.plotly_chart(_gauge_hebergements(totaux[0], nom1, COULEUR_V1, int(max_val)),
-                                width="stretch")
+                st.plotly_chart(
+                    _gauge_hebergements(totaux[0], nom1, COULEUR_V1, int(max_val)),
+                    width="stretch"
+                )
         with g2:
             if totaux[1] > 0:
-                st.plotly_chart(_gauge_hebergements(totaux[1], nom2, COULEUR_V2, int(max_val)),
-                                width="stretch")
+                st.plotly_chart(
+                    _gauge_hebergements(totaux[1], nom2, COULEUR_V2, int(max_val)),
+                    width="stretch"
+                )
 
-    # ── Points d'intérêt OSM ──────────────────────────────────────────────────
     st.divider()
     st.subheader("Points d'intérêt (OpenStreetMap)")
     st.caption("Source : API Overpass / OpenStreetMap — rayon 8km. Licence ODbL.")
@@ -311,8 +314,7 @@ def afficher_section_tourisme(ville1: dict, ville2: dict):
             couleur = COULEURS_POI.get(k, "#888")
             cols[i % 2].markdown(
                 f'<span style="color:{couleur};font-weight:600;">{k}</span>',
-                unsafe_allow_html=True
-            )
+                unsafe_allow_html=True)
             cols[i % 2].metric(label="", value=v)
     with col2:
         st.markdown(f"<h4 style='color:{COULEUR_V2};'>{nom2}</h4>", unsafe_allow_html=True)
@@ -321,12 +323,10 @@ def afficher_section_tourisme(ville1: dict, ville2: dict):
             couleur = COULEURS_POI.get(k, "#888")
             cols[i % 2].markdown(
                 f'<span style="color:{couleur};font-weight:600;">{k}</span>',
-                unsafe_allow_html=True
-            )
+                unsafe_allow_html=True)
             cols[i % 2].metric(label="", value=v)
 
     st.divider()
-
     tab1, tab2 = st.tabs(["Barres comparatives", "Radar touristique"])
     with tab1:
         st.plotly_chart(_bar_poi(poi1, poi2, nom1, nom2), width="stretch")
