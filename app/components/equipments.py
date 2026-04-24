@@ -145,52 +145,31 @@ def afficher_section_equipements(ville1: dict, ville2: dict):
         deck2 = carte_pydeck(pts2, lat2, lon2)
         st.pydeck_chart(deck2, width="stretch", height=400)
 
-# Légende
-COULEURS_EQ = {
-    "Cinémas":             "#7B00C8",
-    "Musées":              "#00B400",
-    "Bibliothèques":       "#FF8C00",
-    "Théâtres":            "#DAA520",
-    "Stades":              "#0000B4",
-    "Piscines":            "#00FFC8",
-    "Hôpitaux":            "#B40000",
-    "Établissements d'enseignement supérieur ": "#FF69B4",
-}
+    # Légende
+    st.markdown("""
+### Légende des couleurs
+- 🟣 Cinémas  
+- 🟢 Musées  
+- 🟠 Bibliothèques  
+- 🟡 Théâtres  
+- 🔵 Stades  
+- 🟦 Piscines  
+- 🟥 Hôpitaux  
+- 🌸 Établissements d'enseignement supérieur   
+""")
 
-st.markdown("**Légende des couleurs**")
-cols_leg = st.columns(4)
-for i, (label, couleur) in enumerate(COULEURS_EQ.items()):
-    cols_leg[i % 4].markdown(
-        f'<span style="display:inline-block;width:14px;height:14px;'
-        f'background:{couleur};border-radius:3px;margin-right:6px;vertical-align:middle;"></span>'
-        f'{label}',
-        unsafe_allow_html=True
-    )
+    # Métriques
+    col1, col2 = st.columns(2)
 
-st.divider()
+    with col1:
+        st.markdown(f"<h4 style='color:{COULEUR_V1};'>{ville1['nom_standard']}</h4>", unsafe_allow_html=True)
+        for label, val in eq1.items():
+            st.metric(label, val)
 
-# Métriques avec labels colorés
-col1, col2 = st.columns(2)
-
-with col1:
-    st.markdown(f"<h4 style='color:{COULEUR_V1};'>{ville1['nom_standard']}</h4>", unsafe_allow_html=True)
-    cols = st.columns(2)
-    for i, (label, val) in enumerate(eq1.items()):
-        couleur = COULEURS_EQ.get(label, "#888")
-        cols[i % 2].markdown(
-            f'<span style="color:{couleur};font-weight:600;">{label}</span>',
-            unsafe_allow_html=True)
-        cols[i % 2].metric(label="", value=val)
-
-with col2:
-    st.markdown(f"<h4 style='color:{COULEUR_V2};'>{ville2['nom_standard']}</h4>", unsafe_allow_html=True)
-    cols = st.columns(2)
-    for i, (label, val) in enumerate(eq2.items()):
-        couleur = COULEURS_EQ.get(label, "#888")
-        cols[i % 2].markdown(
-            f'<span style="color:{couleur};font-weight:600;">{label}</span>',
-            unsafe_allow_html=True)
-        cols[i % 2].metric(label="", value=val)
+    with col2:
+        st.markdown(f"<h4 style='color:{COULEUR_V2};'>{ville2['nom_standard']}</h4>", unsafe_allow_html=True)
+        for label, val in eq2.items():
+            st.metric(label, val)
 
     # Graphique
     st.divider()
