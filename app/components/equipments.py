@@ -142,18 +142,19 @@ def afficher_section_equipements(ville1: dict, ville2: dict):
         st.pydeck_chart(deck2, width="stretch", height=400)
 
     # ── Légende couleurs ──────────────────────────────────────────────────────
+    # ── Légende couleurs ──────────────────────────────────────────────────────
     st.divider()
-    st.markdown("**Légende des couleurs**")
-    cols_leg = st.columns(4)
-    for i, (label, couleur) in enumerate(COULEURS_EQ.items()):
-        cols_leg[i % 4].markdown(
-            f'<span style="display:inline-block;width:14px;height:14px;'
-            f'background:{couleur};border-radius:3px;margin-right:6px;vertical-align:middle;"></span>'
-            f'{label}',
-            unsafe_allow_html=True
-        )
-
-    st.divider()
+    st.markdown("""
+**Légende des couleurs**  
+<span style="display:inline-block;width:12px;height:12px;background:#7B00C8;border-radius:3px;margin-right:6px;vertical-align:middle;"></span> Cinémas &nbsp;&nbsp;
+<span style="display:inline-block;width:12px;height:12px;background:#00B400;border-radius:3px;margin-right:6px;vertical-align:middle;"></span> Musées &nbsp;&nbsp;
+<span style="display:inline-block;width:12px;height:12px;background:#FF8C00;border-radius:3px;margin-right:6px;vertical-align:middle;"></span> Bibliothèques &nbsp;&nbsp;
+<span style="display:inline-block;width:12px;height:12px;background:#DAA520;border-radius:3px;margin-right:6px;vertical-align:middle;"></span> Théâtres &nbsp;&nbsp;
+<span style="display:inline-block;width:12px;height:12px;background:#0000B4;border-radius:3px;margin-right:6px;vertical-align:middle;"></span> Stades &nbsp;&nbsp;
+<span style="display:inline-block;width:12px;height:12px;background:#00FFC8;border-radius:3px;margin-right:6px;vertical-align:middle;"></span> Piscines &nbsp;&nbsp;
+<span style="display:inline-block;width:12px;height:12px;background:#B40000;border-radius:3px;margin-right:6px;vertical-align:middle;"></span> Hôpitaux &nbsp;&nbsp;
+<span style="display:inline-block;width:12px;height:12px;background:#FF69B4;border-radius:3px;margin-right:6px;vertical-align:middle;"></span> Établissements d'enseignement supérieur
+""", unsafe_allow_html=True)
 
     # ── Métriques avec labels colorés ─────────────────────────────────────────
     col1, col2 = st.columns(2)
