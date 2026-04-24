@@ -1,119 +1,168 @@
 """
 fetch_tourisme.py
 ------------------
-Télécharge les hébergements touristiques classés par commune.
-
-Source 1 : data.gouv.fr — "Hébergements touristiques classés en France"
-           Liste des hôtels, campings, résidences, villages vacances, auberges
-           Licence : Licence Ouverte v2.0
-
-Source 2 : INSEE — "Capacité des communes en hébergement touristique"
-           Nombre d'hôtels, chambres, campings, emplacements par commune
-           Licence : Licence Ouverte v2.0
+Lit data/hebergements_classes.csv et produit data/tourisme.csv
+Source : data.gouv.fr — Hébergements touristiques classés en France
+Licence : Licence Ouverte v2.0
 """
 
 import os
-import requests
+import re
+import unicodedata
 import pandas as pd
 
 os.makedirs("data", exist_ok=True)
 
-# ─── Source 1 : Hébergements classés (data.gouv.fr) ──────────────────────────
-print("📥 Récupération des hébergements classés (data.gouv.fr)...")
-DATASET_ID = "hebergements-collectifs-classes-en-france"
-API_URL    = f"https://www.data.gouv.fr/api/1/datasets/{DATASET_ID}/"
+PATH = "data/hebergements_classes.csv"
 
-download_url = None
-try:
-    r = requests.get(API_URL, timeout=30)
-    r.raise_for_status()
-    ressources = r.json().get("resources", [])
-    # Chercher le CSV principal
-    for res in ressources:
-        if res.get("format", "").lower() == "csv":
-            download_url = res["url"]
-            break
-    if not download_url and ressources:
-        download_url = ressources[0]["url"]
-    print(f"   ✓ URL : {str(download_url)[:80]}...")
-except Exception as e:
-    print(f"   ⚠️  API inaccessible : {e}")
+if not os.path.exists(PATH):
+    print(f"❌ Fichier manquant : {PATH}")
+    exit(1)
 
-if download_url:
-    try:
-        r2 = requests.get(download_url, timeout=120)
-        r2.raise_for_status()
-        with open("data/hebergements_raw.csv", "wb") as f:
-            f.write(r2.content)
-        print("   ✓ Fichier téléchargé.")
+# ─── 1. Chargement ────────────────────────────────────────────────────────────
+print("📂 Lecture du fichier hébergements classés...")
+df = None
+for sep in ["\t", ";", ","]:
+    for enc in ["latin-1", "utf-8", "utf-8-sig", "cp1252"]:
+        try:
+            tmp = pd.read_csv(PATH, sep=sep, dtype=str, encoding=enc, on_bad_lines="skip")
+            if len(tmp.columns) > 5:
+                df = tmp
+                print(f"   ✓ sep='{sep}' encoding='{enc}' — {len(df)} lignes, {len(df.columns)} colonnes")
+                break
+        except Exception:
+            continue
+    if df is not None:
+        break
 
-        # Chargement
-        df_heb = pd.read_csv("data/hebergements_raw.csv", sep=";", dtype=str,
-                             encoding="utf-8", on_bad_lines="skip", low_memory=False)
-        # Essai latin-1 si UTF-8 échoue
-        if len(df_heb.columns) <= 2:
-            df_heb = pd.read_csv("data/hebergements_raw.csv", sep=";", dtype=str,
-                                 encoding="latin-1", on_bad_lines="skip", low_memory=False)
+if df is None:
+    print("❌ Impossible de lire le fichier.")
+    exit(1)
 
-        print(f"   Colonnes : {list(df_heb.columns[:8])}")
-        print(f"   Lignes   : {len(df_heb)}")
+print(f"   Colonnes brutes : {list(df.columns)}")
 
-        # Standardisation colonnes
-        col_map = {}
-        for c in df_heb.columns:
-            cl = c.lower()
-            if any(k in cl for k in ["commune_code", "code_insee", "code commune", "insee"]):
-                col_map[c] = "code_insee"
-            elif any(k in cl for k in ["type", "categorie", "mode"]):
-                col_map[c] = "type_hebergement"
-            elif any(k in cl for k in ["classement", "etoile", "catégorie", "nb_etoile"]):
-                col_map[c] = "classement"
-            elif any(k in cl for k in ["chambre", "nb_chambre"]):
-                col_map[c] = "nb_chambres"
-            elif any(k in cl for k in ["capacite", "place", "lit"]):
-                col_map[c] = "capacite"
-            elif any(k in cl for k in ["nom", "name", "etablissement"]):
-                col_map[c] = "nom_etablissement"
+# ─── 2. Nettoyage des noms de colonnes ───────────────────────────────────────
+def clean_colname(s):
+    """Normalise un nom de colonne en ASCII pur sans accents."""
+    s = str(s).strip()
+    # Normalisation Unicode NFD puis suppression des diacritiques
+    s = unicodedata.normalize("NFD", s)
+    s = "".join(c for c in s if unicodedata.category(c) != "Mn")
+    # Minuscules, espaces → underscore, caractères spéciaux supprimés
+    s = s.lower()
+    s = re.sub(r"[\s\(\)/'-]+", "_", s)
+    s = re.sub(r"[^a-z0-9_]", "", s)
+    s = re.sub(r"_+", "_", s).strip("_")
+    return s
 
-        df_heb = df_heb.rename(columns=col_map)
+df.columns = [clean_colname(c) for c in df.columns]
+print(f"   Colonnes nettoyées : {list(df.columns)}")
 
-        if "code_insee" in df_heb.columns:
-            df_heb["code_insee"] = df_heb["code_insee"].astype(str).str.zfill(5)
+# ─── 3. Détection des colonnes clés ──────────────────────────────────────────
+def find_col(df, *keywords):
+    for kw in keywords:
+        for c in df.columns:
+            if kw.lower() in c.lower():
+                return c
+    return None
 
-            # Agrégation par commune et type
-            agg_cols = {"nom_etablissement": "count"} if "nom_etablissement" in df_heb.columns else {}
-            if "nb_chambres" in df_heb.columns:
-                df_heb["nb_chambres"] = pd.to_numeric(df_heb["nb_chambres"], errors="coerce")
-                agg_cols["nb_chambres"] = "sum"
+col_commune  = find_col(df, "commune")
+col_cp       = find_col(df, "postal", "cp")
+col_type     = find_col(df, "typolog", "type")
+col_capacite = find_col(df, "capacit", "accueil")
+col_chambres = find_col(df, "chambre")
 
-            if "type_hebergement" in df_heb.columns:
-                # Pivot : une ligne par commune, une colonne par type
-                df_pivot = df_heb.groupby(["code_insee", "type_hebergement"]).size().unstack(fill_value=0)
-                df_pivot.columns = [f"nb_{c.lower().replace(' ','_')[:20]}" for c in df_pivot.columns]
-                df_pivot = df_pivot.reset_index()
-                df_pivot["total_hebergements"] = df_pivot.drop("code_insee", axis=1).sum(axis=1)
-            else:
-                df_pivot = df_heb.groupby("code_insee").size().reset_index(name="total_hebergements")
+print(f"   commune='{col_commune}' cp='{col_cp}' type='{col_type}' capacite='{col_capacite}'")
 
-            # Capacité totale si disponible
-            if "capacite" in df_heb.columns:
-                df_heb["capacite"] = pd.to_numeric(df_heb["capacite"], errors="coerce")
-                cap = df_heb.groupby("code_insee")["capacite"].sum().reset_index(name="capacite_totale")
-                df_pivot = df_pivot.merge(cap, on="code_insee", how="left")
+# ─── 4. Normalisation commune ─────────────────────────────────────────────────
+if col_commune:
+    df[col_commune] = df[col_commune].astype(str).str.upper().str.strip()
+if col_cp:
+    df[col_cp] = df[col_cp].astype(str).str.zfill(5)
 
-            df_pivot.to_csv("data/tourisme.csv", index=False, encoding="utf-8")
-            print(f"\n✅ data/tourisme.csv → {len(df_pivot)} communes")
-            print(df_pivot.head(5).to_string())
-        else:
-            print("   ⚠️  Colonne code_insee non trouvée — sauvegarde du fichier brut tel quel.")
-            df_heb.to_csv("data/tourisme.csv", index=False, encoding="utf-8")
+# ─── 5. Nettoyage des valeurs de type hébergement ────────────────────────────
+if col_type:
+    def clean_type(s):
+        s = str(s).strip()
+        s = unicodedata.normalize("NFD", s)
+        s = "".join(c for c in s if unicodedata.category(c) != "Mn")
+        return s.upper().strip()
+    df[col_type] = df[col_type].apply(clean_type)
+    print(f"   Types trouvés : {df[col_type].unique()[:8]}")
 
-    except Exception as e:
-        print(f"   ❌ Erreur téléchargement : {e}")
-        # Fichier vide de secours
-        pd.DataFrame(columns=["code_insee","total_hebergements","capacite_totale"]).to_csv(
-            "data/tourisme.csv", index=False)
+# ─── 6. Jointure avec villes_20000 ───────────────────────────────────────────
+path_villes = "data/villes_20000.csv"
+if not os.path.exists(path_villes):
+    print("❌ data/villes_20000.csv manquant.")
+    exit(1)
+
+df_villes = pd.read_csv(path_villes, dtype={"code_insee": str, "code_postal": str})
+df_villes["nom_upper"]   = df_villes["nom_standard"].astype(str).str.upper().str.strip()
+df_villes["code_postal"] = df_villes["code_postal"].astype(str).str.zfill(5)
+
+df["nom_upper"] = df[col_commune].astype(str) if col_commune else ""
+df["cp5"]       = df[col_cp].astype(str).str[:5] if col_cp else ""
+
+# Jointure nom + CP
+df_join = df.merge(
+    df_villes[["code_insee", "nom_upper", "code_postal"]],
+    left_on=["nom_upper", "cp5"],
+    right_on=["nom_upper", "code_postal"],
+    how="left"
+)
+# Fallback nom seul
+mask = df_join["code_insee"].isna()
+if mask.sum() > 0:
+    fb = df[mask].merge(
+        df_villes[["code_insee", "nom_upper"]].drop_duplicates("nom_upper"),
+        on="nom_upper", how="left"
+    )
+    df_join.loc[mask, "code_insee"] = fb["code_insee"].values
+
+matched = df_join["code_insee"].notna().sum()
+print(f"   ✓ {matched}/{len(df_join)} hébergements matchés ({matched/len(df_join)*100:.1f}%)")
+
+df_matched = df_join[df_join["code_insee"].notna()].copy()
+
+# ─── 7. Agrégation par commune ────────────────────────────────────────────────
+if col_type:
+    # Noms propres pour les colonnes pivot
+    type_map = {
+        "HOTEL DE TOURISME":          "hotels",
+        "CAMPING":                     "campings",
+        "RESIDENCE DE TOURISME":       "residences",
+        "VILLAGE DE VACANCES":         "villages_vacances",
+        "AUBERGE COLLECTIVE":          "auberges",
+        "PARC RESIDENTIEL DE LOISIRS": "parcs_loisirs",
+    }
+    df_matched["type_clean"] = df_matched[col_type].map(
+        lambda x: type_map.get(x, re.sub(r"[^a-z0-9]", "_", x.lower())[:20])
+    )
+    pivot = df_matched.groupby(["code_insee", "type_clean"]).size().unstack(fill_value=0)
+    pivot.columns = [f"nb_{c}" for c in pivot.columns]
+    pivot = pivot.reset_index()
+    pivot["total_hebergements"] = pivot.drop("code_insee", axis=1).sum(axis=1)
 else:
-    print("   ❌ Aucune URL trouvée — fichier vide de secours.")
-    pd.DataFrame(columns=["code_insee","total_hebergements","capacite_totale"]).to_csv(
-        "data/tourisme.csv", index=False)
+    pivot = df_matched.groupby("code_insee").size().reset_index(name="total_hebergements")
+
+# Capacité
+if col_capacite:
+    df_matched[col_capacite] = pd.to_numeric(
+        df_matched[col_capacite].astype(str).str.replace("-", "0"), errors="coerce"
+    )
+    cap = df_matched.groupby("code_insee")[col_capacite].sum().reset_index(name="capacite_totale")
+    pivot = pivot.merge(cap, on="code_insee", how="left")
+
+# Chambres
+if col_chambres:
+    df_matched[col_chambres] = pd.to_numeric(
+        df_matched[col_chambres].astype(str).str.replace("-", "0"), errors="coerce"
+    )
+    chb = df_matched.groupby("code_insee")[col_chambres].sum().reset_index(name="nb_chambres_total")
+    pivot = pivot.merge(chb, on="code_insee", how="left")
+
+# ─── 8. Sauvegarde ────────────────────────────────────────────────────────────
+pivot.to_csv("data/tourisme.csv", index=False, encoding="utf-8")
+print(f"\n✅ data/tourisme.csv → {len(pivot)} communes")
+print(f"   Colonnes : {list(pivot.columns)}")
+print(pivot.head(5).to_string())
