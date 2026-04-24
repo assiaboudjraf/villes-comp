@@ -12,7 +12,7 @@ from components.general      import afficher_section_generale
 from components.meteo         import afficher_section_meteo
 from components.immobilier    import afficher_section_immobilier
 from components.emploi        import afficher_section_emploi
-from components.equipments    import afficher_section_equipements
+from components.equipements    import afficher_section_equipements
 from components.tourisme      import afficher_section_tourisme
 
 st.set_page_config(
@@ -150,3 +150,4 @@ st.markdown("""
 </style>
 <div class="footer">© 2026 Assia BOUDJRAF — Tous droits réservés</div>
 """, unsafe_allow_html=True)
+
