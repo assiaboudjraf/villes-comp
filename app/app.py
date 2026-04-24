@@ -12,7 +12,7 @@ from components.general      import afficher_section_generale
 from components.meteo         import afficher_section_meteo
 from components.immobilier    import afficher_section_immobilier
 from components.emploi        import afficher_section_emploi
-from components.equipements    import afficher_section_equipements
+from components.equipments    import afficher_section_equipements
 from components.tourisme      import afficher_section_tourisme
 
 st.set_page_config(
