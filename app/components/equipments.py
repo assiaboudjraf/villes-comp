@@ -51,7 +51,7 @@ def get_equipements(lat: float, lon: float, rayon_m: int = 5000):
         "Stades":        ('stadium',     'leisure', [0, 0, 180]),
         "Piscines":     ('swimming_pool','leisure', [0, 255, 200]),
         "Hôpitaux":     ('hospital',    'amenity', [180, 0, 0]),
-        "Universités":  ('university',  'amenity', [255, 105, 180])
+        "Établissements d'enseignement supérieur ":  ('university',  'amenity', [255, 105, 180])
     }
 
     resultats = {}
@@ -106,12 +106,12 @@ def carte_pydeck(points, lat, lon):
         pitch=0,
     )
 
-    # 🔥 Style OpenStreetMap GRATUIT (pas besoin de clé API)
+    # Style OpenStreetMap GRATUIT (pas besoin de clé API)
     deck = pdk.Deck(
         layers=[layer],
         initial_view_state=view_state,
-        map_provider="carto",  # 👈 IMPORTANT
-        map_style="light",     # 👈 fonctionne sans clé
+        map_provider="carto",  # IMPORTANT
+        map_style="light",     # fonctionne sans clé
         tooltip={"text": "{category}"}
     )
 
@@ -155,7 +155,7 @@ def afficher_section_equipements(ville1: dict, ville2: dict):
 - 🔵 Stades  
 - 🟦 Piscines  
 - 🟥 Hôpitaux  
-- 🌸 Universités  
+- 🌸 Établissements d'enseignement supérieur   
 """)
 
     # Métriques
