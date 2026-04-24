@@ -88,13 +88,12 @@ requetes = {
                       + f'node["shop"="souvenirs"](around:{rayon_m},{lat},{lon});',
 }
 
-    resultats = {}
-    for label, filtre in requetes.items():
-        query = f"[out:json][timeout:20];\n({filtre});\nout ids;"
-        data  = overpass_query(query)
-        resultats[label] = len(data.get("elements", [])) if data else 0
-
-    return resultats
+resultats = {}
+for label, filtre in requetes.items():
+  query = f"[out:json][timeout:20];\n({filtre});\nout ids;"
+  data  = overpass_query(query)
+  resultats[label] = len(data.get("elements", [])) if data else 0
+  return resultats
 
 
 # ─── Graphiques ───────────────────────────────────────────────────────────────
