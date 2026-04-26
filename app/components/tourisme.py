@@ -210,14 +210,15 @@ def _legende_hebergements():
     cols = st.columns(3)
 
     for i, (label, couleur) in enumerate(COULEURS_HEBERG.items()):
-        html = (
-            f"<div style='display:flex;align-items:center;margin-bottom:6px;'>"
-            f"<span style='display:inline-block;width:14px;height:14px;border-radius:50%;"
-            f"background:{couleur};margin-right:8px;'></span>"
-            f"<span>{label}</span>"
-            f"</div>"
+        cols[i].markdown(
+            f'<div style="display:flex;align-items:center;margin-bottom:4px;">'
+            f'<span style="display:inline-block;width:14px;height:14px;border-radius:50%;'
+            f'background:{couleur};margin-right:6px;"></span>'
+            f'<span>{label}</span>'
+            f'</div>',
+            unsafe_allow_html=True
         )
-        cols[i].markdown(html, unsafe_allow_html=True)
+
 
 
 
