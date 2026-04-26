@@ -29,20 +29,17 @@ HEADERS = {
 # ───────────────────────────────────────────────
 # NOUVELLE PALETTE (8 couleurs)
 # ───────────────────────────────────────────────
-
 PALETTE_EQ = [
-    "#fe9929",
-    "#d7b5d8",
-    "#df65b0",
-    "#ce1256",
-    "#fed98e",
-    "#a1dab4",
-    "#41b6c4",
+    "#cc4c02",
     "#225ea8",
+    "#238443",
+    "#ae017e",
+    "#df65b0",
+    "#969696",
+    "#7fcdbb",
+    "#b2182b",
 ]
 
-
-# Ordre fixe des catégories
 CATEGORIES_EQ = [
     "Cinémas",
     "Musées",
@@ -57,7 +54,7 @@ CATEGORIES_EQ = [
 COULEURS_EQ = {cat: PALETTE_EQ[i] for i, cat in enumerate(CATEGORIES_EQ)}
 
 
-COULEURS_EQ = {cat: PALETTE_EQ[i] for i, cat in enumerate(CATEGORIES_EQ)}
+
 
 
 # ───────────────────────────────────────────────
