@@ -24,7 +24,7 @@ PALETTE_POI = [
     "#cc4c02",  # Hôtels
     "#225ea8",  # Campings
     "#238443",  # Attractions
-    "#ae017e",  # Galeries
+    "#7a0177",  # Galeries
     "#df65b0",  # Offices tourisme
     "#969696",  # Restaurants
     "#7fcdbb",  # Cafés
