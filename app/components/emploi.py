@@ -40,11 +40,11 @@ def _gauge_chomage(taux: float, nom: str, couleur: str) -> go.Figure:
         gauge={
             "axis": {"range": [0, 20], "ticksuffix": "%"},
             "bar": {"color": couleur},
-            "steps": [
-                {"range": [0, 5], "color": "#D1FAE5"},
-                {"range": [5, 10], "color": "#FEF3C7"},
-                {"range": [10, 20], "color": "#FEE2E2"},
-            ],
+
+            # Fond blanc (plus de zones colorées)
+            "bgcolor": "white",
+            "steps": [],
+
             "threshold": {
                 "line": {"color": "black", "width": 2},
                 "thickness": 0.75,
@@ -53,7 +53,6 @@ def _gauge_chomage(taux: float, nom: str, couleur: str) -> go.Figure:
         },
     ))
 
-    # Correction du centrage
     fig.update_layout(
         height=260,
         margin=dict(l=0, r=0, t=10, b=0)
