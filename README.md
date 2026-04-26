@@ -1,5 +1,7 @@
 # 🏙️ Comparateur de Villes Françaises
 
+Voici le lien pour visualiser l'application streamlit : https://villes-comp-c4dj3cvv5tqjqntp5jttfd.streamlit.app/
+
 Application web permettant de comparer **deux villes françaises de plus de 20 000 habitants** sur plusieurs dimensions :
 
 - Données générales  
