@@ -38,7 +38,7 @@ def _gauge_chomage(taux: float, nom: str, couleur: str) -> go.Figure:
 
     fig = go.Figure()
 
-    # --- GAUGE FIXE ---
+    # --- GAUGE AGRANDIE + FIXE ---
     fig.add_trace(go.Indicator(
         mode="gauge+number",
         value=taux,
@@ -46,12 +46,12 @@ def _gauge_chomage(taux: float, nom: str, couleur: str) -> go.Figure:
         number={
             "suffix": "%",
             "valueformat": ".1f",
-            "font": {"size": 34, "color": "#111"},
+            "font": {"size": 40, "color": "#111"},  # PLUS GRAND
         },
 
         title={
             "text": f"<b>{nom}</b>",
-            "font": {"size": 14, "color": "#444"},
+            "font": {"size": 16, "color": "#444"},
         },
 
         gauge={
@@ -60,7 +60,7 @@ def _gauge_chomage(taux: float, nom: str, couleur: str) -> go.Figure:
                 "ticksuffix": "%",
                 "tickwidth": 1,
                 "tickcolor": "#999",
-                "tickfont": {"size": 10},
+                "tickfont": {"size": 12},
             },
             "bar": {"color": couleur},
             "bgcolor": "white",
@@ -72,22 +72,21 @@ def _gauge_chomage(taux: float, nom: str, couleur: str) -> go.Figure:
             },
         },
 
-        # Domaine fixe = gauge immobile
-        domain={"x": [0, 1], "y": [0.15, 1]}
+        # Domaine plus haut = gauge plus grande
+        domain={"x": [0, 1], "y": [0.25, 1]}
     ))
 
-    # --- DELTA FIXE (NE BOUGE PLUS JAMAIS) ---
+    # --- DELTA CENTRÉ ---
     fig.add_annotation(
-        x=0.5, y=0.05,
-        text=f"<span style='color:{delta_color}'><b>{delta_txt}</b></span>",
+        x=0.5, y=0.15,  # centré horizontalement
+        text=f"<span style='color:{delta_color}; font-size:16px;'><b>{delta_txt}</b></span>",
         showarrow=False,
-        font=dict(size=14),
         xanchor="center"
     )
 
     fig.update_layout(
-        height=200,
-        margin=dict(l=0, r=0, t=30, b=0),
+        height=260,  # PLUS GRAND
+        margin=dict(l=0, r=0, t=40, b=0),
     )
 
     return fig
