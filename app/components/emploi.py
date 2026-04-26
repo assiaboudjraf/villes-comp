@@ -50,7 +50,7 @@ def _gauge_chomage(taux: float, nom: str, couleur: str) -> go.Figure:
         },
 
         # Réduction de la taille de la jauge
-        domain={"x": [0, 1], "y": [0, 0.95]},  # réduit la hauteur du demi‑cercle
+        domain={"x": [0, 1], "y": [0, 0.85]},  # réduit la hauteur du demi‑cercle
 
         gauge={
             "axis": {"range": [0, 20], "ticksuffix": "%"},
