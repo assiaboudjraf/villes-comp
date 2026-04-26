@@ -225,4 +225,48 @@ Analyse comparative multidimensionnelle basée sur :
 - Emploi (INSEE)
 - Tourisme (data.gouv.fr)
 
-Normalisation :
+Normalisation : valeur_normalisée = valeur / max(valeur_ville1, valeur_ville2)
+
+Score global = moyenne des indicateurs normalisés × 100.
+        """)
+
+    # ── Calcul des indicateurs ─────────────────────────────────────
+    with st.spinner("Calcul des indicateurs..."):
+        v1 = construire_vecteur(ville1)
+        v2 = construire_vecteur(ville2)
+
+    if not v1 or not v2:
+        st.warning("Données insuffisantes pour l'analyse.")
+        return
+
+    indicateurs, vals1, vals2, v1_norm, v2_norm = normaliser(v1, v2)
+
+    # ── Tableau ───────────────────────────────────────────────────
+    st.subheader("Tableau des indicateurs")
+    df_table = pd.DataFrame({
+        "Indicateur": indicateurs,
+        nom1: [f"{v:,.1f}".replace(",", " ") for v in vals1],
+        nom2: [f"{v:,.1f}".replace(",", " ") for v in vals2],
+        f"Score {nom1} (normalisé)": [f"{v:.2f}" for v in v1_norm],
+        f"Score {nom2} (normalisé)": [f"{v:.2f}" for v in v2_norm],
+    })
+    st.dataframe(df_table, hide_index=True, use_container_width=True)
+
+    st.divider()
+
+    # ── Score global ──────────────────────────────────────────────
+    st.subheader("Score global")
+    fig_score, s1, s2 = _score(v1_norm, v2_norm, nom1, nom2)
+    st.plotly_chart(fig_score, use_container_width=True)
+
+    st.divider()
+
+    # ── Graphiques ────────────────────────────────────────────────
+    tab1, tab2 = st.tabs(["Radar normalisé", "Barres comparatives"])
+    with tab1:
+        st.plotly_chart(_radar(indicateurs, v1_norm, v2_norm, nom1, nom2),
+                        use_container_width=True)
+    with tab2:
+        st.plotly_chart(_bars(indicateurs, vals1, vals2, nom1, nom2),
+                        use_container_width=True)
+
