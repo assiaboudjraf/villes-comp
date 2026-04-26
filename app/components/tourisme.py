@@ -225,36 +225,68 @@ def _legende_hebergements():
 def _gauge_hebergements(total, nom, couleur, max_val=500):
     fig = go.Figure(
         go.Indicator(
-            mode="gauge+number",
+            mode="gauge+number+delta",
             value=total,
-            number={"font": {"size": 36, "color": "#111"}, "valueformat": "d"},
-            title={
-                "text": f"<b>Hébergements classés</b><br>{nom}",
-                "font": {"size": 16, "color": "#444"},
+            number={
+                "font": {"size": 28, "color": "#111", "family": "Arial, sans-serif"},
+                "valueformat": ",",
+                "prefix": "",
             },
-            domain={"x": [0, 1], "y": [0.30, 1]},
+            delta={'reference': 0, 'position': "top", 'threshold': {'line': {'color': "gray"}}},
+            title={
+                "text": f"<b style='font-size:14px;'>Hébergements classés</b><br /><span style='font-size:16px; color:#333;'>{nom}</span>",
+                "font": {"size": 14, "color": "#444", "family": "Arial, sans-serif"},
+                "x": 0.5,  # Centre horizontalement
+            },
+            domain={"x": [0.1, 0.9], "y": [0.2, 0.9]},  # Centre la gauge
             gauge={
+                "shape": "angular",
+                "bar": {"color": couleur, "thickness": 0.2},
+                "bgcolor": "rgba(248,250,252,0.8)",
+                "borderwidth": 2,
+                "bordercolor": "#E2E8F0",
                 "axis": {
                     "range": [0, max_val],
                     "tickwidth": 1,
-                    "tickcolor": "#999",
-                    "tickfont": {"size": 12},
+                    "tickcolor": "#94A3B8",
+                    "tickfont": {"size": 10, "family": "Arial, sans-serif"},
+                    "dtick": max_val / 10,
                 },
-                "bar": {"color": couleur},
-                "bgcolor": "white",
-                "steps": [],
+                "steps": [
+                    {"range": [0, max_val * 0.3], "color": "rgba(248,250,252,0.8)"},
+                    {"range": [max_val * 0.3, max_val * 0.7], "color": "rgba(254,252,232,0.8)"},
+                    {"range": [max_val * 0.7, max_val], "color": "rgba(254,242,242,0.8)"},
+                ],
                 "threshold": {
-                    "line": {"color": "black", "width": 2},
-                    "thickness": 0.8,
-                    "value": max_val * 0.5,
+                    "line": {"color": couleur, "width": 4},
+                    "thickness": 0.75,
+                    "value": total,
                 },
             },
         )
     )
 
     fig.update_layout(
-        height=240,
-        margin=dict(l=0, r=0, t=40, b=0),
+        height=280,
+        margin=dict(l=20, r=20, t=20, b=20),
+        paper_bgcolor="rgba(0,0,0,0)",
+        font={"family": "Arial, sans-serif"},
+        # Centre le contenu
+        annotations=[
+            dict(
+                x=0.5,
+                y=0.05,
+                xref="paper",
+                yref="paper",
+                text=f"<b>{total:,}</b>",
+                showarrow=False,
+                font=dict(size=24, color="#1E293B", family="Arial, sans-serif"),
+                bgcolor="rgba(255,255,255,0.9)",
+                bordercolor="#E2E8F0",
+                borderwidth=1,
+                borderpad=8,
+            )
+        ]
     )
 
     return fig
@@ -439,27 +471,22 @@ def afficher_section_tourisme(ville1: dict, ville2: dict):
                 _legende_hebergements()
 
     if any(t > 0 for t in totaux):
-        max_val = max(max(totaux) * 1.3, 10)
-        g1, g2 = st.columns(2)
+    max_val = max(max(totaux) * 1.3, 10)
+    g1, g2 = st.columns([1, 1], gap="small")  # Réduit l'espace entre colonnes
 
-        with g1:
-            if totaux[0] > 0:
-                st.markdown("<div style='height:200px;'>", unsafe_allow_html=True)
-                st.plotly_chart(
-                    _gauge_hebergements(totaux[0], nom1, COULEUR_V1, int(max_val)),
-                    use_container_width=True,
-                )
-                st.markdown("</div>", unsafe_allow_html=True)
+    with g1:
+        if totaux[0] > 0:
+            st.plotly_chart(
+                _gauge_hebergements(totaux[0], nom1, COULEUR_V1, int(max_val)),
+                use_container_width=True
+            )
 
-        with g2:
-            if totaux[1] > 0:
-                st.markdown("<div style='height:200px;'>", unsafe_allow_html=True)
-                st.plotly_chart(
-                    _gauge_hebergements(totaux[1], nom2, COULEUR_V2, int(max_val)),
-                    use_container_width=True,
-                )
-                st.markdown("</div>", unsafe_allow_html=True)
-
+    with g2:
+        if totaux[1] > 0:
+            st.plotly_chart(
+                _gauge_hebergements(totaux[1], nom2, COULEUR_V2, int(max_val)),
+                use_container_width=True
+            )
     st.divider()
     st.subheader("Points d'intérêt (OpenStreetMap)")
     st.caption("Source : API Overpass / OpenStreetMap — rayon 8km. Licence ODbL.")
