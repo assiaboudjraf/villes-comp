@@ -286,27 +286,49 @@ def _bar_poi(poi1, poi2, nom1, nom2):
 
 def _radar_tourisme(poi1, poi2, nom1, nom2):
     categories = list(poi1.keys())
+
+    # valeurs brutes
     v1 = [poi1.get(c, 0) for c in categories]
     v2 = [poi2.get(c, 0) for c in categories]
+
+    # normalisation par le maximum observé
+    max_vals = [max(v1[i], v2[i], 1) for i in range(len(categories))]
+    v1_norm = [v1[i] / max_vals[i] for i in range(len(categories))]
+    v2_norm = [v2[i] / max_vals[i] for i in range(len(categories))]
+
+    # fermer le radar
     cats_c = categories + [categories[0]]
-    v1_c   = v1 + [v1[0]]
-    v2_c   = v2 + [v2[0]]
-    max_val = max(max(v1 + v2), 1) * 1.15
+    v1_c = v1_norm + [v1_norm[0]]
+    v2_c = v2_norm + [v2_norm[0]]
 
     fig = go.Figure()
-    fig.add_trace(go.Scatterpolar(r=v1_c, theta=cats_c, fill="toself",
-                                  name=nom1, line_color=COULEUR_V1,
-                                  fillcolor=COULEUR_V1, opacity=0.4))
-    fig.add_trace(go.Scatterpolar(r=v2_c, theta=cats_c, fill="toself",
-                                  name=nom2, line_color=COULEUR_V2,
-                                  fillcolor=COULEUR_V2, opacity=0.4))
+
+    fig.add_trace(go.Scatterpolar(
+        r=v1_c, theta=cats_c, fill="toself",
+        name=f"{nom1} (normalisé)",
+        line_color=COULEUR_V1,
+        fillcolor=COULEUR_V1,
+        opacity=0.4
+    ))
+
+    fig.add_trace(go.Scatterpolar(
+        r=v2_c, theta=cats_c, fill="toself",
+        name=f"{nom2} (normalisé)",
+        line_color=COULEUR_V2,
+        fillcolor=COULEUR_V2,
+        opacity=0.4
+    ))
+
     fig.update_layout(
-        polar=dict(radialaxis=dict(visible=True, range=[0, max_val])),
-        title="Profil touristique comparatif", height=420,
+        title="Profil touristique comparatif (normalisé)",
+        polar=dict(radialaxis=dict(visible=True, range=[0, 1])),
+        height=420,
         legend=dict(orientation="h", y=-0.1),
         margin=dict(l=40, r=40, t=60, b=60),
     )
+
     return fig
+
 
 def afficher_section_tourisme(ville1: dict, ville2: dict):
     st.header("Tourisme & Attractivité")
