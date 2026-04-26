@@ -390,18 +390,19 @@ def afficher_section_tourisme(ville1: dict, ville2: dict):
                     m1.metric("Nb de chambres", f"{int(float(chambres)):,}".replace(",", " "))
                 except Exception:
                     pass
-
+                    
             fig_donut = _donut_types(tour, nom)
             if fig_donut:
-                st.plotly_chart(fig_donut, width="stretch")
-                _legende_hebergements()
+            st.plotly_chart(fig_donut, width="stretch")
+            _legende_hebergements()
 
-    if any(t > 0 for t in totaux):
-    max_val = max(max(totaux) * 1.3, 10)
-    g1, g2 = st.columns(2)
-
-    with g1:
-        if totaux[0] > 0:
+# --- Gauges hébergements ---
+            if any(t > 0 for t in totaux):
+            max_val = max(max(totaux) * 1.3, 10)
+            g1, g2 = st.columns(2)
+            
+            with g1:
+            if totaux[0] > 0:
             st.markdown("<div style='height:260px;'>", unsafe_allow_html=True)
             st.plotly_chart(
                 _gauge_hebergements(totaux[0], nom1, COULEUR_V1, int(max_val)),
@@ -409,8 +410,8 @@ def afficher_section_tourisme(ville1: dict, ville2: dict):
             )
             st.markdown("</div>", unsafe_allow_html=True)
 
-    with g2:
-        if totaux[1] > 0:
+            with g2:
+            if totaux[1] > 0:
             st.markdown("<div style='height:260px;'>", unsafe_allow_html=True)
             st.plotly_chart(
                 _gauge_hebergements(totaux[1], nom2, COULEUR_V2, int(max_val)),
