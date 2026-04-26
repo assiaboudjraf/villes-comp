@@ -30,7 +30,7 @@ def _get_chomage(df_cho: pd.DataFrame, code_insee: str) -> dict:
     return row.iloc[0].to_dict()
 
 
-ddef _gauge_chomage(taux: float, nom: str, couleur: str) -> go.Figure:
+def _gauge_chomage(taux: float, nom: str, couleur: str) -> go.Figure:
     fig = go.Figure(go.Indicator(
         mode="gauge+number+delta",
         value=taux,
