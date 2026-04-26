@@ -128,7 +128,7 @@ def _score(v1_norm, v2_norm, nom1, nom2):
 
 
 def afficher_section_acp(ville1: dict, ville2: dict):
-    st.header("📈 Analyse Comparative")
+    st.header("Analyse Comparative")
 
     nom1 = ville1.get("nom_standard", "Ville 1")
     nom2 = ville2.get("nom_standard", "Ville 2")
@@ -233,7 +233,7 @@ Plus la surface colorée est grande, plus la ville domine sur l'ensemble des cri
     st.divider()
 
     # ── Graphiques ────────────────────────────────────────────────────────────
-    tab1, tab2 = st.tabs(["🕸️ Radar normalisé", "Barres comparatives"])
+    tab1, tab2 = st.tabs(["Radar normalisé", "Barres comparatives"])
     with tab1:
         st.plotly_chart(_radar(indicateurs, v1_norm, v2_norm, nom1, nom2),
                         use_container_width=True)
