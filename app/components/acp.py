@@ -245,3 +245,45 @@ Plus la surface colorée est grande, plus la ville domine sur l'ensemble des cri
         st.plotly_chart(_bars(indicateurs, vals1, vals2, nom1, nom2),
                         use_container_width=True)
         st.caption("Valeurs brutes — les unités varient selon l'indicateur.")
+
+def afficher_top10(scores, ville1, ville2):
+    """
+    scores : dict {nom_ville: score_global}
+    ville1, ville2 : noms des villes sélectionnées
+    """
+
+    # Tri décroissant
+    df = pd.DataFrame([
+        {"ville": v, "score": s} for v, s in scores.items()
+    ]).sort_values("score", ascending=False)
+
+    top10 = df.head(10)
+
+    # Couleurs : ville1 / ville2 / autres
+    couleurs = []
+    for v in top10["ville"]:
+        if v == ville1:
+            couleurs.append(COULEUR_V1)
+        elif v == ville2:
+            couleurs.append(COULEUR_V2)
+        else:
+            couleurs.append("#cccccc")
+
+    fig = go.Figure(go.Bar(
+        x=top10["score"],
+        y=top10["ville"],
+        orientation="h",
+        marker_color=couleurs,
+        opacity=0.85
+    ))
+
+    fig.update_layout(
+        title="Top 10 des villes françaises (score global)",
+        xaxis_title="Score normalisé",
+        yaxis_title="",
+        height=450,
+        margin=dict(l=60, r=20, t=60, b=40)
+    )
+
+    st.plotly_chart(fig, use_container_width=True)
+
