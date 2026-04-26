@@ -34,31 +34,44 @@ def _gauge_chomage(taux: float, nom: str, couleur: str) -> go.Figure:
     fig = go.Figure(go.Indicator(
         mode="gauge+number+delta",
         value=taux,
-        delta={"reference": TAUX_NATIONAL, "suffix": "%", "valueformat": ".1f"},
-        number={"suffix": "%", "valueformat": ".1f"},
-        title={"text": nom, "font": {"size": 14}},
+        delta={
+            "reference": TAUX_NATIONAL,
+            "suffix": "%",
+            "valueformat": ".1f"
+        },
+        number={
+            "suffix": "%",
+            "valueformat": ".1f",
+            "font": {"size": 26} 
+        },
+        title={
+            "text": nom,
+            "font": {"size": 13}
+        },
         gauge={
             "axis": {"range": [0, 20], "ticksuffix": "%"},
             "bar": {"color": couleur},
 
-            # Fond blanc (plus de zones colorées)
+            # Fond blanc (aucune zone colorée)
             "bgcolor": "white",
             "steps": [],
 
             "threshold": {
                 "line": {"color": "black", "width": 2},
-                "thickness": 0.75,
+                "thickness": 0.7,
                 "value": TAUX_NATIONAL,
             },
         },
     ))
 
+    # Taille réduite + centrage parfait
     fig.update_layout(
-        height=260,
-        margin=dict(l=0, r=0, t=10, b=0)
+        height=220,   # ← plus petit qu’avant
+        margin=dict(l=0, r=0, t=5, b=0)
     )
 
     return fig
+
 
 
 
