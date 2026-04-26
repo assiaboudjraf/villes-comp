@@ -38,23 +38,26 @@ def _gauge_chomage(taux: float, nom: str, couleur: str) -> go.Figure:
         number={
             "suffix": "%",
             "valueformat": ".1f",
-            "font": {"size": 32, "color": "#111"},  # plus lisible
+            "font": {"size": 30, "color": "#111"},
         },
 
         delta={
             "reference": TAUX_NATIONAL,
             "suffix": "%",
             "valueformat": ".1f",
-            "increasing": {"color": "#b2182b"},  # rouge foncé si > national
-            "decreasing": {"color": "#238443"},  # vert foncé si < national
+            "increasing": {"color": "#b2182b"},
+            "decreasing": {"color": "#238443"},
+            "font": {"size": 12},
+            "position": "top"  # empêche le déplacement du nombre
         },
 
         title={
             "text": f"<b>{nom}</b>",
-            "font": {"size": 14, "color": "#444"},
+            "font": {"size": 13, "color": "#444"},
         },
 
-        domain={"x": [0, 1], "y": [0, 0.65]},  # demi‑cercle plus bas et centré
+        # Domaine FIXE, parfaitement centré, ne bouge plus
+        domain={"x": [0, 1], "y": [0, 0.55]},
 
         gauge={
             "axis": {
@@ -62,6 +65,7 @@ def _gauge_chomage(taux: float, nom: str, couleur: str) -> go.Figure:
                 "ticksuffix": "%",
                 "tickwidth": 1,
                 "tickcolor": "#999",
+                "tickfont": {"size": 10},
             },
 
             "bar": {"color": couleur},
@@ -78,11 +82,12 @@ def _gauge_chomage(taux: float, nom: str, couleur: str) -> go.Figure:
     ))
 
     fig.update_layout(
-        height=180,
-        margin=dict(l=0, r=0, t=20, b=0),
+        height=160,  # hauteur FIXE
+        margin=dict(l=0, r=0, t=10, b=0),
     )
 
     return fig
+
 
 
 
