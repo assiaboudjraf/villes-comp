@@ -200,17 +200,28 @@ def _gauge_hebergements(total, nom, couleur, max_val=500):
         gauge={
             "axis": {"range": [0, max_val]},
             "bar": {"color": couleur},
+
+            # Fond blanc (aucune zone colorée)
             "bgcolor": "white",
             "steps": [],
+
+            # (optionnel) seuil visuel
+            "threshold": {
+                "line": {"color": "black", "width": 2},
+                "thickness": 0.7,
+                "value": max_val * 0.5,
+            },
         },
+        domain={"x": [0, 1], "y": [0, 0.75]}  #jauge plus compacte
     ))
 
     fig.update_layout(
-        height=200,
+        height=200,  #  taille compacte
         margin=dict(l=0, r=0, t=10, b=0)
     )
 
     return fig
+
 def _donut_types(tour_dict, nom):
     labels, vals, seen = [], [], set()
     for col, label in TYPES_LABELS.items():
