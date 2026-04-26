@@ -31,15 +31,16 @@ HEADERS = {
 # ───────────────────────────────────────────────
 
 PALETTE_EQ = [
-    "#f1eef6",
+    "#fe9929",
     "#d7b5d8",
     "#df65b0",
     "#ce1256",
-    "#ffffcc",
+    "#fed98e",
     "#a1dab4",
     "#41b6c4",
     "#225ea8",
 ]
+
 
 # Ordre fixe des catégories
 CATEGORIES_EQ = [
