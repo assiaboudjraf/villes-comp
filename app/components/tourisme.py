@@ -208,20 +208,17 @@ def _legende_couleurs():
 def _legende_hebergements():
     st.markdown("### Légende des types d'hébergements")
     cols = st.columns(3)
+
     for i, (label, couleur) in enumerate(COULEURS_HEBERG.items()):
-        cols[i].markdown(
-            """
-            <div style="display:flex;align-items:center;margin-bottom:6px;">
-                <span style="
-                    display:inline-block;width:14px;height:14px;border-radius:50%;
-                    background:%s;margin-right:8px;">
-                </span>
-                <span>%s</span>
-            </div>
-            """
-            % (couleur, label),
-            unsafe_allow_html=True,
+        html = (
+            f"<div style='display:flex;align-items:center;margin-bottom:6px;'>"
+            f"<span style='display:inline-block;width:14px;height:14px;border-radius:50%;"
+            f"background:{couleur};margin-right:8px;'></span>"
+            f"<span>{label}</span>"
+            f"</div>"
         )
+        cols[i].markdown(html, unsafe_allow_html=True)
+
 
 
 def _gauge_hebergements(total, nom, couleur, max_val=500):
