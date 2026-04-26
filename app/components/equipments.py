@@ -57,6 +57,9 @@ CATEGORIES_EQ = [
 COULEURS_EQ = {cat: PALETTE_EQ[i] for i, cat in enumerate(CATEGORIES_EQ)}
 
 
+COULEURS_EQ = {cat: PALETTE_EQ[i] for i, cat in enumerate(CATEGORIES_EQ)}
+
+
 # ───────────────────────────────────────────────
 # OVERPASS QUERY
 # ───────────────────────────────────────────────
@@ -153,17 +156,19 @@ def carte_pydeck(points, lat, lon):
 
     # Convertir hex → RGB
     df["color_rgb"] = df["color"].apply(
-        lambda c: [int(c[i:i+2], 16) for i in (1, 3, 5)]
-    )
+    lambda c: [int(c[i:i+2], 16) for i in (1, 3, 5)]
+)
+
 
     layer = pdk.Layer(
-        "ScatterplotLayer",
-        data=df,
-        get_position='[lon, lat]',
-        get_color='color_rgb',
-        get_radius=150,
-        pickable=True,
-    )
+    "ScatterplotLayer",
+    data=df,
+    get_position='[lon, lat]',
+    get_color='color_rgb',
+    get_radius=150,
+    pickable=True,
+)
+
 
     view_state = pdk.ViewState(latitude=lat, longitude=lon, zoom=11, pitch=0)
 
