@@ -443,7 +443,7 @@ def afficher_section_tourisme(ville1: dict, ville2: dict):
 
         with g1:
             if totaux[0] > 0:
-                st.markdown("<div style='height:260px;'>", unsafe_allow_html=True)
+                st.markdown("<div style='height:200px;'>", unsafe_allow_html=True)
                 st.plotly_chart(
                     _gauge_hebergements(totaux[0], nom1, COULEUR_V1, int(max_val)),
                     use_container_width=True,
@@ -452,7 +452,7 @@ def afficher_section_tourisme(ville1: dict, ville2: dict):
 
         with g2:
             if totaux[1] > 0:
-                st.markdown("<div style='height:260px;'>", unsafe_allow_html=True)
+                st.markdown("<div style='height:200px;'>", unsafe_allow_html=True)
                 st.plotly_chart(
                     _gauge_hebergements(totaux[1], nom2, COULEUR_V2, int(max_val)),
                     use_container_width=True,
