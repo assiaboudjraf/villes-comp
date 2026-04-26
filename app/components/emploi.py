@@ -35,6 +35,12 @@ def _gauge_chomage(taux: float, nom: str, couleur: str) -> go.Figure:
         mode="gauge+number+delta",
         value=taux,
 
+        number={
+            "suffix": "%",
+            "valueformat": ".1f",
+            "font": {"size": 32, "color": "#111"},  # plus lisible
+        },
+
         delta={
             "reference": TAUX_NATIONAL,
             "suffix": "%",
@@ -43,28 +49,26 @@ def _gauge_chomage(taux: float, nom: str, couleur: str) -> go.Figure:
             "decreasing": {"color": "#238443"},  # vert foncé si < national
         },
 
-        number={
-            "suffix": "%",
-            "valueformat": ".1f",
-            "font": {"size": 28, "color": "#111"}  # plus lisible
-        },
-
         title={
             "text": f"<b>{nom}</b>",
-            "font": {"size": 13, "color": "#444"}
+            "font": {"size": 14, "color": "#444"},
         },
 
-        domain={"x": [0, 1], "y": [0, 0.70]},  # demi‑cercle plus compact
+        domain={"x": [0, 1], "y": [0, 0.65]},  # demi‑cercle plus bas et centré
 
         gauge={
-            "axis": {"range": [0, 20], "ticksuffix": "%", "tickwidth": 1},
+            "axis": {
+                "range": [0, 20],
+                "ticksuffix": "%",
+                "tickwidth": 1,
+                "tickcolor": "#999",
+            },
+
             "bar": {"color": couleur},
 
-            # Fond blanc propre
             "bgcolor": "white",
             "steps": [],
 
-            # Seuil national
             "threshold": {
                 "line": {"color": "black", "width": 2},
                 "thickness": 0.8,
@@ -74,11 +78,12 @@ def _gauge_chomage(taux: float, nom: str, couleur: str) -> go.Figure:
     ))
 
     fig.update_layout(
-        height=170,  # plus compact
-        margin=dict(l=0, r=0, t=10, b=0),
+        height=180,
+        margin=dict(l=0, r=0, t=20, b=0),
     )
 
     return fig
+
 
 
 
