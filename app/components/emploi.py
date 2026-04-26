@@ -31,7 +31,6 @@ def _get_chomage(df_cho: pd.DataFrame, code_insee: str) -> dict:
 
 
 def _gauge_chomage(taux: float, nom: str, couleur: str) -> go.Figure:
-    """Jauge de taux de chômage."""
     fig = go.Figure(go.Indicator(
         mode="gauge+number+delta",
         value=taux,
@@ -53,8 +52,15 @@ def _gauge_chomage(taux: float, nom: str, couleur: str) -> go.Figure:
             },
         },
     ))
-    fig.update_layout(height=300, margin=dict(l=20, r=20, t=40, b=20))
+
+    # Correction du centrage
+    fig.update_layout(
+        height=260,
+        margin=dict(l=0, r=0, t=10, b=0)
+    )
+
     return fig
+
 
 
 def afficher_section_emploi(ville1: dict, ville2: dict):
