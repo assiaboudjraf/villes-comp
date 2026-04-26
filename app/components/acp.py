@@ -23,6 +23,16 @@ def load_tourisme_acp() -> pd.DataFrame:
         return pd.DataFrame()
     return pd.read_csv(path, dtype={"code_insee": str}, low_memory=False)
 
+def get_nom_ville(row):
+    if "nom_standard" in row and pd.notna(row["nom_standard"]):
+        return row["nom_standard"]
+    if "nom" in row and pd.notna(row["nom"]):
+        return row["nom"]
+    if "nom_commune" in row and pd.notna(row["nom_commune"]):
+        return row["nom_commune"]
+    return "Ville inconnue"
+
+
 
 # ───────────────────────────────────────────────────────────────
 # Construction du vecteur d'indicateurs pour une ville
@@ -153,21 +163,26 @@ def _score(v1_norm, v2_norm, nom1, nom2):
 # ───────────────────────────────────────────────────────────────
 # Top 10 national
 # ───────────────────────────────────────────────────────────────
-def afficher_top10(scores, ville1, ville2):
-    df = pd.DataFrame([
-        {"ville": v, "score": s} for v, s in scores.items()
-    ]).sort_values("score", ascending=False)
+    # ── Calcul du score global pour toutes les villes ─────────────
+    df_villes = load_villes()
+    scores_globaux = {}
 
-    top10 = df.head(10)
+    for _, row in df_villes.iterrows():
+        ville_tmp = row.to_dict()
+        vect = construire_vecteur(ville_tmp)
+        if vect:
+            vals = np.array(list(vect.values()), dtype=float)
+            max_vals = np.maximum(vals, 1)
+            score = float(np.mean(vals / max_vals)) * 100
 
-    couleurs = []
-    for v in top10["ville"]:
-        if v == ville1:
-            couleurs.append(COULEUR_V1)
-        elif v == ville2:
-            couleurs.append(COULEUR_V2)
-        else:
-            couleurs.append("#cccccc")
+            nom_ville = get_nom_ville(row)
+            scores_globaux[nom_ville] = score
+
+    # ── Affichage du Top 10 ───────────────────────────────────────
+    st.subheader("🏆 Top 10 des villes françaises (score global)")
+    afficher_top10(scores_globaux, nom1, nom2)
+    st.divider()
+
 
     fig = go.Figure(go.Bar(
         x=top10["score"],
@@ -210,10 +225,6 @@ def afficher_section_acp(ville1: dict, ville2: dict):
             score = float(np.mean(vals / max_vals)) * 100
             scores_globaux[row["nom"]] = score
 
-    # ── Affichage du Top 10 ───────────────────────────────────────
-    st.subheader("🏆 Top 10 des villes françaises (score global)")
-    afficher_top10(scores_globaux, nom1, nom2)
-    st.divider()
 
     # ── Explication méthodologique ────────────────────────────────
     with st.expander("Comment fonctionne cette analyse ?", expanded=False):
