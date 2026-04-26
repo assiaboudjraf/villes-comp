@@ -21,14 +21,14 @@ ENDPOINTS_OVERPASS = [
 HEADERS = {"User-Agent": "ComparateurVilles/1.0", "Accept": "application/json"}
 
 PALETTE_POI = [
-    "#fe9929",
-    "#d7b5d8",
-    "#df65b0",
-    "#ce1256",
-    "#fed98e",
-    "#a1dab4",
-    "#41b6c4",
-    "#225ea8",
+    "#cc4c02",  # Hôtels
+    "#225ea8",  # Campings
+    "#238443",  # Attractions
+    "#ae017e",  # Galeries
+    "#df65b0",  # Offices tourisme
+    "#969696",  # Restaurants
+    "#7fcdbb",  # Cafés
+    "#b2182b",  # Commerces
 ]
 
 COULEURS_POI = {
