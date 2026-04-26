@@ -7,6 +7,7 @@ import pandas as pd
 import plotly.graph_objects as go
 import plotly.express as px
 import requests
+import pydeck as pdk
 import sys, os
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 from utils import COULEUR_V1, COULEUR_V2
@@ -42,7 +43,6 @@ TYPES_LABELS = {
     "nb_parcs_loisirs":        "Parcs loisirs",
     "nb_parc_ra_sidentiel_de": "Parcs loisirs",
 }
-
 
 # ───────────────────────────────────────────────
 # CHARGEMENT DES DONNÉES TOURISME
@@ -81,7 +81,6 @@ def overpass_query(query: str):
 
 
 @st.cache_data(ttl=86400)
-@st.cache_data(ttl=86400)
 def get_poi_touristiques(lat: float, lon: float, rayon_m: int = 8000):
     requetes = {
         "Hôtels":           ('tourism', 'hotel'),
@@ -112,7 +111,7 @@ def get_poi_touristiques(lat: float, lon: float, rayon_m: int = 8000):
         resultats[label] = len(elems)
 
         for e in elems:
-            # Récupération coordonnées
+            # Coordonnées
             if "lat" in e and "lon" in e:
                 lat_e, lon_e = e["lat"], e["lon"]
             elif "center" in e:
@@ -120,7 +119,7 @@ def get_poi_touristiques(lat: float, lon: float, rayon_m: int = 8000):
             else:
                 continue
 
-            # Nom si disponible
+            # Nom
             nom = e.get("tags", {}).get("name", "Établissement")
 
             points.append({
@@ -132,7 +131,6 @@ def get_poi_touristiques(lat: float, lon: float, rayon_m: int = 8000):
             })
 
     return resultats, points
-
 
 
 # ───────────────────────────────────────────────
@@ -161,13 +159,17 @@ def _legende_couleurs():
             unsafe_allow_html=True
         )
 
+
+# ───────────────────────────────────────────────
+# CARTE PYDECK TOURISME
+# ───────────────────────────────────────────────
+
 def carte_poi_tourisme(points, lat, lon):
     if not points:
         return None
 
     df = pd.DataFrame(points)
 
-    # Conversion hex → RGB
     df["color_rgb"] = df["color"].apply(
         lambda c: tuple(int(c[i:i+2], 16) for i in (1, 3, 5))
     )
@@ -177,9 +179,8 @@ def carte_poi_tourisme(points, lat, lon):
         data=df,
         get_position='[lon, lat]',
         get_color='color_rgb',
-        get_radius=120,
+        get_radius=140,
         pickable=True,
-        tooltip=True
     )
 
     view_state = pdk.ViewState(
@@ -425,23 +426,21 @@ def afficher_section_tourisme(ville1: dict, ville2: dict):
         poi1_counts, poi1_points = get_poi_touristiques(float(lat1), float(lon1))
         poi2_counts, poi2_points = get_poi_touristiques(float(lat2), float(lon2))
 
-st.subheader("Cartes touristiques interactives")
+    st.subheader("Cartes touristiques interactives")
 
-colA, colB = st.columns(2)
+    colA, colB = st.columns(2)
 
-with colA:
-    st.markdown(f"### {nom1}")
-    deck1 = carte_poi_tourisme(poi1_points, lat1, lon1)
-    if deck1:
-        st.pydeck_chart(deck1, height=400)
+    with colA:
+        st.markdown(f"### {nom1}")
+        deck1 = carte_poi_tourisme(poi1_points, lat1, lon1)
+        if deck1:
+            st.pydeck_chart(deck1, height=400)
 
-with colB:
-    st.markdown(f"### {nom2}")
-    deck2 = carte_poi_tourisme(poi2_points, lat2, lon2)
-    if deck2:
-        st.pydeck_chart(deck2, height=400)
-
-
+    with colB:
+        st.markdown(f"### {nom2}")
+        deck2 = carte_poi_tourisme(poi2_points, lat2, lon2)
+        if deck2:
+            st.pydeck_chart(deck2, height=400)
 
     _legende_couleurs()
     st.divider()
@@ -451,7 +450,7 @@ with colB:
     with col1:
         st.markdown(f"<h4 style='color:{COULEUR_V1};'>{nom1}</h4>", unsafe_allow_html=True)
         cols = st.columns(2)
-        for i, (k, v) in enumerate(poi1.items()):
+        for i, (k, v) in enumerate(poi1_counts.items()):
             couleur = COULEURS_POI.get(k, "#888")
             cols[i % 2].markdown(
                 f'<span style="color:{couleur};font-weight:600;">{k}</span>',
@@ -462,7 +461,7 @@ with colB:
     with col2:
         st.markdown(f"<h4 style='color:{COULEUR_V2};'>{nom2}</h4>", unsafe_allow_html=True)
         cols = st.columns(2)
-        for i, (k, v) in enumerate(poi2.items()):
+        for i, (k, v) in enumerate(poi2_counts.items()):
             couleur = COULEURS_POI.get(k, "#888")
             cols[i % 2].markdown(
                 f'<span style="color:{couleur};font-weight:600;">{k}</span>',
@@ -472,10 +471,4 @@ with colB:
 
     st.divider()
 
-    tab1, tab2 = st.tabs(["Barres comparatives", "Radar touristique"])
-
-    with tab1:
-        st.plotly_chart(_bar_poi(poi1, poi2, nom1, nom2), width="stretch")
-
-    with tab2:
-        st.plotly_chart(_radar_tourisme(poi1, poi2, nom1, nom2), width="stretch")
+    tab1, tab2
