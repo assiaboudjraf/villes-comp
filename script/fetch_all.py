@@ -8,9 +8,10 @@ project_root = os.path.dirname(script_dir)
 os.chdir(project_root)
 
 scripts = [
-    ("1/3 — Villes françaises +20 000 hab",         "scripts/fetch_villes.py"),
-    ("2/3 — Prix immobilier (DVF agrégé)",            "scripts/fetch_immobilier.py"),
-    ("3/3 — Taux de chômage (fichiers INSEE locaux)", "scripts/fetch_chomage.py"),
+    ("1/4 — Villes françaises +20 000 hab",         "scripts/fetch_villes.py"),
+    ("2/4 — Prix immobilier (DVF agrégé)",            "scripts/fetch_immobilier.py"),
+    ("3/4 — Taux de chômage (fichiers INSEE locaux)", "scripts/fetch_chomage.py"),
+    ("4/4 — Tourismes dans chaque ville (fichiers INSEE locaux)", "scripts/fetch_tourisme.py")
 ]
 
 print("=" * 60)
