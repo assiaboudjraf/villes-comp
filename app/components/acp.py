@@ -130,6 +130,28 @@ def _score(v1_norm, v2_norm, nom1, nom2):
 def afficher_section_acp(ville1: dict, ville2: dict):
     st.header("Analyse Comparative")
 
+# ── Calcul du score global pour TOUTES les villes ─────────────────────────────
+from utils import load_villes
+
+df_villes = load_villes()
+scores_globaux = {}
+
+for _, row in df_villes.iterrows():
+    ville_tmp = row.to_dict()
+    vect = construire_vecteur(ville_tmp)
+    if vect:
+        vals = np.array(list(vect.values()), dtype=float)
+        max_vals = np.maximum(vals, 1)
+        score = float(np.mean(vals / max_vals)) * 100
+        scores_globaux[row["nom"]] = score
+
+# ── Affichage du Top 10 national ─────────────────────────────────────────────
+st.subheader("🏆 Top 10 des villes françaises (score global)")
+afficher_top10(scores_globaux, nom1, nom2)
+st.divider()
+
+
+
     nom1 = ville1.get("nom_standard", "Ville 1")
     nom2 = ville2.get("nom_standard", "Ville 2")
 
@@ -246,44 +268,5 @@ Plus la surface colorée est grande, plus la ville domine sur l'ensemble des cri
                         use_container_width=True)
         st.caption("Valeurs brutes — les unités varient selon l'indicateur.")
 
-def afficher_top10(scores, ville1, ville2):
-    """
-    scores : dict {nom_ville: score_global}
-    ville1, ville2 : noms des villes sélectionnées
-    """
 
-    # Tri décroissant
-    df = pd.DataFrame([
-        {"ville": v, "score": s} for v, s in scores.items()
-    ]).sort_values("score", ascending=False)
-
-    top10 = df.head(10)
-
-    # Couleurs : ville1 / ville2 / autres
-    couleurs = []
-    for v in top10["ville"]:
-        if v == ville1:
-            couleurs.append(COULEUR_V1)
-        elif v == ville2:
-            couleurs.append(COULEUR_V2)
-        else:
-            couleurs.append("#cccccc")
-
-    fig = go.Figure(go.Bar(
-        x=top10["score"],
-        y=top10["ville"],
-        orientation="h",
-        marker_color=couleurs,
-        opacity=0.85
-    ))
-
-    fig.update_layout(
-        title="Top 10 des villes françaises (score global)",
-        xaxis_title="Score normalisé",
-        yaxis_title="",
-        height=450,
-        margin=dict(l=60, r=20, t=60, b=40)
-    )
-
-    st.plotly_chart(fig, use_container_width=True)
 
