@@ -85,7 +85,7 @@ def _gauge_chomage(taux: float, nom: str, couleur: str) -> go.Figure:
     )
 
     fig.update_layout(
-        height=210,  # PLUS GRAND
+        height=185,  # PLUS GRAND
         margin=dict(l=0, r=0, t=40, b=0),
     )
 
