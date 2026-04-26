@@ -210,31 +210,30 @@ def _gauge_hebergements(total, nom, couleur, max_val=500):
         value=total,
 
         number={
-            "font": {"size": 30, "color": "#111"},
+            "font": {"size": 36, "color": "#111"},
             "valueformat": "d"
         },
 
         title={
             "text": f"<b>Hébergements classés</b><br>{nom}",
-            "font": {"size": 14, "color": "#444"}
+            "font": {"size": 16, "color": "#444"}
         },
 
-        domain={"x": [0, 1], "y": [0, 0.60]},  # demi‑cercle plus bas et centré
+        # Domaine plus haut = gauge plus grande et stable
+        domain={"x": [0, 1], "y": [0.30, 1]},
 
         gauge={
             "axis": {
                 "range": [0, max_val],
                 "tickwidth": 1,
-                "tickcolor": "#999"
+                "tickcolor": "#999",
+                "tickfont": {"size": 12},
             },
 
             "bar": {"color": couleur},
-
-            # Fond blanc propre
             "bgcolor": "white",
             "steps": [],
 
-            # Seuil visuel (optionnel)
             "threshold": {
                 "line": {"color": "black", "width": 2},
                 "thickness": 0.8,
@@ -244,11 +243,12 @@ def _gauge_hebergements(total, nom, couleur, max_val=500):
     ))
 
     fig.update_layout(
-        height=170,  # plus compact et harmonisé
-        margin=dict(l=0, r=0, t=20, b=0)
+        height=240,  # plus grand + stable
+        margin=dict(l=0, r=0, t=40, b=0)
     )
 
     return fig
+
 
 
 def _donut_types(tour_dict, nom):
@@ -397,16 +397,28 @@ def afficher_section_tourisme(ville1: dict, ville2: dict):
                 _legende_hebergements()
 
     if any(t > 0 for t in totaux):
-        max_val = max(max(totaux) * 1.3, 10)
-        g1, g2  = st.columns(2)
-        with g1:
-            if totaux[0] > 0:
-                st.plotly_chart(_gauge_hebergements(totaux[0], nom1, COULEUR_V1, int(max_val)),
-                                width="stretch")
-        with g2:
-            if totaux[1] > 0:
-                st.plotly_chart(_gauge_hebergements(totaux[1], nom2, COULEUR_V2, int(max_val)),
-                                width="stretch")
+    max_val = max(max(totaux) * 1.3, 10)
+    g1, g2 = st.columns(2)
+
+    with g1:
+        if totaux[0] > 0:
+            st.markdown("<div style='height:260px;'>", unsafe_allow_html=True)
+            st.plotly_chart(
+                _gauge_hebergements(totaux[0], nom1, COULEUR_V1, int(max_val)),
+                use_container_width=True
+            )
+            st.markdown("</div>", unsafe_allow_html=True)
+
+    with g2:
+        if totaux[1] > 0:
+            st.markdown("<div style='height:260px;'>", unsafe_allow_html=True)
+            st.plotly_chart(
+                _gauge_hebergements(totaux[1], nom2, COULEUR_V2, int(max_val)),
+                use_container_width=True
+            )
+            st.markdown("</div>", unsafe_allow_html=True)
+
+
 
     st.divider()
     st.subheader("Points d'intérêt (OpenStreetMap)")
