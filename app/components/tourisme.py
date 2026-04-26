@@ -21,6 +21,7 @@ ENDPOINTS_OVERPASS = [
 ]
 HEADERS = {"User-Agent": "ComparateurVilles/1.0", "Accept": "application/json"}
 
+# Couleurs POI (pour la carte)
 COULEURS_POI = {
     "Hôtels":           "#2563EB",
     "Campings":         "#16A34A",
@@ -32,16 +33,23 @@ COULEURS_POI = {
     "Commerces":        "#DB2777",
 }
 
+# Couleurs hébergements (3 types seulement)
+COULEURS_HEBERG = {
+    "Hôtels":      "#2563EB",
+    "Campings":    "#16A34A",
+    "Résidences":  "#CA8A04",
+}
+
 TYPES_LABELS = {
     "nb_hotels":               "Hôtels",
     "nb_ha_tel_de_tourisme":   "Hôtels",
     "nb_campings":             "Campings",
     "nb_residences":           "Résidences",
     "nb_ra_sidence_de_touris": "Résidences",
-    "nb_villages_vacances":    "Villages vacances",
-    "nb_auberges":             "Auberges",
-    "nb_parcs_loisirs":        "Parcs loisirs",
-    "nb_parc_ra_sidentiel_de": "Parcs loisirs",
+    "nb_villages_vacances":    "Résidences",
+    "nb_auberges":             "Résidences",
+    "nb_parcs_loisirs":        "Résidences",
+    "nb_parc_ra_sidentiel_de": "Résidences",
 }
 
 # ───────────────────────────────────────────────
@@ -106,7 +114,6 @@ def get_poi_touristiques(lat: float, lon: float, rayon_m: int = 8000):
         out center tags;
         """
         data = overpass_query(query)
-
         elems = data.get("elements", []) if data else []
         resultats[label] = len(elems)
 
@@ -119,12 +126,24 @@ def get_poi_touristiques(lat: float, lon: float, rayon_m: int = 8000):
             else:
                 continue
 
-            # Nom
-            nom = e.get("tags", {}).get("name", "Établissement")
+            tags = e.get("tags", {})
+            nom = tags.get("name", "Établissement")
+
+            # Récupération des infos utiles
+            info_parts = []
+            for key in [
+                "addr:housenumber", "addr:street", "addr:postcode", "addr:city",
+                "phone", "contact:phone", "website", "opening_hours", "email"
+            ]:
+                if key in tags:
+                    info_parts.append(f"{key}: {tags[key]}")
+
+            info = "<br>".join(info_parts) if info_parts else "Aucune information"
 
             points.append({
                 "category": label,
                 "name": nom,
+                "info": info,
                 "lat": lat_e,
                 "lon": lon_e,
                 "color": COULEURS_POI.get(label, "#888")
@@ -195,7 +214,10 @@ def carte_poi_tourisme(points, lat, lon):
         initial_view_state=view_state,
         map_provider="carto",
         map_style="light",
-        tooltip={"text": "{category}\n{name}"}
+        tooltip={
+            "html": "<b>{category}</b><br>{name}<br><br>{info}",
+            "style": {"backgroundColor": "white", "color": "black"}
+        }
     )
 
     return deck
@@ -204,25 +226,6 @@ def carte_poi_tourisme(points, lat, lon):
 # ───────────────────────────────────────────────
 # GRAPHIQUES
 # ───────────────────────────────────────────────
-
-def _gauge_hebergements(total, nom, couleur, max_val=500):
-    fig = go.Figure(go.Indicator(
-        mode="gauge+number",
-        value=total,
-        title={"text": f"Hébergements classés<br><b>{nom}</b>", "font": {"size": 13}},
-        gauge={
-            "axis": {"range": [0, max_val]},
-            "bar":  {"color": couleur},
-            "steps": [
-                {"range": [0,              max_val * 0.33], "color": "#FEE2E2"},
-                {"range": [max_val * 0.33, max_val * 0.66], "color": "#FEF3C7"},
-                {"range": [max_val * 0.66, max_val],        "color": "#D1FAE5"},
-            ],
-        },
-    ))
-    fig.update_layout(height=260, margin=dict(l=20, r=20, t=60, b=20))
-    return fig
-
 
 def _donut_types(tour_dict, nom):
     labels, vals = [], []
@@ -244,14 +247,20 @@ def _donut_types(tour_dict, nom):
     if not vals:
         return None
 
+    colors = [COULEURS_HEBERG.get(lbl, "#888") for lbl in labels]
+
     fig = go.Figure(go.Pie(
-        labels=labels, values=vals, hole=0.5,
-        marker_colors=px.colors.qualitative.Set2,
+        labels=labels,
+        values=vals,
+        hole=0.5,
+        marker=dict(colors=colors),
         textinfo="label+percent",
     ))
+
     fig.update_layout(
         title=f"Types d'hébergements — {nom}",
-        height=320, showlegend=True,
+        height=320,
+        showlegend=True,
         margin=dict(l=20, r=20, t=50, b=20),
     )
     return fig
@@ -288,10 +297,6 @@ def _bar_poi(poi1, poi2, nom1, nom2):
     )
     return fig
 
-
-# ───────────────────────────────────────────────
-# RADAR AVEC ÉCHELLE DYNAMIQUE
-# ───────────────────────────────────────────────
 
 def _radar_tourisme(poi1, poi2, nom1, nom2):
     categories = list(poi1.keys())
@@ -449,32 +454,33 @@ def afficher_section_tourisme(ville1: dict, ville2: dict):
 
     with col1:
         st.markdown(f"<h4 style='color:{COULEUR_V1};'>{nom1}</h4>", unsafe_allow_html=True)
-        cols = st.columns(2)
-        for i, (k, v) in enumerate(poi1_counts.items()):
-            couleur = COULEURS_POI.get(k, "#888")
-            cols[i % 2].markdown(
-                f'<span style="color:{couleur};font-weight:600;">{k}</span>',
+        for k, v in poi1_counts.items():
+            st.markdown(
+                f"""
+                <div style="display:flex; justify-content:space-between; padding:4px 0;">
+                    <span style="font-weight:500; color:#111;">{k}</span>
+                    <span style="font-weight:600;">{v}</span>
+                </div>
+                """,
                 unsafe_allow_html=True
             )
-            cols[i % 2].metric(label="", value=v)
 
     with col2:
         st.markdown(f"<h4 style='color:{COULEUR_V2};'>{nom2}</h4>", unsafe_allow_html=True)
-        cols = st.columns(2)
-        for i, (k, v) in enumerate(poi2_counts.items()):
-            couleur = COULEURS_POI.get(k, "#888")
-            cols[i % 2].markdown(
-                f'<span style="color:{couleur};font-weight:600;">{k}</span>',
+        for k, v in poi2_counts.items():
+            st.markdown(
+                f"""
+                <div style="display:flex; justify-content:space-between; padding:4px 0;">
+                    <span style="font-weight:500; color:#111;">{k}</span>
+                    <span style="font-weight:600;">{v}</span>
+                </div>
+                """,
                 unsafe_allow_html=True
             )
-            cols[i % 2].metric(label="", value=v)
 
     st.divider()
 
     tab1, tab2 = st.tabs(["Barres comparatives", "Radar touristique"])
 
     with tab1:
-        st.plotly_chart(_bar_poi(poi1_counts, poi2_counts, nom1, nom2), width="stretch")
-
-    with tab2:
-        st.plotly_chart(_radar_tourisme(poi1_counts, poi2_counts, nom1, nom2), width="stretch")
+        st.plotly_chart(_bar_p
