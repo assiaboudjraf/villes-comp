@@ -81,27 +81,58 @@ def overpass_query(query: str):
 
 
 @st.cache_data(ttl=86400)
-def get_poi_touristiques(lat: float, lon: float, rayon_m: int = 8000) -> dict:
+@st.cache_data(ttl=86400)
+def get_poi_touristiques(lat: float, lon: float, rayon_m: int = 8000):
     requetes = {
-        "Hôtels":           f'node["tourism"="hotel"](around:{rayon_m},{lat},{lon});',
-        "Campings":         f'node["tourism"="camp_site"](around:{rayon_m},{lat},{lon});',
-        "Attractions":      f'node["tourism"="attraction"](around:{rayon_m},{lat},{lon});'
-                            f'way["tourism"="attraction"](around:{rayon_m},{lat},{lon});',
-        "Galeries":         f'node["tourism"="gallery"](around:{rayon_m},{lat},{lon});',
-        "Offices tourisme": f'node["tourism"="information"]["information"="office"](around:{rayon_m},{lat},{lon});',
-        "Restaurants":      f'node["amenity"="restaurant"](around:{rayon_m},{lat},{lon});',
-        "Cafés":            f'node["amenity"="cafe"](around:{rayon_m},{lat},{lon});',
-        "Commerces":        f'node["shop"="gift"](around:{rayon_m},{lat},{lon});'
-                            f'node["shop"="souvenirs"](around:{rayon_m},{lat},{lon});',
+        "Hôtels":           ('tourism', 'hotel'),
+        "Campings":         ('tourism', 'camp_site'),
+        "Attractions":      ('tourism', 'attraction'),
+        "Galeries":         ('tourism', 'gallery'),
+        "Offices tourisme": ('tourism', 'information'),
+        "Restaurants":      ('amenity', 'restaurant'),
+        "Cafés":            ('amenity', 'cafe'),
+        "Commerces":        ('shop', 'gift'),
     }
 
     resultats = {}
-    for label, filtre in requetes.items():
-        query = f"[out:json][timeout:20];\n({filtre});\nout ids;"
-        data = overpass_query(query)
-        resultats[label] = len(data.get("elements", [])) if data else 0
+    points = []
 
-    return resultats
+    for label, (key, value) in requetes.items():
+        query = f"""
+        [out:json][timeout:20];
+        (
+            node["{key}"="{value}"](around:{rayon_m},{lat},{lon});
+            way["{key}"="{value}"](around:{rayon_m},{lat},{lon});
+        );
+        out center tags;
+        """
+        data = overpass_query(query)
+
+        elems = data.get("elements", []) if data else []
+        resultats[label] = len(elems)
+
+        for e in elems:
+            # Récupération coordonnées
+            if "lat" in e and "lon" in e:
+                lat_e, lon_e = e["lat"], e["lon"]
+            elif "center" in e:
+                lat_e, lon_e = e["center"]["lat"], e["center"]["lon"]
+            else:
+                continue
+
+            # Nom si disponible
+            nom = e.get("tags", {}).get("name", "Établissement")
+
+            points.append({
+                "category": label,
+                "name": nom,
+                "lat": lat_e,
+                "lon": lon_e,
+                "color": COULEURS_POI.get(label, "#888")
+            })
+
+    return resultats, points
+
 
 
 # ───────────────────────────────────────────────
@@ -129,6 +160,44 @@ def _legende_couleurs():
             """,
             unsafe_allow_html=True
         )
+
+def carte_poi_tourisme(points, lat, lon):
+    if not points:
+        return None
+
+    df = pd.DataFrame(points)
+
+    # Conversion hex → RGB
+    df["color_rgb"] = df["color"].apply(
+        lambda c: tuple(int(c[i:i+2], 16) for i in (1, 3, 5))
+    )
+
+    layer = pdk.Layer(
+        "ScatterplotLayer",
+        data=df,
+        get_position='[lon, lat]',
+        get_color='color_rgb',
+        get_radius=120,
+        pickable=True,
+        tooltip=True
+    )
+
+    view_state = pdk.ViewState(
+        latitude=lat,
+        longitude=lon,
+        zoom=12,
+        pitch=0,
+    )
+
+    deck = pdk.Deck(
+        layers=[layer],
+        initial_view_state=view_state,
+        map_provider="carto",
+        map_style="light",
+        tooltip={"text": "{category}\n{name}"}
+    )
+
+    return deck
 
 
 # ───────────────────────────────────────────────
@@ -353,8 +422,26 @@ def afficher_section_tourisme(ville1: dict, ville2: dict):
         return
 
     with st.spinner("Chargement des points d'intérêt..."):
-        poi1 = get_poi_touristiques(float(lat1), float(lon1))
-        poi2 = get_poi_touristiques(float(lat2), float(lon2))
+        poi1_counts, poi1_points = get_poi_touristiques(float(lat1), float(lon1))
+        poi2_counts, poi2_points = get_poi_touristiques(float(lat2), float(lon2))
+
+st.subheader("Cartes touristiques interactives")
+
+colA, colB = st.columns(2)
+
+with colA:
+    st.markdown(f"### {nom1}")
+    deck1 = carte_poi_tourisme(poi1_points, lat1, lon1)
+    if deck1:
+        st.pydeck_chart(deck1, height=400)
+
+with colB:
+    st.markdown(f"### {nom2}")
+    deck2 = carte_poi_tourisme(poi2_points, lat2, lon2)
+    if deck2:
+        st.pydeck_chart(deck2, height=400)
+
+
 
     _legende_couleurs()
     st.divider()
