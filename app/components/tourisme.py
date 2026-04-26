@@ -20,16 +20,29 @@ ENDPOINTS_OVERPASS = [
 ]
 HEADERS = {"User-Agent": "ComparateurVilles/1.0", "Accept": "application/json"}
 
+PALETTE_POI = [
+    "#fe9929",
+    "#d7b5d8",
+    "#df65b0",
+    "#ce1256",
+    "#fed98e",
+    "#a1dab4",
+    "#41b6c4",
+    "#225ea8",
+]
+
 COULEURS_POI = {
-    "Hôtels":           "#2563EB",
-    "Campings":         "#16A34A",
-    "Attractions":      "#DC2626",
-    "Galeries":         "#9333EA",
-    "Offices tourisme": "#EA580C",
-    "Restaurants":      "#CA8A04",
-    "Cafés":            "#0891B2",
-    "Commerces":        "#DB2777",
+    "Hôtels":           PALETTE_POI[0],
+    "Campings":         PALETTE_POI[1],
+    "Attractions":      PALETTE_POI[2],
+    "Galeries":         PALETTE_POI[3],
+    "Offices tourisme": PALETTE_POI[4],
+    "Restaurants":      PALETTE_POI[5],
+    "Cafés":            PALETTE_POI[6],
+    "Commerces":        PALETTE_POI[7],
 }
+
+
 
 COULEURS_HEBERG = {
     "Hôtels":     "#2563EB",
