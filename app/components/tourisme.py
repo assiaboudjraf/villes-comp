@@ -49,16 +49,12 @@ TYPES_LABELS = {
     "nb_parc_ra_sidentiel_de": "Résidences",
 }
 
-
-# ─── Chargement ───────────────────────────────────────────────────────────────
-
 @st.cache_data
 def load_tourisme() -> pd.DataFrame:
     path = os.path.join(DATA_DIR, "tourisme.csv")
     if not os.path.exists(path):
         return pd.DataFrame()
     return pd.read_csv(path, dtype={"code_insee": str}, low_memory=False)
-
 
 def get_tourisme_ville(df: pd.DataFrame, code_insee: str) -> dict:
     if df.empty or "code_insee" not in df.columns:
@@ -67,9 +63,6 @@ def get_tourisme_ville(df: pd.DataFrame, code_insee: str) -> dict:
     if row.empty:
         return {}
     return row.iloc[0].to_dict()
-
-
-# ─── Overpass ─────────────────────────────────────────────────────────────────
 
 def overpass_query(query: str):
     for url in ENDPOINTS_OVERPASS:
@@ -80,7 +73,6 @@ def overpass_query(query: str):
         except Exception:
             continue
     return None
-
 
 @st.cache_data(ttl=86400)
 def get_poi_touristiques(lat: float, lon: float, rayon_m: int = 8000):
@@ -140,9 +132,6 @@ def get_poi_touristiques(lat: float, lon: float, rayon_m: int = 8000):
 
     return resultats, points
 
-
-# ─── Carte Pydeck ─────────────────────────────────────────────────────────────
-
 def carte_poi_tourisme(points, lat, lon):
     if not points:
         return None
@@ -174,11 +163,8 @@ def carte_poi_tourisme(points, lat, lon):
         },
     )
 
-
-# ─── Graphiques ───────────────────────────────────────────────────────────────
-
 def _legende_couleurs():
-    st.markdown("**Légende des couleurs**")
+    st.markdown("**Légende des couleurs (POI)**")
     cols = st.columns(4)
     for i, (label, couleur) in enumerate(COULEURS_POI.items()):
         cols[i % 4].markdown(
@@ -188,26 +174,43 @@ def _legende_couleurs():
             unsafe_allow_html=True,
         )
 
+def _legende_hebergements():
+    st.markdown("### Légende des types d'hébergements")
+    cols = st.columns(3)
+    for i, (label, couleur) in enumerate(COULEURS_HEBERG.items()):
+        cols[i].markdown(
+            f"""
+            <div style="display:flex;align-items:center;margin-bottom:6px;">
+                <span style="
+                    display:inline-block;width:14px;height:14px;border-radius:50%;
+                    background:{couleur};margin-right:8px;">
+                </span>
+                <span>{label}</span>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 
 def _gauge_hebergements(total, nom, couleur, max_val=500):
     fig = go.Figure(go.Indicator(
         mode="gauge+number",
         value=total,
+        number={"font": {"size": 26}},
         title={"text": f"Hébergements classés<br><b>{nom}</b>", "font": {"size": 13}},
         gauge={
             "axis": {"range": [0, max_val]},
-            "bar":  {"color": couleur},
-            "steps": [
-                {"range": [0,              max_val * 0.33], "color": "#FEE2E2"},
-                {"range": [max_val * 0.33, max_val * 0.66], "color": "#FEF3C7"},
-                {"range": [max_val * 0.66, max_val],        "color": "#D1FAE5"},
-            ],
+            "bar": {"color": couleur},
+            "bgcolor": "white",
+            "steps": [],
         },
     ))
-    fig.update_layout(height=260, margin=dict(l=20, r=20, t=60, b=20))
+
+    fig.update_layout(
+        height=200,
+        margin=dict(l=0, r=0, t=10, b=0)
+    )
+
     return fig
-
-
 def _donut_types(tour_dict, nom):
     labels, vals, seen = [], [], set()
     for col, label in TYPES_LABELS.items():
@@ -233,11 +236,10 @@ def _donut_types(tour_dict, nom):
     ))
     fig.update_layout(
         title=f"Types d'hébergements — {nom}",
-        height=320, showlegend=True,
+        height=320, showlegend=False,
         margin=dict(l=20, r=20, t=50, b=20),
     )
     return fig
-
 
 def _bar_poi(poi1, poi2, nom1, nom2):
     categories = list(poi1.keys())
@@ -257,7 +259,6 @@ def _bar_poi(poi1, poi2, nom1, nom2):
         xaxis_tickangle=-20,
     )
     return fig
-
 
 def _radar_tourisme(poi1, poi2, nom1, nom2):
     categories = list(poi1.keys())
@@ -283,16 +284,12 @@ def _radar_tourisme(poi1, poi2, nom1, nom2):
     )
     return fig
 
-
-# ─── Point d'entrée ───────────────────────────────────────────────────────────
-
 def afficher_section_tourisme(ville1: dict, ville2: dict):
     st.header("Tourisme & Attractivité")
 
     nom1 = ville1.get("nom_standard", "Ville 1")
     nom2 = ville2.get("nom_standard", "Ville 2")
 
-    # ── Hébergements classés ──────────────────────────────────────────────────
     st.subheader("Hébergements touristiques classés")
     st.caption("Source : data.gouv.fr — hébergements classés. Licence Ouverte v2.0.")
 
@@ -335,6 +332,7 @@ def afficher_section_tourisme(ville1: dict, ville2: dict):
             fig_donut = _donut_types(tour, nom)
             if fig_donut:
                 st.plotly_chart(fig_donut, width="stretch")
+                _legende_hebergements()
 
     if any(t > 0 for t in totaux):
         max_val = max(max(totaux) * 1.3, 10)
@@ -348,7 +346,6 @@ def afficher_section_tourisme(ville1: dict, ville2: dict):
                 st.plotly_chart(_gauge_hebergements(totaux[1], nom2, COULEUR_V2, int(max_val)),
                                 width="stretch")
 
-    # ── Points d'intérêt OSM ──────────────────────────────────────────────────
     st.divider()
     st.subheader("Points d'intérêt (OpenStreetMap)")
     st.caption("Source : API Overpass / OpenStreetMap — rayon 8km. Licence ODbL.")
@@ -366,7 +363,6 @@ def afficher_section_tourisme(ville1: dict, ville2: dict):
         poi1_counts, poi1_points = get_poi_touristiques(float(lat1), float(lon1))
         poi2_counts, poi2_points = get_poi_touristiques(float(lat2), float(lon2))
 
-    # Cartes
     st.subheader("Cartes touristiques interactives")
     colA, colB = st.columns(2)
     with colA:
@@ -383,7 +379,6 @@ def afficher_section_tourisme(ville1: dict, ville2: dict):
     _legende_couleurs()
     st.divider()
 
-    # Métriques
     col1, col2 = st.columns(2)
     with col1:
         st.markdown(f"<h4 style='color:{COULEUR_V1};'>{nom1}</h4>", unsafe_allow_html=True)
