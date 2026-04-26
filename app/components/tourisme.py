@@ -228,12 +228,25 @@ def _legende_hebergements():
 
 
 def _gauge_hebergements(total, nom, couleur, max_val=500):
-    """Gauge simple et propre — chiffre centré, pas d'annotation redondante."""
     fig = go.Figure(go.Indicator(
         mode="gauge+number",
         value=total,
-        number={"font": {"size": 32, "color": "#1E293B"}, "valueformat": ","},
-        title={"text": f"<b>{nom}</b>", "font": {"size": 14, "color": "#64748B"}},
+
+        # --- CHIFFRE CENTRÉ + PROPRE ---
+        number={
+            "font": {"size": 36, "color": "#1E293B"},
+            "valueformat": ","
+        },
+
+        # --- TITRE ---
+        title={
+            "text": f"<b>{nom}</b>",
+            "font": {"size": 14, "color": "#64748B"}
+        },
+
+        # --- DOMAINE QUI CENTRE LE CHIFFRE ---
+        domain={"x": [0, 1], "y": [0.40, 1]},
+
         gauge={
             "axis": {
                 "range": [0, max_val],
@@ -242,14 +255,17 @@ def _gauge_hebergements(total, nom, couleur, max_val=500):
                 "tickfont": {"size": 10},
                 "dtick": round(max_val / 5),
             },
+
+            # --- BARRE DE PROGRESSION ---
             "bar": {"color": couleur, "thickness": 0.25},
-            "bgcolor": "rgba(0,0,0,0)",
-            "borderwidth": 0,
-            "steps": [
-                {"range": [0,              max_val * 0.33], "color": "#F8FAFC"},
-                {"range": [max_val * 0.33, max_val * 0.66], "color": "#FEF9C3"},
-                {"range": [max_val * 0.66, max_val],        "color": "#DCFCE7"},
-            ],
+
+            # --- FOND 100% BLANC ---
+            "bgcolor": "white",
+
+            # --- AUCUNE COULEUR DE FOND ---
+            "steps": [],
+
+            # --- SEUIL (optionnel) ---
             "threshold": {
                 "line": {"color": couleur, "width": 3},
                 "thickness": 0.75,
@@ -257,12 +273,15 @@ def _gauge_hebergements(total, nom, couleur, max_val=500):
             },
         },
     ))
+
     fig.update_layout(
         height=240,
         margin=dict(l=30, r=30, t=50, b=10),
-        paper_bgcolor="rgba(0,0,0,0)",
+        paper_bgcolor="rgba(0,0,0,0)"
     )
+
     return fig
+
 
 
 def _donut_types(tour_dict, nom):
