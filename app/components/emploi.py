@@ -42,17 +42,21 @@ def _gauge_chomage(taux: float, nom: str, couleur: str) -> go.Figure:
         number={
             "suffix": "%",
             "valueformat": ".1f",
-            "font": {"size": 26} 
+            "font": {"size": 22}  # texte lisible mais pas énorme
         },
         title={
             "text": nom,
-            "font": {"size": 13}
+            "font": {"size": 12}
         },
+
+        # Réduction de la taille de la jauge
+        domain={"x": [0, 1], "y": [0, 0.65]},  # ← réduit la hauteur du demi‑cercle
+
         gauge={
             "axis": {"range": [0, 20], "ticksuffix": "%"},
             "bar": {"color": couleur},
 
-            # Fond blanc (aucune zone colorée)
+            # Fond blanc
             "bgcolor": "white",
             "steps": [],
 
@@ -64,14 +68,13 @@ def _gauge_chomage(taux: float, nom: str, couleur: str) -> go.Figure:
         },
     ))
 
-    # Taille réduite + centrage parfait
+    # Hauteur réduite + centrage parfait
     fig.update_layout(
-        height=220,   # ← plus petit qu’avant
-        margin=dict(l=0, r=0, t=5, b=0)
+        height=180,  # ← beaucoup plus petit
+        margin=dict(l=0, r=0, t=0, b=0)
     )
 
     return fig
-
 
 
 
