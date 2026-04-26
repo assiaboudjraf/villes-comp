@@ -208,32 +208,48 @@ def _gauge_hebergements(total, nom, couleur, max_val=500):
     fig = go.Figure(go.Indicator(
         mode="gauge+number",
         value=total,
-        number={"font": {"size": 26}},
-        title={"text": f"Hébergements classés<br><b>{nom}</b>", "font": {"size": 13}},
+
+        number={
+            "font": {"size": 30, "color": "#111"},
+            "valueformat": "d"
+        },
+
+        title={
+            "text": f"<b>Hébergements classés</b><br>{nom}",
+            "font": {"size": 14, "color": "#444"}
+        },
+
+        domain={"x": [0, 1], "y": [0, 0.60]},  # demi‑cercle plus bas et centré
+
         gauge={
-            "axis": {"range": [0, max_val]},
+            "axis": {
+                "range": [0, max_val],
+                "tickwidth": 1,
+                "tickcolor": "#999"
+            },
+
             "bar": {"color": couleur},
 
-            # Fond blanc (aucune zone colorée)
+            # Fond blanc propre
             "bgcolor": "white",
             "steps": [],
 
-            # (optionnel) seuil visuel
+            # Seuil visuel (optionnel)
             "threshold": {
                 "line": {"color": "black", "width": 2},
-                "thickness": 0.7,
+                "thickness": 0.8,
                 "value": max_val * 0.5,
             },
         },
-        domain={"x": [0, 1], "y": [0, 0.75]}  #jauge plus compacte
     ))
 
     fig.update_layout(
-        height=200,  #  taille compacte
-        margin=dict(l=0, r=0, t=10, b=0)
+        height=170,  # plus compact et harmonisé
+        margin=dict(l=0, r=0, t=20, b=0)
     )
 
     return fig
+
 
 def _donut_types(tour_dict, nom):
     labels, vals, seen = [], [], set()
