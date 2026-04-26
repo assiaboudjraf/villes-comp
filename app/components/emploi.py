@@ -31,33 +31,28 @@ def _get_chomage(df_cho: pd.DataFrame, code_insee: str) -> dict:
 
 
 def _gauge_chomage(taux: float, nom: str, couleur: str) -> go.Figure:
-    fig = go.Figure(go.Indicator(
-        mode="gauge+number+delta",
+    # Calcul du delta manuellement
+    delta_val = taux - TAUX_NATIONAL
+    delta_txt = f"{delta_val:+.1f}%"
+    delta_color = "#b2182b" if delta_val > 0 else "#238443"
+
+    fig = go.Figure()
+
+    # --- GAUGE FIXE ---
+    fig.add_trace(go.Indicator(
+        mode="gauge+number",
         value=taux,
 
         number={
             "suffix": "%",
             "valueformat": ".1f",
-            "font": {"size": 30, "color": "#111"},
-        },
-
-        delta={
-            "reference": TAUX_NATIONAL,
-            "suffix": "%",
-            "valueformat": ".1f",
-            "increasing": {"color": "#b2182b"},
-            "decreasing": {"color": "#238443"},
-            "font": {"size": 12},
-            "position": "top"  # empêche le déplacement du nombre
+            "font": {"size": 34, "color": "#111"},
         },
 
         title={
             "text": f"<b>{nom}</b>",
-            "font": {"size": 13, "color": "#444"},
+            "font": {"size": 14, "color": "#444"},
         },
-
-        # Domaine FIXE, parfaitement centré, ne bouge plus
-        domain={"x": [0, 1], "y": [0, 0.55]},
 
         gauge={
             "axis": {
@@ -67,26 +62,36 @@ def _gauge_chomage(taux: float, nom: str, couleur: str) -> go.Figure:
                 "tickcolor": "#999",
                 "tickfont": {"size": 10},
             },
-
             "bar": {"color": couleur},
-
             "bgcolor": "white",
             "steps": [],
-
             "threshold": {
                 "line": {"color": "black", "width": 2},
                 "thickness": 0.8,
                 "value": TAUX_NATIONAL,
             },
         },
+
+        # Domaine fixe = gauge immobile
+        domain={"x": [0, 1], "y": [0.15, 1]}
     ))
 
+    # --- DELTA FIXE (NE BOUGE PLUS JAMAIS) ---
+    fig.add_annotation(
+        x=0.5, y=0.05,
+        text=f"<span style='color:{delta_color}'><b>{delta_txt}</b></span>",
+        showarrow=False,
+        font=dict(size=14),
+        xanchor="center"
+    )
+
     fig.update_layout(
-        height=160,  # hauteur FIXE
-        margin=dict(l=0, r=0, t=10, b=0),
+        height=200,
+        margin=dict(l=0, r=0, t=30, b=0),
     )
 
     return fig
+
 
 
 
