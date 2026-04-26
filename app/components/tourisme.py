@@ -481,9 +481,8 @@ def afficher_section_tourisme(ville1: dict, ville2: dict):
     st.divider()
 
     tab1, tab2 = st.tabs(["Barres comparatives", "Radar touristique"])
-
-        with tab1:
-        st.plotly_chart(_bar_poi(poi1_counts, poi2_counts, nom1, nom2), width="stretch")
-        with tab2:
-        st.plotly_chart(_radar_tourisme(poi1_counts, poi2_counts, nom1, nom2), width="stretch")
+    with tab1:
+    st.plotly_chart(_bar_poi(poi1_counts, poi2_counts, nom1, nom2), width="stretch")
+    with tab2:
+    st.plotly_chart(_radar_tourisme(poi1_counts, poi2_counts, nom1, nom2), width="stretch")
 
