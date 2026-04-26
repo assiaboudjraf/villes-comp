@@ -30,51 +30,56 @@ def _get_chomage(df_cho: pd.DataFrame, code_insee: str) -> dict:
     return row.iloc[0].to_dict()
 
 
-def _gauge_chomage(taux: float, nom: str, couleur: str) -> go.Figure:
+ddef _gauge_chomage(taux: float, nom: str, couleur: str) -> go.Figure:
     fig = go.Figure(go.Indicator(
         mode="gauge+number+delta",
         value=taux,
+
         delta={
             "reference": TAUX_NATIONAL,
             "suffix": "%",
-            "valueformat": ".1f"
+            "valueformat": ".1f",
+            "increasing": {"color": "#b2182b"},  # rouge foncé si > national
+            "decreasing": {"color": "#238443"},  # vert foncé si < national
         },
+
         number={
             "suffix": "%",
             "valueformat": ".1f",
-            "font": {"size": 22}  # texte lisible mais pas énorme
-        },
-        title={
-            "text": nom,
-            "font": {"size": 12}
+            "font": {"size": 28, "color": "#111"}  # plus lisible
         },
 
-        # Réduction de la taille de la jauge
-        domain={"x": [0, 1], "y": [0, 0.85]},  # réduit la hauteur du demi‑cercle
+        title={
+            "text": f"<b>{nom}</b>",
+            "font": {"size": 13, "color": "#444"}
+        },
+
+        domain={"x": [0, 1], "y": [0, 0.70]},  # demi‑cercle plus compact
 
         gauge={
-            "axis": {"range": [0, 20], "ticksuffix": "%"},
+            "axis": {"range": [0, 20], "ticksuffix": "%", "tickwidth": 1},
             "bar": {"color": couleur},
 
-            # Fond blanc
+            # Fond blanc propre
             "bgcolor": "white",
             "steps": [],
 
+            # Seuil national
             "threshold": {
                 "line": {"color": "black", "width": 2},
-                "thickness": 0.7,
+                "thickness": 0.8,
                 "value": TAUX_NATIONAL,
             },
         },
     ))
 
-    # Hauteur réduite + centrage parfait
     fig.update_layout(
-        height=180,  # ← beaucoup plus petit
-        margin=dict(l=0, r=0, t=0, b=0)
+        height=170,  # plus compact
+        margin=dict(l=0, r=0, t=10, b=0),
     )
 
     return fig
+
 
 
 
